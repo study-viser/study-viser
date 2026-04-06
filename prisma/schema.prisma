@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client"
+  output   = "../src/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+// ---------------------------------------------------------------------------
+// Enums
+// ---------------------------------------------------------------------------
+
+/// Roles a user can hold in the system
+enum Role {
+  STUDENT
+  INSTRUCTOR
+  TA
+}
+
+// ---------------------------------------------------------------------------
+// Models
+// ---------------------------------------------------------------------------
+
+model User {
+  id          String       @id @default(cuid())
+  name        String
+  email       String       @unique
+  password    String
+  role        Role         @default(STUDENT)
+  enrollments Enrollment[]
+  courses     Course[]     @relation("InstructorCourses")
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@map("users")
+}
+
+model Course {
+  id          String       @id @default(cuid())
+  code        String       @unique
+  title       String
+  description String?
+  instructor  User         @relation("InstructorCourses", fields: [instructorId], references: [id])
+  instructorId String
+  enrollments Enrollment[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@map("courses")
+}
+
+/// Enrollment links a user to a course with a course-specific role
+model Enrollment {
+  id         String   @id @default(cuid())
+  user       User     @relation(fields: [userId], references: [id])
+  userId     String
+  course     Course   @relation(fields: [courseId], references: [id])
+  courseId   String
+  role       Role     @default(STUDENT)
+  enrolledAt DateTime @default(now())
+
+  @@unique([userId, courseId])
+  @@map("enrollments")
+}
