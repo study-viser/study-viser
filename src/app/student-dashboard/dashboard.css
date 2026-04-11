@@ -1,0 +1,443 @@
+.dashboard-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.section {
+  margin-bottom: 16px;
+}
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 16px;
+}
+
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+.grid-2-equal {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 24px;
+}
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid #E5E7EB;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(171, 190, 209, 0.18);
+}
+
+.card-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.page-title {
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #2E7D32;
+}
+
+.page-subtitle {
+  font-size: 18px;
+  color: #555;
+}
+
+.list {
+  padding-left: 20px;
+  line-height: 1.9;
+}
+
+.button-primary {
+  background-color: #4CAF50;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 12px 16px;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.points {
+  font-size: 36px;
+  font-weight: 700;
+  margin: 8px 0;
+}
+
+/* Available Terms to Submit */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.view-all {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2f5da8;
+  text-decoration: none;
+}
+
+.view-all:hover {
+  text-decoration: underline;
+}
+
+.terms-table {
+  border: 1px solid #E5E7EB;
+  border-radius: 14px;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.terms-table-head {
+  display: grid;
+  grid-template-columns: 1.6fr 0.9fr 1fr 1fr;
+  padding: 10px 16px;
+  background-color: #F5F7FA;
+  color: #6B7280;
+  font-weight: 500;
+  font-size: 15px;
+}
+
+.terms-row {
+  display: grid;
+  grid-template-columns: 1.6fr 0.9fr 1fr 1fr;
+  align-items: center;
+  padding: 12px 16px;
+  border-top: 1px solid #E5E7EB;
+  font-size: 16px;
+}
+
+.term-name {
+  font-weight: 600;
+  font-size: 16px;
+  color: #1F2937;
+}
+
+.course-pill {
+  display: inline-block;
+  width: fit-content;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background-color: #EEF1F5;
+  color: #6B7280;
+  font-size: 13px;
+  font-weight: 500;
+}
+
+.status-pill {
+  display: inline-block;
+  width: fit-content;
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.status-approved {
+  background-color: #6DB089;
+}
+
+.status-pending {
+  background-color: #E0B548;
+}
+
+.status-rejected {
+  background-color: #C65A5A;
+}
+
+.terms-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 16px 4px 0 4px;
+  color: #6B7280;
+  font-size: 15px;
+}
+
+.progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.progress-bar {
+  width: 180px;
+  height: 10px;
+  background-color: #E9EDF3;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  width: 50%;
+  height: 100%;
+  background-color: #8AB4ED;
+  border-radius: 999px;
+}
+
+.progress-text {
+  font-size: 16px;
+  color: #6B7280;
+}
+
+.submission-table {
+  border: 1px solid #E5E7EB;
+  border-radius: 14px;
+  overflow: hidden;
+  background-color: #ffffff;
+}
+
+.submission-table-head {
+  display: grid;
+  grid-template-columns: 1.7fr 0.9fr 0.8fr 1fr;
+  padding: 12px 16px;
+  background-color: #F5F7FA;
+  color: #6B7280;
+  font-weight: 500;
+  font-size: 14px;
+}
+
+.submission-row {
+  display: grid;
+  grid-template-columns: 1.7fr 0.9fr 0.8fr 1fr;
+  align-items: center;
+  padding: 12px 16px;
+  border-top: 1px solid #E5E7EB;
+  font-size: 15px;
+}
+
+.slot-status {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  color: #374151;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.slot-dot {
+  display: inline-block;
+  width: 26px;
+  height: 8px;
+  border-radius: 999px;
+}
+
+.slot-green {
+  background-color: #6DB089;
+}
+
+.slot-gray {
+  background-color: #D9DDE5;
+}
+
+.submit-button {
+  background-color: #6DB089;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 4px 6px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.2;
+  cursor: pointer;
+  justify-self: start;
+  min-width: 88px;
+}
+
+.submit-button:hover {
+  background-color: #5c9b76;
+}
+
+.course-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 16px;
+}
+
+.course-icon-circle {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  background-color: #6DB089;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  box-shadow: 0 4px 10px rgba(109, 176, 137, 0.25);
+}
+
+.course-title {
+  margin-bottom: 0;
+}
+
+.course-divider {
+  height: 1px;
+  background-color: #E5E7EB;
+  margin-bottom: 18px;
+}
+
+.course-content {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 20px;
+}
+
+.course-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin: 0;
+  font-size: 16px;
+  line-height: 1.5;
+  color: #1F2937;
+}
+
+.course-bullet {
+  color: #2f5da8;
+  font-size: 22px;
+  line-height: 1;
+  margin-top: 2px;
+}
+
+/* Extra Credit Card */
+.extra-card {
+    background-color: #ffffff;
+}
+
+.extra-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 8px;
+}
+
+.extra-title-wrap {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.extra-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #E0B548;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  box-shadow: 0 4px 10px rgba(224, 181, 72, 0.3);
+}
+
+.extra-points {
+  font-size: 34px;
+  font-weight: 700;
+  margin: 6px 0;
+}
+
+.extra-sub {
+  color: #6B7280;
+  font-size: 15px;
+}
+
+/* Weekly Submission Progress Card */
+.weekly-card {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.weekly-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+}
+
+.weekly-icon-circle {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  background-color: #8AB4ED;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 10px rgba(138, 180, 237, 0.35);
+  flex-shrink: 0;
+}
+
+.weekly-title {
+  margin-bottom: 0;
+  font-size: 18px;
+}
+
+.weekly-progress-bar-wrap {
+  width: 100%;
+}
+
+.weekly-progress-bar {
+  width: 100%;
+  height: 10px;
+  background-color: #E9EDF3;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.weekly-progress-fill {
+  height: 100%;
+  background-color: #8AB4ED;
+  border-radius: 999px;
+  transition: width 0.4s ease;
+}
+
+.weekly-desc {
+  font-size: 15px;
+  color: #1F2937;
+  margin: 0;
+}
+
+.weekly-sub {
+  font-size: 14px;
+  color: #6B7280;
+  margin: 0;
+}
+
+.weekly-footer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 4px;
+}
+
+.weekly-submit-btn {
+  background-color: #6DB089;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 8px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+.weekly-submit-btn:hover {
+  background-color: #5c9b76;
+}
