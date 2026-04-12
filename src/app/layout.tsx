@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "bootstrap/dist/css/bootstrap.min.css";
 
 export const metadata: Metadata = {
   title: "Study Viser",
@@ -12,8 +13,10 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="h-full antialiased">
-      <body className="min-h-full flex flex-col">{children}</body>
+    <html lang="en">
+      <body>
+       {children}
+      </body>
     </html>
   );
 }
