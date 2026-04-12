@@ -1,20 +1,28 @@
 import { Col, Container, Row, Table } from 'react-bootstrap';
 import { prisma } from '@/lib/prisma';
-import StuffItem from '@/components/StuffItem';
+import UserItem from '@/components/UserItem';
+import CourseItem from '@/components/CourseItem';
 
 /** Render a list of users and courses. */
 const TestPage = async () => {
   
-  // console.log(stuff);
+  const users = await prisma.user.findMany({
+    include: { courses: true }, // Include related courses for each user
+  });
+  const courses = await prisma.course.findMany({
+    include: { user: true }, // Include related user for each course
+  });
+
   return (
     <main>
-      <Container id="list" fluid className="py-3">
-        <Row>
-          <Col>
+      <Container id="testDB">
+        <Row className="justify-content-center">
+          <Col xs={12} md={10} lg={8}>
             <h1>Users</h1>
             <Table striped bordered hover>
               <thead>
                 <tr>
+                  <th>ID</th>
                   <th>Name</th>
                   <th>Email</th>
                   <th>Role</th>
@@ -22,8 +30,8 @@ const TestPage = async () => {
                 </tr>
               </thead>
               <tbody>
-                {stuff.map((item) => (
-                  <StuffItem key={item.id} {...item} />
+                {users.map((user) => (
+                  <UserItem key={user.id} {...user} />
                 ))}
               </tbody>
             </Table>
@@ -35,14 +43,16 @@ const TestPage = async () => {
               <Table striped bordered hover>
                 <thead>
                   <tr>    
-                    <th>Name</th>
+                    <th>ID</th>
                     <th>Code</th>
-                    <th>Instructor</th>
+                    <th>Title</th>
+                    <th>Description</th>
+                    <th>Instructor/TA</th>
                   </tr>
                 </thead>
                 <tbody>
-                {stuff.map((item) => (
-                  <StuffItem key={item.id} {...item} />
+                {courses.map((course) => (
+                  <CourseItem key={course.id} {...course} />
                 ))}
               </tbody>
                 </Table>
