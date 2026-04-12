@@ -26,12 +26,12 @@ enum Role {
 // ---------------------------------------------------------------------------
 
 model User {
-  id          String       @id @default(cuid())
+  id          Int       @id @default(cuid())
   name        String
   email       String       @unique
   password    String
   role        Role         @default(STUDENT)
-  enrollments Enrollment[]
+  // enrollments Enrollment[]
   courses     Course[]     @relation("InstructorCourses")
   createdAt   DateTime     @default(now())
   updatedAt   DateTime     @updatedAt
@@ -53,6 +53,8 @@ model Course {
   @@map("courses")
 }
 
+/* Not needed at this time-mw 4/11/26
+/
 /// Enrollment links a user to a course with a course-specific role
 model Enrollment {
   id         String   @id @default(cuid())
@@ -66,3 +68,4 @@ model Enrollment {
   @@unique([userId, courseId])
   @@map("enrollments")
 }
+*/
