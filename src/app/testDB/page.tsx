@@ -37,8 +37,8 @@ const TestPage = async () => {
             </Table>
           </Col>
         </Row>
-        <Row>
-          <Col>
+        <Row className="justify-content-center">
+          <Col xs={12} md={10} lg={8}>
             <h1>Courses</h1>
               <Table striped bordered hover>
                 <thead>
