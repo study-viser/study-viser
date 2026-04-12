@@ -23,22 +23,6 @@ const prisma = createPrismaClient();
 async function main() {
   // Seeding database
   console.log('Seeding the database');
-  // ── Users ──────────────────────────────────────────────────────────────
-  const password = await hash('changeme', 10);
-  config.defaultUsers.forEach(async (user) => {
-    const role = user.role as Role || Role.STUDENT;
-    console.log(`  Creating user: ${user.email} with role: ${role}`);
-    await prisma.user.upsert({
-      where: { email: user.email },
-      update: {},
-      create: {
-        name: user.name,
-        email: user.email,
-        password,
-        role,
-      },
-    });
-  });
 
   // ── Courses ────────────────────────────────────────────────────────────
   for (const course of config.defaultCourses) {
@@ -53,6 +37,28 @@ async function main() {
       },
     });
   }
+
+  // ── Users ──────────────────────────────────────────────────────────────
+  const password = await hash('changeme', 10);
+  for (const user of config.defaultUsers) {
+    const role = user.role as Role || Role.STUDENT;
+    console.log(`  Creating user: ${user.email} with role: ${role}`);
+
+    await prisma.user.upsert({
+      where: { email: user.email },
+      update: {},
+      create: {
+        name: user.name,
+        email: user.email,
+        password,
+        role,
+        courses: {
+          connect: user.courses?.map((code: string) => ({ code })) || [],
+        }
+      },
+    });
+  }
+
 }
 
 main()
