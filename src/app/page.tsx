@@ -1,65 +1,416 @@
+"use client";
+ 
+import { useState } from "react";
 import Image from "next/image";
-
-export default function Home() {
+import Link from "next/link";
+ 
+export default function HomePage() {
+  const [searchQuery, setSearchQuery] = useState("");
+  const [coursesOpen, setCoursesOpen] = useState(false);
+ 
   return (
-    <div className="flex flex-col flex-1 items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex flex-1 w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
+    <main className="min-h-screen bg-white font-sans overflow-x-hidden">
+      <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Belanosima:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+ 
+        :root {
+          --green-dark: #024731;;
+          --green-mid: #2d6a44;
+          --green-light: #4a9b65;
+          --green-pale: #a8d5b5;
+          --green-muted: #E8F5E9;
+          --white: #ffffff;
+          --gray-text: D9D9D9;
+        }
+ 
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+ 
+        body {
+          font-family: 'DM Sans', sans-serif;
+        }
+ 
+        .nav {
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+          padding: 20px 48px;
+          position: relative;
+          z-index: 50;
+          background: white;
+        }
+ 
+        .logo {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          text-decoration: none;
+        }
+ 
+        .logo-icon {
+          width: 44px;
+          height: 44px;
+        }
+ 
+        .logo-text {
+          font-family: 'DM Sans', sans-serif;
+          font-weight: 700;
+          font-size: 1.5rem;
+          color: var(--green-dark);
+          letter-spacing: -0.5px;
+        }
+ 
+        .nav-links {
+          display: flex;
+          align-items: center;
+          gap: 40px;
+          list-style: none;
+        }
+ 
+        .nav-links a {
+          text-decoration: none;
+          color: var(--green-dark);
+          font-weight: 500;
+          font-size: 0.95rem;
+          transition: color 0.2s;
+          position: relative;
+        }
+ 
+        .nav-links a.active::after {
+          content: '';
+          position: absolute;
+          bottom: -4px;
+          left: 0;
+          right: 0;
+          height: 2px;
+          background: var(--green-dark);
+          border-radius: 2px;
+        }
+ 
+        .nav-links a:hover { color: var(--green-mid); }
+ 
+        .courses-wrapper {
+          position: relative;
+          display: flex;
+          align-items: center;
+          gap: 4px;
+          cursor: pointer;
+        }
+ 
+        .courses-wrapper span {
+          font-weight: 500;
+          font-size: 0.95rem;
+          color: var(--green-dark);
+        }
+ 
+        .dropdown-arrow {
+          width: 18px;
+          height: 18px;
+          color: var(--green-dark);
+          transition: transform 0.2s;
+        }
+ 
+        .dropdown-arrow.open { transform: rotate(180deg); }
+ 
+        .dropdown-menu {
+          position: absolute;
+          top: calc(100% + 12px);
+          left: 50%;
+          transform: translateX(-50%);
+          background: white;
+          border: 1px solid #e2e8f0;
+          border-radius: 10px;
+          box-shadow: 0 8px 24px rgba(0,0,0,0.10);
+          min-width: 180px;
+          padding: 8px 0;
+          z-index: 100;
+        }
+ 
+        .dropdown-menu a {
+          display: block;
+          padding: 10px 20px;
+          color: var(--green-dark);
+          text-decoration: none;
+          font-size: 0.9rem;
+          transition: background 0.15s;
+        }
+ 
+        .dropdown-menu a:hover { background: #f0faf4; }
+ 
+        .nav-auth {
+          display: flex;
+          align-items: center;
+          gap: 20px;
+        }
+ 
+        .login-btn {
+          font-family: 'DM Sans', sans-serif;
+          font-weight: 600;
+          font-size: 0.95rem;
+          color: var(--green-dark);
+          text-decoration: underline;
+          text-underline-offset: 3px;
+          background: none;
+          border: none;
+          cursor: pointer;
+          transition: color 0.2s;
+        }
+ 
+        .login-btn:hover { color: var(--green-mid); }
+ 
+        .register-btn {
+          font-family: 'DM Sans', sans-serif;
+          font-weight: 600;
+          font-size: 0.95rem;
+          color: white;
+          background: var(--green-dark);
+          border: none;
+          border-radius: 8px;
+          padding: 10px 24px;
+          cursor: pointer;
+          transition: background 0.2s, transform 0.15s;
+        }
+ 
+        .register-btn:hover {
+          background: var(--green-mid);
+          transform: translateY(-1px);
+        }
+ 
+        .hero {
+          position: relative;
+          min-height: calc(100vh - 84px);
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+        }
+ 
+        .search-bar-wrapper {
+          position: relative;
+          z-index: 10;
+          width: 100%;
+          max-width: 720px;
+          margin: 32px auto 0;
+          padding: 0 24px;
+        }
+ 
+        .search-bar {
+          width: 100%;
+          padding: 16px 20px 16px 52px;
+          border: 1.5px solid #c8e6d0;
+          border-radius: 50px;
+          font-family: 'DM Sans', sans-serif;
+          font-size: 1rem;
+          color: var(--green-dark);
+          outline: none;
+          background: white;
+          box-shadow: 0 2px 16px rgba(26, 74, 46, 0.07);
+          transition: border-color 0.2s, box-shadow 0.2s;
+        }
+ 
+        .search-bar::placeholder { color: #9ab8a8; }
+ 
+        .search-bar:focus {
+          border-color: var(--green-mid);
+          box-shadow: 0 4px 20px rgba(26, 74, 46, 0.12);
+        }
+ 
+        .search-icon {
+          position: absolute;
+          left: 42px;
+          top: 50%;
+          transform: translateY(-50%);
+          color: #9ab8a8;
+          width: 20px;
+          height: 20px;
+          pointer-events: none;
+        }
+ 
+        .hero-content {
+          position: relative;
+          z-index: 10;
+          text-align: center;
+          margin-top: 60px;
+          padding: 0 24px;
+        }
+ 
+        .hero-headline {
+          font-family: 'Belanosima', serif;
+          font-weight: 700;
+          font-size: clamp(2rem, 4vw, 2.8rem);
+          color: var(--green-dark);
+          line-height: 1.25;
+          margin-bottom: 36px;
+        }
+ 
+        .visit-btn {
+          font-family: 'Inter', sans-serif;
+          font-weight: 600;
+          font-size: 1rem;
+          color: white;
+          background: var(--green-dark);
+          border: none;
+          border-radius: 8px;
+          padding: 16px 44px;
+          cursor: pointer;
+          transition: background 0.2s, transform 0.15s, box-shadow 0.2s;
+          box-shadow: 0 4px 16px rgba(26, 74, 46, 0.25);
+        }
+ 
+        .visit-btn:hover {
+          background: var(--green-mid);
+          transform: translateY(-2px);
+          box-shadow: 0 8px 24px rgba(26, 74, 46, 0.3);
+        }
+ 
+        /* Wave illustration */
+        .wave-section {
+          position: absolute;
+          bottom: 0;
+          left: 0;
+          right: 0;
+          height: 62%;
+          pointer-events: none;
+        }
+ 
+        /* Sitting figure */
+        .figure-wrapper {
+          position: absolute;
+          right: 5%;
+          bottom: 15%;
+          z-index: 5;
+          width: min(260px, 22vw);
+        }
+ 
+        /* Footer bar */
+        .footer-bar {
+          background: var(--green-dark);
+          color: white;
+          text-align: center;
+          padding: 28px 20px 24px;
+        }
+ 
+        .footer-university {
+          font-family: 'Playfair Display', serif;
+          font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+          font-weight: 600;
+          letter-spacing: 0.04em;
+          margin-bottom: 6px;
+        }
+ 
+        .footer-subtitle {
+          font-family: 'DM Sans', sans-serif;
+          font-size: 0.95rem;
+          opacity: 0.8;
+          font-weight: 400;
+        }
+ 
+        @media (max-width: 768px) {
+          .nav { padding: 16px 20px; }
+          .nav-links { display: none; }
+          .figure-wrapper { width: min(180px, 30vw); right: 2%; }
+          .hero-content { margin-top: 40px; }
+        }
+      `}</style>
+ 
+      {/* Navbar */}
+      <nav className="nav">
+      <Link href="/" className="logo">
         <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
+          src="/studyviserlogo.png"
+          alt="StudyViser Logo"
+          width={44}
+          height={44}
+          className="logo-icon"
         />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
+        <span className="logo-text">StudyViser</span>
+      </Link>
+ 
+        <ul className="nav-links">
+          <li><Link href="/" className="active">Home</Link></li>
+          <li><Link href="/about">About</Link></li>
+          <li>
+            <div
+              className="courses-wrapper"
+              onClick={() => setCoursesOpen(!coursesOpen)}
+            >
+              <span>Courses</span>
+              <svg className={`dropdown-arrow ${coursesOpen ? "open" : ""}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <polyline points="6 9 12 15 18 9"/>
+              </svg>
+              {coursesOpen && (
+                <div className="dropdown-menu">
+                  <a>TBA</a>
+                </div>
+              )}
+            </div>
+          </li>
+          <li><Link href="/contact">Contact</Link></li>
+        </ul>
+ 
+        <div className="nav-auth">
+          <button className="login-btn">Login</button>
+          <button className="register-btn">Register</button>
+        </div>
+      </nav>
+ 
+      {/* Hero Section */}
+      <section className="hero">
+        {/* Search Bar */}
+        <div className="search-bar-wrapper">
+          <svg className="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+            <circle cx="11" cy="11" r="8"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
+          </svg>
+          <input
+            type="text"
+            className="search-bar"
+            placeholder="Search for courses"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+        </div>
+ 
+        {/* Headline + CTA */}
+        <div className="hero-content">
+          <h1 className="hero-headline">
+            Earn Credit. Build Knowledge.<br />
+            Learn Better Together.
           </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
-          </p>
+          <button className="visit-btn">Visit Courses</button>
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
+ 
+        {/* Triangle Background */}
+        <div className="wave-section">
+          <svg viewBox="0 0 1440 480" preserveAspectRatio="none" style={{ width: "100%", height: "100%" }} xmlns="http://www.w3.org/2000/svg">
+            {/* Back triangle - lightest */}
+            <polygon points="0,280 1440,160 1440,480 0,480" fill="#c8e6d0" opacity="0.55"/>
+            {/* Mid triangle */}
+            <polygon points="0,320 1440,200 1440,480 0,480" fill="#4a9b65" opacity="0.7"/>
+            {/* Front triangle - darkest */}
+            <polygon points="0,370 1440,250 1440,480 0,480" fill="#1a4a2e"/>
+          </svg>
+        </div>
+ 
+        {/* Sitting Figure SVG */}
+        <div className="figure-wrapper">
+          <div className="figure-wrapper">
             <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
+              src="/sittingLady.png"
+              alt="Student sitting at laptop"
+              width={260}
+              height={400}
+              style={{ objectFit: "contain" }}
             />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
+          </div>
         </div>
-      </main>
-    </div>
+      </section>
+ 
+      {/* Footer */}
+      <footer className="footer-bar">
+        <p className="footer-university">University <em>of</em> Hawai&#x02BB;i&#174; <em>at</em> M&#x101;noa</p>
+        <p className="footer-subtitle">Ke Kulanui o Hawai&#x02BB;i ma M&#x101;noa</p>
+      </footer>
+    </main>
   );
 }
+ 
