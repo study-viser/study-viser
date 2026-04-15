@@ -1,0 +1,33 @@
+{
+  "defaultUsers": [
+    { "name": "Admin", "email": "admin@foo.com", "password": "changeme", "role": "ADMIN" },
+    { "name": "John Doe", "email": "john@foo.com", "password": "changeme" },
+    { "name": "Smarty Pants", "email": "smarty@foo.com", "password": "changeme", "courses": ["ICS 111", "ICS 211"], "role": "TA" }
+  ],
+  "defaultCourses": [
+    {
+      "id": "1",
+      "code": "ICS 111",
+      "title": "Introduction to Computer Science I",
+      "description": "Overview of computer science emphasizing problem solving, algorithm development, implementation, and debugging/testing using an object-oriented programming language."
+    },
+    {
+      "id": "2",
+      "code": "ICS 211",
+      "title": "Introduction to Computer Science II",
+      "description": "Reinforce and strengthen problem-solving skills using abstract data types and introduction to algorithms and their complexity."
+    },
+    {
+      "id": "3",
+      "code": "ICS 311",
+      "title": "Algorithms",
+      "description": "Design and efficiency of algorithms for sorting, searching, graph problems, and string matching. Analysis of worst-case and average-case complexity."
+    },
+    {
+      "id": "4",
+      "code": "ICS 314",
+      "title": "Software Engineering I",
+      "description": "Systematic definition, development, and maintenance of software systems. Software life-cycle, compilers, and project management tools."
+    }
+  ]
+}
