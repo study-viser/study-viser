@@ -5,11 +5,13 @@
 /* Page layout */
 .login-page {
   background-color: #E8F5E9;
-  flex: 1;
+  min-height: calc(100vh - 140px);
   display: flex;
   align-items: center;
+  justify-content: center;
   position: relative;
   overflow: hidden;
+  padding: 2rem 0;
 }
 
 /* Card */
@@ -24,7 +26,6 @@
   position: relative;
   background-color: rgba(255, 255, 255, 0.9);
   max-width: 600px;
-  min-height: 500px;
   border-radius: 12px;
   box-shadow: 0px 16px 32px rgba(0, 0, 0, 0.15);
   padding: 48px 32px 32px;

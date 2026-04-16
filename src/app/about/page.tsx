@@ -729,11 +729,6 @@ export default function AboutPage() {
         </div>
       </section>
  
-      {/* Footer */}
-      <footer className="footer-bar">
-        <p className="footer-university">University <em>of</em> Hawai&#x02BB;i&#174; <em>at</em> M&#x101;noa</p>
-        <p className="footer-subtitle">Ke Kulanui o Hawai&#x02BB;i ma M&#x101;noa</p>
-      </footer>
     </main>
   );
 }
