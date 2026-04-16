@@ -27,7 +27,7 @@ const SignIn = () => {
 
       <Image src="/top-left-shape.png"  alt="" className="bg-shape top-left" />
       <Image src="/bottom-left-shape.png"  alt="" className="bg-shape bottom-left" />
-      <Image src="/bottom-right.png" alt="" className="bg-shape bottom-right" />
+      <Image src="/bottom-right-shape.png" alt="" className="bg-shape bottom-right" />
 
         <Container>
         <Row className="justify-content-center">
