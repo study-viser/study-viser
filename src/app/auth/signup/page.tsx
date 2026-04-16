@@ -59,7 +59,7 @@ const SignUpRole = () => {
                       className={`role-card ${selectedRole === 'TA' ? 'selected' : ''}`}
                       onClick={() => setSelectedRole('TA')}
                     >
-                      <Image src="/ta-icon.png" width={60} alt="Teacher Assistant" />
+                      <Image src="/TA-icon.png" width={60} alt="Teacher Assistant" />
                       <p>Teacher Assistant</p>
                     </div>
                   </Col>
