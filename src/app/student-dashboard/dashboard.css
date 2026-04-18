@@ -1,7 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Belanosima:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+
 .dashboard-container {
+  font-family: 'Inter', sans-serif;
   max-width: 1200px;
   margin: 0 auto;
   padding: 32px 24px;
+}
+
+.page-title,
+.card-title,
+.weekly-title,
+.course-title {
+  font-family: 'Belanosima', sans-serif;
 }
 
 .section {
