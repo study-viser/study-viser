@@ -93,7 +93,7 @@ export default function StudentDashboardPage() {
                 <span className="course-pill">FIN 307</span>
                 <span className="slot-status">
                     <span className="slot-dot slot-gray"></span>
-                    0 / 4
+                    0 / 3
                 </span>
                 <button className="submit-button">Submit Definition</button>
                 </div>
@@ -241,7 +241,7 @@ export default function StudentDashboardPage() {
                     </svg>
                     </div>
                     <p className="notif-text">
-                    Your definition for <strong>'Algorithm'</strong> was approved.
+                    Your definition for <strong>&apos;Algorithm&apos;</strong> was approved.
                     </p>
                     <span className="notif-time">4h ago</span>
                 </div>
@@ -255,7 +255,7 @@ export default function StudentDashboardPage() {
                     </svg>
                     </div>
                     <p className="notif-text">
-                    The term <strong>'API'</strong> has reached its submission cap.
+                    The term <strong>&apos;API&apos;</strong> has reached its submission cap.
                     </p>
                     <span className="notif-time">1d ago</span>
                 </div>
