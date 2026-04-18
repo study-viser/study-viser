@@ -54,6 +54,28 @@ model Course {
   @@map("courses")
 }
 
+// Course listing data structure
+model Listing {
+  id               String   @id @default(uuid())
+  code             String   @unique
+  subject          String
+  title            String
+  credits          String   // this is a string because some courses have "V" for variable
+  description      String?
+  prerequisites    String?
+  corequisites     String?
+  genEd            String?
+  gradeOption      String?
+  repeatable       String?
+  majorRestrictions String?
+  classStanding    String?
+  crossListed      String?
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@map("courses")
+
+}
 /**
  * Not needed at this time-mw 4/11/26
  * /
