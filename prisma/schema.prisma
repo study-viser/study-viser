@@ -73,7 +73,7 @@ model Listing {
   createdAt        DateTime @default(now())
   updatedAt        DateTime @updatedAt
 
-  @@map("courses")
+  @@map("listings")
 
 }
 /**
