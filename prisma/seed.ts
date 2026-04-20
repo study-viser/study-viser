@@ -61,14 +61,22 @@ async function main() {
 
   for (const course of config.defaultCourses) {
     console.log(`  Creating course: ${course.code} - ${course.title}`);
-    await prisma.course.upsert({
-      where: { code: course.code },
-      update: {},
-      create: {
-        code: course.code,
-        title: course.title,
-        description: course.description,
+      
+  const listing = await prisma.listing.findUnique({
+    where: { code: course.code },
+  });
+
+  await prisma.course.upsert({
+    where: { code: course.code },
+    update: {},
+    create: {
+      code: course.code,
+      title: listing?.title ?? course.title,
+      description: listing?.description ?? course.description,
+      listing: {
+        connect: { code: course.code },
       },
+    },
     });
   }
 
