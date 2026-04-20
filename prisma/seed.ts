@@ -66,6 +66,11 @@ async function main() {
     where: { code: course.code },
   });
 
+  if (!listing) {
+    console.log(`  No listing found for ${course.code}, skipping...`);
+    continue;
+  }
+
   await prisma.course.upsert({
     where: { code: course.code },
     update: {},
@@ -73,9 +78,11 @@ async function main() {
       code: course.code,
       title: listing?.title ?? course.title,
       description: listing?.description ?? course.description,
-      listing: {
-        connect: { code: course.code },
-      },
+      ...(listing && {
+        listing: {                      // relation field
+          connect: { id: listing?.id }, // connects to preexisting listing
+        },
+      }), 
     },
     });
   }
