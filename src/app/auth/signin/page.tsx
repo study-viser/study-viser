@@ -15,11 +15,25 @@ const SignIn = () => {
     const email = target.email.value;
     const password = target.password.value;
 
-    await signIn('credentials', {
-      callbackUrl: '/list',
+    const result = await signIn('credentials', {
+      redirect: false,
       email,
       password,
     });
+
+    if (result?.error) return;
+
+    const{getSession} = await import('next-auth/react');
+    const session = await getSession();
+    const role = (session?.user as {role?: string})?.role;
+
+    if (role === 'INSTRUCTOR') {
+      window.location.href = '/instructor-dashboard';
+    } else if (role === 'TA') {
+      window.location.href = '/ta-dashboard';
+    } else {
+      window.location.href = '/student-dashboard';
+    }
   };
 
   return (
