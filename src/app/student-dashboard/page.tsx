@@ -93,7 +93,7 @@ export default function StudentDashboardPage() {
                 <span className="course-pill">FIN 307</span>
                 <span className="slot-status">
                     <span className="slot-dot slot-gray"></span>
-                    0 / 4
+                    0 / 3
                 </span>
                 <button className="submit-button">Submit Definition</button>
                 </div>

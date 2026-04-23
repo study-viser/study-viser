@@ -40,6 +40,7 @@ model User {
   @@map("users") // maps model to a table named "users" in db
 }
 
+// a course is an instance of a Listing
 model Course {
   id          String   @id @default(uuid())
   code        String   @unique
@@ -50,10 +51,37 @@ model Course {
   updatedAt   DateTime @updatedAt
   user        User?    @relation(fields: [userId], references: [id])
   userId      String?
+  listing     Listing? @relation(fields: [listingId], references: [code])
+  listingId String?
+  externalURLs      String[]   // list of external study sources, specific to course
 
   @@map("courses")
 }
 
+// Course listing data structure
+model Listing {
+  id                String   @id @default(uuid())
+  code              String   @unique
+  subject           String
+  title             String
+  credits           String   // this is a string because some courses have "V" for variable
+  description       String?
+  prerequisites     String?
+  corequisites      String?
+  genEd             String?
+  gradeOption       String?
+  repeatable        String?
+  majorRestrictions String?
+  classStanding     String?
+  crossListed       String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  courses           Course[]
+  externalURLs      String[]   // list of external study sources
+
+  @@map("listings")
+
+}
 /**
  * Not needed at this time-mw 4/11/26
  * /

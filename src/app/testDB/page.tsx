@@ -17,7 +17,7 @@ const TestPage = async () => {
     <main>
       <Container id="testDB">
         <Row className="justify-content-center">
-          <Col xs={12} md={10} lg={8}>
+          <Col xs={12} md={11} lg={10}>
             <h1>Users</h1>
             <Table striped bordered hover>
               <thead>
@@ -38,9 +38,9 @@ const TestPage = async () => {
           </Col>
         </Row>
         <Row className="justify-content-center">
-          <Col xs={12} md={10} lg={8}>
+          <Col xs={12} md={11} lg={10}>
             <h1>Courses</h1>
-              <Table striped bordered hover>
+              <Table striped bordered hover responsive>
                 <thead>
                   <tr>    
                     <th>ID</th>
@@ -48,6 +48,7 @@ const TestPage = async () => {
                     <th>Title</th>
                     <th>Description</th>
                     <th>Instructor/TA</th>
+                    <th>External URLs</th>
                   </tr>
                 </thead>
                 <tbody>
