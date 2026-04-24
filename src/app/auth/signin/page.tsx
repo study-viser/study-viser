@@ -6,7 +6,7 @@ import '@/styles/auth.css';
 
 /** The sign in page. */
 const SignIn = () => {
-  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: any) => {
     e.preventDefault();
     const target = e.target as typeof e.target & {
       email: { value: string };
