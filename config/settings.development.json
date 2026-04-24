@@ -1,8 +1,9 @@
 {
   "defaultUsers": [
-    { "name": "Admin", "email": "admin@foo.com", "password": "changeme", "role": "ADMIN" },
+    { "name": "Admin", "email": "admin@foo.com", "password": "changeme", "role": "STUDENT" },
     { "name": "John Doe", "email": "john@foo.com", "password": "changeme" },
-    { "name": "Smarty Pants", "email": "smarty@foo.com", "password": "changeme", "courses": ["ICS 111", "ICS 211"], "role": "TA" }
+    { "name": "Smarty Pants", "email": "smarty@foo.com", "password": "changeme", "courses": ["ICS 111", "ICS 211"], "role": "TA" },
+    { "name": "Square Pants", "email": "spongebob@foo.com", "password": "changeme", "courses": ["ICS 111", "ICS 211"], "role": "STUDENT" }
   ],
   
   "defaultCourses": [
