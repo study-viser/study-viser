@@ -129,6 +129,10 @@ export default function StudentDashboardPage() {
                 </span>
                 </p>
             </div>
+
+            <div className="course-actions">
+                    <a href="#" className="course-btn course-btn-add">+ add courses</a>
+            </div>
         </div>
 
         <div className="card extra-card">
