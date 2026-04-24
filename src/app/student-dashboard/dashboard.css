@@ -563,3 +563,22 @@
   white-space: nowrap;
   flex-shrink: 0;
 }
+
+.course-actions {
+  display: flex;
+}
+
+.course-btn-add {
+  padding: 7px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  background-color: #6DB089;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.course-btn-add:hover {
+  background-color: #5c9b76;
+}
