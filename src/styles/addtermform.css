@@ -1,0 +1,112 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Almendra+SC&family=Belanosima:wght@400;600;700&family=Diplomata+SC&family=Gelasio:ital,wght@0,400..700;1,400..700&family=Gravitas+One&family=IM+Fell+Double+Pica:ital@0;1&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+html,
+body {
+  background-color: #E8F5E9;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+h1 {
+  font-family: "Belanosima", sans-serif;
+  font-weight: 600;
+  color: #024731;
+  margin: 20px 0;
+}
+
+.add-term-title {
+  text-align: center;
+  color: #004d35;
+  font-size: 3rem;
+  font-weight: 800;
+}
+
+.add-term-card {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px 40px;
+  border: 1px solid #2f7d63;
+  border-radius: 16px;
+}
+
+.add-term-label {
+  font-family: "Lato", sans-serif;
+  font-size: 1.6rem;
+}
+
+.add-term-card .form-control,
+.add-term-card .form-select {
+  border: 1px solid #6d7f76;
+  border-radius: 12px;
+  font-size: 1.1rem;
+}
+
+.requires-image-row {
+  display: flex;
+  align-items: center;
+  gap: 18px;
+}
+
+.requires-image-switch {
+  font-weight: 700;
+}
+
+.add-term-label {
+    font-family: sans-serif;
+    font-size: 1.2rem;
+    font-weight: 400;
+}
+
+.meta-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+}
+
+.meta-field {
+  align-items: center;
+}
+
+.meta-field .add-term-label {
+  padding-right: 6px;
+  white-space: nowrap;
+}
+
+.meta-field .col-sm-6,
+.meta-field .col-sm-5 {
+  padding-left: 0;
+}
+
+.requires-image-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding-top: 8px;
+}
+
+.requires-image-row .add-term-label {
+  margin-bottom: 0;
+  white-space: nowrap;
+}
+
+.submit-button {
+  position: center;
+  font-family: "Lato", sans-serif;
+  font-weight: 600;
+  background: #E8F5E9;
+  color: #024731;
+  border: 2px solid #024731;
+  border-radius: 10px;
+  width: 40%;
+  padding: 10px 24px;
+  cursor: pointer;
+}
+.submit-button:hover {
+  background-color: #024731;
+  color: #E8F5E9;
+  border: 2px solid #024731;
+}
+
+
