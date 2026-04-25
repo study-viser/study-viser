@@ -1,7 +1,7 @@
 'use client';
 
-/** import { signIn } from 'next-auth/react';
-import Link from 'next/link'; */
+import { signIn } from 'next-auth/react';
+// import Link from 'next/link';
 import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
@@ -52,6 +52,21 @@ const onSubmit = async (data: SignUpForm) => {
     ...data,
     role: role as 'STUDENT' | 'TA' | 'INSTRUCTOR',
   });
+
+  const result = await signIn('credentials', {
+      redirect: false,
+      email: data.email,
+      password: data.password,
+    });
+
+    if (result?.error) {
+      router.push('/auth/signin');
+      return;
+    }
+
+    if (role === 'INSTRUCTOR') router.push('/instructor-dashboard');
+    else if (role === 'TA') router.push('/ta-dashboard');
+    else router.push('/student-dashboard');
 };
 
   return (

@@ -12,7 +12,7 @@ const NavBar: React.FC = () => {
 
   if (status === 'loading') return null;
 
-  const currentUser = session?.user?.email;
+  const currentUser = session?.user?.name;
   const role = session?.user?.role;
 
   return (
@@ -81,28 +81,38 @@ const NavBar: React.FC = () => {
               Contact
             </Nav.Link>
 
-            {currentUser && (
-              <>
-                <Nav.Link
-                  as={Link}
-                  href="/add"
-                  active={pathName === '/add'}
-                  className="fw-medium"
-                  style={{ color: '#024731' }}
-                >
-                  Add Stuff
-                </Nav.Link>
-
-                <Nav.Link
-                  as={Link}
-                  href="/list"
-                  active={pathName === '/list'}
-                  className="fw-medium"
-                  style={{ color: '#024731' }}
-                >
-                  List Stuff
-                </Nav.Link>
-              </>
+            {currentUser && role === 'STUDENT' && (
+              <Nav.Link
+                as={Link}
+                href="/student-dashboard"
+                active={pathName.startsWith('/student-dashboard')}
+                className="fw-medium"
+                style={{ color: '#024731' }}
+              >
+                Dashboard
+              </Nav.Link>
+            )}
+            {currentUser && role === 'INSTRUCTOR' && (
+              <Nav.Link
+                as={Link}
+                href="/instructor-dashboard"
+                active={pathName.startsWith('/instructor-dashboard')}
+                className="fw-medium"
+                style={{ color: '#024731' }}
+              >
+                Dashboard
+              </Nav.Link>
+            )}
+            {currentUser && role === 'TA' && (
+              <Nav.Link
+                as={Link}
+                href="/ta-dashboard"
+                active={pathName.startsWith('/ta-dashboard')}
+                className="fw-medium"
+                style={{ color: '#024731' }}
+              >
+                Dashboard
+              </Nav.Link>
             )}
 
             {currentUser && role === 'ADMIN' && (
