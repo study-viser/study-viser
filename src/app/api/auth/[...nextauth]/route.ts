@@ -22,10 +22,12 @@ const handler = NextAuth({
   ],
   pages: { signIn: '/auth/signin' },
   callbacks: {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async jwt({ token, user }: { token: any; user: any }) {
       if (user) token.role = user.role;
       return token;
     },
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     async session({ session, token }: { session: any; token: any }) {
       return { ...session, user: { ...session.user, role: token.role } };
     },
