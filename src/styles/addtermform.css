@@ -1,0 +1,88 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Almendra+SC&family=Belanosima:wght@400;600;700&family=Diplomata+SC&family=Gelasio:ital,wght@0,400..700;1,400..700&family=Gravitas+One&family=IM+Fell+Double+Pica:ital@0;1&family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Playfair+Display:ital,wght@0,400..900;1,400..900&display=swap');
+
+html,
+body {
+  background-color: #E8F5E9;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.add-term-title {
+  font-family: "Belanosima", sans-serif;
+  text-align: center;
+  color: #024731;
+  font-weight: 700;
+  margin: 20px 0;
+}
+
+.add-term-card {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 16px 40px;
+  border: 1px solid #2f7d63;
+  border-radius: 16px;
+}
+.add-term-card .form-group {
+  align-items: center;
+}
+
+.add-term-label {
+  font-family: "Lato", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  white-space: nowrap;
+  margin-bottom: 0;
+}
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.meta-col {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.meta-label {
+  line-height: 1;
+}
+
+.difficulty-select {
+  width: 150px;
+}
+
+.week-select {
+  width: 80px;
+}
+
+.requires-image-switch {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+  font-weight: 700;
+}
+
+.submit-button {
+  position: center;
+  font-family: "Lato", sans-serif;
+  font-weight: 600;
+  background: #E8F5E9;
+  color: #024731;
+  border: 2px solid #024731;
+  border-radius: 10px;
+  width: 40%;
+  padding: 10px 24px;
+  cursor: pointer;
+}
+.submit-button:hover {
+  background-color: #024731;
+  color: #E8F5E9;
+  border: 2px solid #024731;
+}
+
+
