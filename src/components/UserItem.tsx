@@ -17,14 +17,18 @@ const UserItem = ({ id, name, email, role, taughtCourses, enrolledCourses, submi
     <td>
       {taughtCourses.length > 0 ? (
         <ul style={{ paddingLeft: '20px', marginBottom: 0 }}>
-          {taughtCourses.map((c) => <li key={c.id}><strong>{c.code}</strong> — {c.title}</li>)}
+          {taughtCourses.map((c) => (
+            <li key={c.crn}><strong>{c.crn}</strong> {c.code} — {c.title}</li>
+          ))}
         </ul>
       ) : <span className="text-muted">None</span>}
     </td>
     <td>
       {enrolledCourses.length > 0 ? (
         <ul style={{ paddingLeft: '20px', marginBottom: 0 }}>
-          {enrolledCourses.map((c) => <li key={c.id}><strong>{c.code}</strong> — {c.title}</li>)}
+          {enrolledCourses.map((c) => (
+            <li key={c.crn}><strong>{c.crn}</strong> {c.code} — {c.title}</li>
+          ))}
         </ul>
       ) : <span className="text-muted">None</span>}
     </td>
