@@ -32,10 +32,11 @@ model User {
   email     String   @unique
   password  String
   role      Role     @default(STUDENT)
-  // enrollments Enrollment[]
-  courses   Course[]
+  taughtCourses  Course[] @relation("InstructorCourses")
+  enrolledCourses Course[] @relation("StudentCourses")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+  submissions  Submission[] @relation("SubmissionCreator")
 
   @@map("users") // maps model to a table named "users" in db
 }
@@ -49,11 +50,14 @@ model Course {
   // enrollments Enrollment[]
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
-  user        User?    @relation(fields: [userId], references: [id])
-  userId      String?
+  instructor  User?    @relation("InstructorCourses", fields: [instructorId], references: [id])
+  instructorId      String?
   listing     Listing? @relation(fields: [listingId], references: [code])
   listingId String?
   externalURLs      String[]   // list of external study sources, specific to course
+  location    String
+  students    User[]  @relation("StudentCourses")
+  terms    Term[]
 
   @@map("courses")
 }
@@ -82,10 +86,41 @@ model Listing {
   @@map("listings")
 
 }
-/**
+
+// term created by INSTRUCTOR
+model Term {
+  id                String   @id @default(uuid())
+  maxSubmissions    Int     // set by INSTRUCTOR
+  submissions       Submission[] @relation("TermSubmissions")
+  bestSubmission    Submission? @relation("BestSubmission", fields: [bestSubmissionId], references: [id])  // submission accepted by INSTRUCTOR
+  bestSubmissionId  String?    @unique
+  coveredOn         DateTime @default(now())
+  week              Int?    // week covered 
+  course   Course @relation(fields: [courseId], references: [id])
+  courseId String
+
+  @@map("terms")
+}
+
+// submission created by STUDENT
+model Submission {
+  id                String   @id @default(uuid())
+  creator    User   @relation("SubmissionCreator", fields: [creatorId], references: [id])
+  creatorId  String
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+  wasReviewed       Boolean
+  points            Float
+  term              Term?    @relation("TermSubmissions", fields: [termId], references: [id])
+  termId            String?
+  bestForTerm       Term?    @relation("BestSubmission")
+
+  @@map("submissions")
+}
+/*
  * Not needed at this time-mw 4/11/26
- * /
- * /// Enrollment links a user to a course with a course-specific role
+ * 
+ * Enrollment links a user to a course with a course-specific role
  * model Enrollment {
  * id         String   @id @default(cuid())
  * user       User     @relation(fields: [userId], references: [id])
