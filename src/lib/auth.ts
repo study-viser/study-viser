@@ -1,15 +1,23 @@
-import NextAuth from 'next-auth';
+import NextAuth, { type DefaultSession } from 'next-auth';
 import { getServerSession } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { prisma } from './prisma';
 import bcrypt from 'bcrypt';
+
+declare module 'next-auth' {
+  interface Session {
+    user: {
+      role?: string;
+    } & DefaultSession['user'];
+  }
+}
 
 export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     Credentials({
       credentials: {
-        email: { label: 'Email', type: 'email' },
+        email: { label: 'Email', type: 'email', placeholder: 'john@foo.com' },
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials: any) {
