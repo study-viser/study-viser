@@ -8,6 +8,7 @@ generator client {
 
 datasource db {
   provider = "postgresql"
+  url      = env("DATABASE_URL")
 }
 
 // ---------------------------------------------------------------------------
@@ -27,37 +28,36 @@ enum Role {
 // ---------------------------------------------------------------------------
 
 model User {
-  id        String   @id @default(cuid())
-  name      String
-  email     String   @unique
-  password  String
-  role      Role     @default(STUDENT)
-  taughtCourses  Course[] @relation("InstructorCourses")
-  enrolledCourses Course[] @relation("StudentCourses")
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  submissions  Submission[] @relation("SubmissionCreator")
+  id              String       @id @default(cuid())
+  name            String
+  email           String       @unique
+  password        String
+  role            Role         @default(STUDENT)
+  taughtCourses   Course[]     @relation("InstructorCourses")
+  enrolledCourses Course[]     @relation("StudentCourses")
+  submissions     Submission[] @relation("SubmissionCreator")
+  createdAt       DateTime     @default(now())
+  updatedAt       DateTime     @updatedAt
 
-  @@map("users") // maps model to a table named "users" in db
+  @@map("users")
 }
 
 // a course is an instance of a Listing
 model Course {
-  id          String   @id @default(uuid())
-  code        String   @unique
-  title       String
-  description String?
-  // enrollments Enrollment[]
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
-  instructor  User?    @relation("InstructorCourses", fields: [instructorId], references: [id])
-  instructorId      String?
-  listing     Listing? @relation(fields: [listingId], references: [code])
-  listingId String?
-  externalURLs      String[]   // list of external study sources, specific to course
-  location    String
-  students    User[]  @relation("StudentCourses")
-  terms    Term[]
+  crn          String    @id
+  code         String    @unique
+  title        String
+  description  String?
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  instructor   User?     @relation("InstructorCourses", fields: [instructorId], references: [id])
+  instructorId String?
+  listing      Listing?  @relation(fields: [listingId], references: [code])
+  listingId    String?
+  externalURLs String[]  // list of external study sources, specific to course
+  location     String
+  students     User[]    @relation("StudentCourses")
+  terms        Term[]
 
   @@map("courses")
 }
@@ -81,55 +81,39 @@ model Listing {
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
   courses           Course[]
-  externalURLs      String[]   // list of external study sources
+  externalURLs      String[] // list of external study sources
 
   @@map("listings")
-
 }
 
 // term created by INSTRUCTOR
 model Term {
-  id                String   @id @default(uuid())
-  maxSubmissions    Int     // set by INSTRUCTOR
-  submissions       Submission[] @relation("TermSubmissions")
-  bestSubmission    Submission? @relation("BestSubmission", fields: [bestSubmissionId], references: [id])  // submission accepted by INSTRUCTOR
-  bestSubmissionId  String?    @unique
-  coveredOn         DateTime @default(now())
-  week              Int?    // week covered 
-  course   Course @relation(fields: [courseId], references: [id])
-  courseId String
+  id               String       @id @default(uuid())
+  maxSubmissions   Int          // set by INSTRUCTOR
+  submissions      Submission[] @relation("TermSubmissions")
+  bestSubmission   Submission?  @relation("BestSubmission", fields: [bestSubmissionId], references: [id])
+  bestSubmissionId String?      @unique
+  coveredOn        DateTime     @default(now())
+  week             Int?         // week covered
+  course           Course       @relation(fields: [courseId], references: [crn])
+  courseId         String
 
   @@map("terms")
 }
 
 // submission created by STUDENT
 model Submission {
-  id                String   @id @default(uuid())
-  creator    User   @relation("SubmissionCreator", fields: [creatorId], references: [id])
-  creatorId  String
-  createdAt         DateTime @default(now())
-  updatedAt         DateTime @updatedAt
-  wasReviewed       Boolean
-  points            Float
-  term              Term?    @relation("TermSubmissions", fields: [termId], references: [id])
-  termId            String?
-  bestForTerm       Term?    @relation("BestSubmission")
+  id          String   @id @default(uuid())
+  creator     User     @relation("SubmissionCreator", fields: [creatorId], references: [id])
+  creatorId   String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  definition  String   // written answer, URL, file reference, or combination
+  wasReviewed Boolean
+  points      Float
+  term        Term?    @relation("TermSubmissions", fields: [termId], references: [id])
+  termId      String?
+  bestForTerm Term?    @relation("BestSubmission")
 
   @@map("submissions")
 }
-/*
- * Not needed at this time-mw 4/11/26
- * 
- * Enrollment links a user to a course with a course-specific role
- * model Enrollment {
- * id         String   @id @default(cuid())
- * user       User     @relation(fields: [userId], references: [id])
- * userId     String
- * course     Course   @relation(fields: [courseId], references: [id])
- * courseId   String
- * role       Role     @default(STUDENT)
- * enrolledAt DateTime @default(now())
- * @@unique([userId, courseId])
- * @@map("enrollments")
- * }
- */
