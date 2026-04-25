@@ -1,7 +1,7 @@
 'use client';
 
 import { Form, Button, Col, Container, Card, Row, Image } from 'react-bootstrap';
-import '@/styles/joincourseform.css';
+import '@/styles/forms.css';
 
 const JoinCourseForm = () => {
   const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
@@ -17,16 +17,16 @@ const JoinCourseForm = () => {
   };
 
   return (
-    <Container className="join-course-page">
+    <Container className="course-page">
       <p className="back-link">← Back to Dashboard</p>
 
-      <Card className="join-course-card">
+      <Card className="course-card">
         <Card.Body>
 
         <Image src="/courseaddicon.png" className="two-user-icon" alt="Join Course" />
-          <h1 className="join-course-title">Join a Course</h1>
+          <h1 className="course-title">Join a Course</h1>
 
-          <p className="join-course-subtitle">
+          <p className="course-subtitle">
             Enter the course code provided by your instructor to enroll in a course.
           </p>
 
@@ -34,7 +34,7 @@ const JoinCourseForm = () => {
 
           <Form onSubmit={handleSubmit}>
             <Form.Group as={Row} className="mb-4" controlId="courseCode">
-              <Form.Label column sm={12} className="join-course-label">
+              <Form.Label column sm={12} className="course-label">
                 Course Code
               </Form.Label>
 
@@ -59,7 +59,7 @@ const JoinCourseForm = () => {
             </Row>
 
             <div className="text-center">
-              <Button type="submit" className="join-course-button">
+              <Button type="submit" className="submit-button">
                 Join Course
               </Button>
             </div>
