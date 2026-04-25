@@ -1,35 +1,35 @@
 import { Prisma } from '@/generated/prisma/client';
 
-type UserWithRelations = Prisma.UserGetPayload<{
+type TermWithRelations = Prisma.TermGetPayload<{
   include: {
-    taughtCourses: true;
-    enrolledCourses: true;
+    course: true;
     submissions: true;
+    bestSubmission: true;
   };
 }>;
 
-const UserItem = ({ id, name, email, role, taughtCourses, enrolledCourses, submissions }: UserWithRelations) => (
+const TermItem = ({ id, word, week, coveredOn, maxSubmissions, courseCRN, course, submissions, bestSubmission }: TermWithRelations) => (
   <tr>
     <td>...{id.slice(-4)}</td>
-    <td>{name}</td>
-    <td>{email}</td>
-    <td><span className="badge bg-secondary">{role}</span></td>
+    <td><strong>{word}</strong></td>
     <td>
-      {taughtCourses.length > 0 ? (
-        <ul style={{ paddingLeft: '20px', marginBottom: 0 }}>
-          {taughtCourses.map((c) => <li key={c.id}><strong>{c.code}</strong> — {c.title}</li>)}
-        </ul>
-      ) : <span className="text-muted">None</span>}
+      <strong>{courseCRN}</strong>
+      <small className="text-muted d-block">{course.code} — {course.title}</small>
     </td>
+    <td>{week ?? <span className="text-muted">N/A</span>}</td>
+    <td>{new Date(coveredOn).toLocaleDateString()}</td>
+    <td>{submissions.length} / {maxSubmissions}</td>
     <td>
-      {enrolledCourses.length > 0 ? (
-        <ul style={{ paddingLeft: '20px', marginBottom: 0 }}>
-          {enrolledCourses.map((c) => <li key={c.id}><strong>{c.code}</strong> — {c.title}</li>)}
-        </ul>
-      ) : <span className="text-muted">None</span>}
+      {bestSubmission ? (
+        <span>
+          ...{bestSubmission.id.slice(-4)}
+          <small className="text-muted d-block">{bestSubmission.points} pts</small>
+        </span>
+      ) : (
+        <span className="text-muted">Not selected</span>
+      )}
     </td>
-    <td>{submissions.length > 0 ? submissions.length : <span className="text-muted">0</span>}</td>
   </tr>
 );
 
-export default UserItem;
+export default TermItem;
