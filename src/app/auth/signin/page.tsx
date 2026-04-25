@@ -2,10 +2,12 @@
 
 import { signIn } from 'next-auth/react'; // v5 compatible
 import { Button, Card, Col, Container, Form, Row, Image } from 'react-bootstrap';
+import { useState } from 'react';
 import '@/styles/auth.css';
 
 /** The sign in page. */
 const SignIn = () => {
+  const [error, setError] = useState('');
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     const target = e.target as typeof e.target & {
@@ -21,7 +23,10 @@ const SignIn = () => {
       password,
     });
 
-    if (result?.error) return;
+    if (result?.error || !result?.ok) {
+      setError('Invalid email or password. Please try again.');
+      return;
+    }
 
     const{getSession} = await import('next-auth/react');
     const session = await getSession();
@@ -92,6 +97,9 @@ const SignIn = () => {
                     </div>
                   </Form.Group>
 
+                  {error && (
+                    <p className="text-danger text-center mb-3">{error}</p>
+                  )}
                   <Button type="submit" className="login-button d-block mx-auto">
                     Login
                   </Button>
