@@ -2,7 +2,7 @@
 
 import { hash } from 'bcrypt';
 import { prisma } from './prisma';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@/generated/prisma/client';
 
 // ---------------------------------------------------------------------------
 // Available Actions
