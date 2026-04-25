@@ -34,12 +34,12 @@ const AddTermForm = () => {
             <Row>
                 <Col className="px-3">
           <Form onSubmit={handleSubmit}>
-            <Form.Group as={Row} className="" controlId="termName">
-              <Form.Label column sm={3} className="add-term-label">
+            <Form.Group as={Row} className="mb-3 align-items-center" controlId="termName">
+              <Form.Label column sm={4} className="add-term-label">
                 Term Name:
               </Form.Label>
 
-              <Col sm={9}>
+              <Col sm={8}>
                 <Form.Control
                   name="termName"
                   type="text"
@@ -49,12 +49,12 @@ const AddTermForm = () => {
               </Col>
             </Form.Group>
 
-            <Form.Group as={Row} className="mb-4 py-3" controlId="referenceDefinition">
-              <Form.Label column sm={3} className="add-term-label">
+            <Form.Group as={Row} className="mb-4 py-3 align-items-center" controlId="referenceDefinition">
+              <Form.Label column sm={4} className="add-term-label">
                 Reference Definition:
               </Form.Label>
 
-              <Col sm={9}>
+              <Col sm={8}>
                 <Form.Control
                   as="textarea"
                   name="referenceDefinition"
@@ -65,58 +65,46 @@ const AddTermForm = () => {
               </Col>
             </Form.Group>
 
-            <Row className="meta-row align-items-start mb-5">
-              <Col md={5}>
-                <Form.Group as={Row} className="meta-field" controlId="difficultyLevel">
-                  <Form.Label column sm={5} className="add-term-label">
-                    Difficulty Level:
-                  </Form.Label>
+<Row className="meta-row mb-5">
+  <Col md={5} className="meta-col">
+    <Form.Label className="add-term-label meta-label">
+      Difficulty Level:
+    </Form.Label>
 
-                  <Col sm={6}>
-                    <Form.Select name="difficultyLevel" required>
-                      <option value="BEGINNER">Beginner</option>
-                      <option value="INTERMEDIATE">Intermediate</option>
-                      <option value="ADVANCED">Advanced</option>
-                    </Form.Select>
-                    <Form.Text className="p-2">Select one</Form.Text>
-                  </Col>
-                </Form.Group>
-              </Col>
+    <Form.Select name="difficultyLevel" required className="difficulty-select">
+      <option value="BASIC">Basic</option>
+      <option value="MODERATE">Moderate</option>
+      <option value="ADVANCED">Advanced</option>
+    </Form.Select>
+  </Col>
 
-              <Col md={3}>
-                <Form.Group as={Row} className="meta-field" controlId="week">
-  <Form.Label column sm={5} className="add-term-label">
-    Week:
-  </Form.Label>
+  <Col md={3} className="meta-col">
+    <Form.Label className="add-term-label meta-label">
+      Week:
+    </Form.Label>
 
-  <Col sm={6}>
-    <Form.Select name="week" required>
+    <Form.Select name="week" required className="week-select">
       {[1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17].map((week) => (
         <option key={week} value={week}>
           {week}
         </option>
       ))}
     </Form.Select>
-    <Form.Text className="p-2">Select one</Form.Text>
   </Col>
-</Form.Group>
-              </Col>
 
-              <Col md={4}>
-                <div className="requires-image-row">
-                  <span className="add-term-label">Requires Image:</span>
+  <Col md={4} className="meta-col">
+    <span className="add-term-label meta-label">Requires Image:</span>
 
-                  <Form.Check
-                    type="switch"
-                    id="requires-image"
-                    checked={requiresImage}
-                    onChange={(e) => setRequiresImage(e.target.checked)}
-                    label={requiresImage ? 'ON' : 'OFF'}
-                    className="requires-image-switch"
-                  />
-                </div>
-              </Col>
-            </Row>
+    <Form.Check
+      type="switch"
+      id="requires-image"
+      checked={requiresImage}
+      onChange={(e) => setRequiresImage(e.target.checked)}
+      label={requiresImage ? 'ON' : 'OFF'}
+      className="requires-image-switch"
+    />
+  </Col>
+</Row>
 
             <div className="text-center">
               <Button type="submit" className="submit-button">
