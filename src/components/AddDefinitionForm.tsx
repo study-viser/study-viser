@@ -2,7 +2,7 @@
 
 import { Form, Button, Col, Container, Card, Row } from 'react-bootstrap';
 import { useState } from 'react';
-import '@/styles/adddefinitionform.css';
+import '@/styles/forms.css';
 import '@/app/globals.css';
 
 
