@@ -1,5 +1,43 @@
 import './dashboard.css';
-import { Book, Award, Users, ClipboardList, BookOpen, BarChart2, PlusCircle, FileOutput } from 'lucide-react'
+import {
+  Book, Award, Users, ClipboardList, BookOpen,
+  PlusCircle, FileOutput, Bell, CheckCircle2,
+  AlertCircle, Lock, Clock
+} from 'lucide-react'
+
+const courses = [
+  {
+    id: 'ics314',
+    name: 'ICS 314',
+    fullName: 'Software Engineering',
+    terms: [
+      { name: 'Encapsulation', submitted: 3, cap: 3, approved: false, week: 'Week 10' },
+      { name: 'Inheritance', submitted: 2, cap: 3, approved: true, week: 'Week 10' },
+      { name: 'Design Patterns', submitted: 3, cap: 3, approved: false, week: 'Week 10' },
+      { name: 'Polymorphism', submitted: 1, cap: 3, approved: false, week: 'Week 9' },
+    ]
+  },
+  {
+    id: 'ics211',
+    name: 'ICS 211',
+    fullName: 'Introduction to CS',
+    terms: [
+      { name: 'Algorithm', submitted: 1, cap: 3, approved: false, week: 'Week 10' },
+      { name: 'Recursion', submitted: 3, cap: 3, approved: true, week: 'Week 9' },
+    ]
+  }
+]
+
+const totalUnapproved = courses.flatMap(c => c.terms).filter(t => !t.approved).length
+const totalApproved = courses.flatMap(c => c.terms).filter(t => t.approved).length
+const newSubmissionsToday = 3
+const termsThisWeek = courses.flatMap(c => c.terms).filter(t => t.week === 'Week 10').length
+
+function getTermStatus(term: { submitted: number; cap: number; approved: boolean }) {
+  if (term.approved) return 'approved'
+  if (term.submitted >= term.cap) return 'cap-reached'
+  return 'pending'
+}
 
 export default function InstructorDashboardPage() {
   return (
@@ -11,106 +49,113 @@ export default function InstructorDashboardPage() {
         </p>
       </section>
 
-      {/* Course Overview Stats */}
+      {/* Summary Cards */}
       <section className="stats-grid section">
         <div className="stat-card">
-          <div className="stat-icon-wrap stat-icon-green">
-            <Users size={18} />
-          </div>
-          <div className="stat-body">
-            <p className="stat-label">Students Enrolled</p>
-            <p className="stat-value">245</p>
-          </div>
-          <a href="#" className="stat-link">View All</a>
-        </div>
-
-        <div className="stat-card">
           <div className="stat-icon-wrap stat-icon-yellow">
-            <ClipboardList size={18} />
+            <AlertCircle size={18} />
           </div>
           <div className="stat-body">
-            <p className="stat-label">Pending Reviews</p>
-            <p className="stat-value">5</p>
-          </div>
-        </div>
-
-        <div className="stat-card">
-          <div className="stat-icon-wrap stat-icon-green">
-            <Award size={18} />
-          </div>
-          <div className="stat-body">
-            <p className="stat-label">Approved Entries</p>
-            <p className="stat-value">38</p>
+            <p className="stat-label">Unapproved Terms</p>
+            <p className="stat-value">{totalUnapproved}</p>
+            <p className="stat-hint">need approval</p>
           </div>
         </div>
 
         <div className="stat-card">
           <div className="stat-icon-wrap stat-icon-blue">
+            <ClipboardList size={18} />
+          </div>
+          <div className="stat-body">
+            <p className="stat-label">New Submissions Today</p>
+            <p className="stat-value">{newSubmissionsToday}</p>
+            <p className="stat-hint">across all courses</p>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <div className="stat-icon-wrap stat-icon-green">
+            <CheckCircle2 size={18} />
+          </div>
+          <div className="stat-body">
+            <p className="stat-label">Approved Entries</p>
+            <p className="stat-value">{totalApproved}</p>
+            <p className="stat-hint">total approved</p>
+          </div>
+        </div>
+
+        <div className="stat-card">
+          <div className="stat-icon-wrap stat-icon-purple">
             <Book size={18} />
           </div>
           <div className="stat-body">
             <p className="stat-label">Terms This Week</p>
-            <p className="stat-value">4</p>
+            <p className="stat-value">{termsThisWeek}</p>
+            <p className="stat-hint">added this week</p>
           </div>
-          <a href="#" className="stat-link">View Terms</a>
         </div>
       </section>
 
-      {/* Middle Row */}
-      <section className="grid-3 section">
-        {/* Pending Submissions */}
-        <div className="card">
+      {/* Term Status — Full Width */}
+      <section className="section">
+        <div className="card full-width-card">
           <div className="section-header">
-            <h2 className="card-title">Pending Submissions</h2>
-            <a href="#" className="view-all">View All Submissions &gt;</a>
+            <h2 className="card-title">Term Submission Status</h2>
+            <button className="add-course-btn">+ add courses</button>
           </div>
 
-          <div className="submission-list">
-            <div className="pending-row">
-              <div className="pending-left">
-                <div className="pending-icon">
-                  <BookOpen size={14} />
-                </div>
-                <div>
-                  <p className="pending-term">Encapsulation</p>
-                  <p className="pending-count">3 submissions pending</p>
-                </div>
+          {courses.map(course => (
+            <div key={course.id} className="course-block">
+              <div className="course-label">
+                <span className="course-code">{course.name}</span>
+                <span className="course-fullname">— {course.fullName}</span>
               </div>
-              <button className="review-btn">Review</button>
-            </div>
 
-            <div className="pending-row">
-              <div className="pending-left">
-                <div className="pending-icon">
-                  <BookOpen size={14} />
+              <div className="term-table">
+                <div className="term-table-header">
+                  <span>Term</span>
+                  <span>Week</span>
+                  <span>Submissions</span>
+                  <span>Status</span>
                 </div>
-                <div>
-                  <p className="pending-term">Inheritance</p>
-                  <p className="pending-count">2 submissions pending</p>
-                </div>
-              </div>
-              <button className="review-btn">Review</button>
-            </div>
 
-            <div className="pending-row">
-              <div className="pending-left">
-                <div className="pending-icon">
-                  <BookOpen size={14} />
-                </div>
-                <div>
-                  <p className="pending-term">Design Patterns</p>
-                  <p className="pending-count">2 submissions pending</p>
-                </div>
+                {course.terms.map(term => {
+                  const status = getTermStatus(term)
+                  return (
+                    <div key={term.name} className="term-row">
+                      <span className="term-name">
+                        <BookOpen size={13} className="term-icon" />
+                        {term.name}
+                      </span>
+                      <span className="term-week">{term.week}</span>
+                      <span className="term-submissions">
+                        <div className="submission-bar-wrap">
+                          <div
+                            className="submission-bar-fill"
+                            style={{ width: `${(term.submitted / term.cap) * 100}%` }}
+                          />
+                        </div>
+                        <span className="submission-count">{term.submitted}/{term.cap}</span>
+                      </span>
+                      <span className={`term-status term-status-${status}`}>
+                        {status === 'approved' && <><CheckCircle2 size={12} /> Approved</>}
+                        {status === 'cap-reached' && <><Lock size={12} /> Cap Reached</>}
+                        {status === 'pending' && <><Clock size={12} /> Pending</>}
+                      </span>
+                    </div>
+                  )
+                })}
               </div>
-              <button className="review-btn">Review</button>
             </div>
-          </div>
+          ))}
         </div>
+      </section>
 
+      {/* Bottom Row */}
+      <section className="grid-3 section">
         {/* Glossary Management */}
         <div className="card">
           <h2 className="card-title">Glossary Management</h2>
-
           <div className="glossary-list">
             <a href="#" className="glossary-item">
               <PlusCircle size={15} className="glossary-icon glossary-icon-green" />
@@ -120,16 +165,11 @@ export default function InstructorDashboardPage() {
               <BookOpen size={15} className="glossary-icon glossary-icon-green" />
               <span>Manage Glossary</span>
             </a>
-            <a href="#" className="glossary-item glossary-item-warning">
-              <ClipboardList size={15} className="glossary-icon glossary-icon-yellow" />
-              <span>Visual Annotation required: <strong>Encapsulation</strong></span>
-            </a>
             <a href="#" className="glossary-item">
-              <Award size={15} className="glossary-icon glossary-icon-green" />
-              <span>Definition added: Polymorphism</span>
+              <FileOutput size={15} className="glossary-icon glossary-icon-blue" />
+              <span>Export Resources</span>
             </a>
           </div>
-
           <button className="manage-glossary-btn">Manage Full Glossary</button>
         </div>
 
@@ -137,112 +177,78 @@ export default function InstructorDashboardPage() {
         <div className="card">
           <div className="section-header">
             <h2 className="card-title">Recent Activity</h2>
-            <a href="#" className="view-all">View All Notifications</a>
+            <a href="#" className="view-all">View All</a>
           </div>
-
           <div className="activity-list">
             <div className="activity-item">
               <div className="activity-icon activity-icon-blue">
                 <ClipboardList size={13} />
               </div>
               <div>
-                <p className="activity-text">2 new submissions added for <strong className="highlight-green">Algorithm</strong></p>
+                <p className="activity-text">2 new submissions for <strong>Algorithm</strong></p>
                 <p className="activity-time">2 minutes ago</p>
               </div>
             </div>
-
             <div className="activity-item">
-              <div className="activity-icon activity-icon-green">
-                <Award size={13} />
+              <div className="activity-icon activity-icon-yellow">
+                <Lock size={13} />
               </div>
               <div>
-                <p className="activity-text">&apos;Encapsulation&apos; reached submission cap</p>
+                <p className="activity-text"><strong>Design Patterns</strong> reached submission cap</p>
                 <p className="activity-time">5 hours ago</p>
               </div>
             </div>
-
             <div className="activity-item">
               <div className="activity-icon activity-icon-green">
                 <Award size={13} />
               </div>
               <div>
-                <p className="activity-text">1 glossary entry approved today</p>
+                <p className="activity-text"><strong>Inheritance</strong> entry approved</p>
+                <p className="activity-time">1 day ago</p>
+              </div>
+            </div>
+            <div className="activity-item">
+              <div className="activity-icon activity-icon-blue">
+                <Bell size={13} />
+              </div>
+              <div>
+                <p className="activity-text">1 new submission for <strong>Encapsulation</strong></p>
                 <p className="activity-time">1 day ago</p>
               </div>
             </div>
           </div>
         </div>
-      </section>
 
-      {/* Bottom Row */}
-      <section className="grid-3 section">
-        {/* Quick Actions */}
-        <div className="card">
-          <h2 className="card-title">Quick Actions</h2>
-          <div className="quick-actions-grid">
-            <a href="#" className="quick-action-item">
-              <div className="quick-action-icon">
-                <PlusCircle size={18} />
-              </div>
-              <div>
-                <p className="quick-action-title">Add Term</p>
-              </div>
-            </a>
-
-            <a href="#" className="quick-action-item">
-              <div className="quick-action-icon">
-                <ClipboardList size={18} />
-              </div>
-              <div>
-                <p className="quick-action-title">Review Pending</p>
-              </div>
-            </a>
-
-            <a href="#" className="quick-action-item">
-              <div className="quick-action-icon">
-                <BookOpen size={18} />
-              </div>
-              <div>
-                <p className="quick-action-title">View Glossary</p>
-              </div>
-            </a>
-
-            <a href="#" className="quick-action-item">
-              <div className="quick-action-icon">
-                <FileOutput size={18} />
-              </div>
-              <div>
-                <p className="quick-action-title">Export Resources</p>
-              </div>
-            </a>
-          </div>
-        </div>
-
-        {/* Course Analytics 1 */}
+        {/* Course Analytics */}
         <div className="card">
           <h2 className="card-title">Course Analytics</h2>
-          <div className="analytics-row">
-            <div className="analytics-icon">
-              <Users size={15} />
-            </div>
-            <span className="analytics-label">Active Student Contributors</span>
-            <span className="analytics-value">48</span>
-          </div>
-          <a href="#" className="analytics-link">View Detailed Analytics &gt;</a>
-        </div>
-
-        {/* Course Analytics 2 */}
-        <div className="card">
-          <h2 className="card-title">Course Analytics</h2>
-          <div className="analytics-row">
-            <div className="analytics-icon">
-              <BarChart2 size={15} />
-            </div>
-            <span className="analytics-label">Avg Submissions per Term</span>
-            <span className="analytics-value">7.2</span>
+          <div className="analytics-course-list">
+            {courses.map(course => {
+              const approved = course.terms.filter(t => t.approved).length
+              const total = course.terms.length
+              const enrolled = course.id === 'ics314' ? 24 : 18
+              return (
+                <div key={course.id} className="analytics-course-block">
+                  <div className="analytics-course-header">
+                    <span className="analytics-course-name">{course.name}</span>
+                    <span className="analytics-course-full">{course.fullName}</span>
+                  </div>
+                  <div className="analytics-row-item">
+                    <Users size={13} className="analytics-row-icon" />
+                    <span className="analytics-row-label">Students Enrolled</span>
+                    <span className="analytics-row-value">{enrolled}</span>
+                  </div>
+                  <div className="analytics-row-item">
+                    <CheckCircle2 size={13} className="analytics-row-icon" />
+                    <span className="analytics-row-label">Approved / Total Terms</span>
+                    <span className="analytics-row-value">{approved}/{total}</span>
+                  </div>
+                </div>
+              )
+            })}
           </div>
         </div>
       </section>
     </main>
-  );
+  )
 }

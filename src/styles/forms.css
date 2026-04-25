@@ -1,0 +1,226 @@
+@import url('https://fonts.googleapis.com/css2?family=Belanosima:wght@400;600;700&family=Lato:wght@400;600;700;900&display=swap');
+
+html,
+body {
+  background-color: #e8f5e9;
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+h1,
+.form-title,
+.add-term-title {
+  font-family: "Belanosima", sans-serif;
+  text-align: center;
+  color: #024731;
+  font-weight: 700;
+  margin: 20px 0;
+}
+
+.form-card,
+.add-term-card,
+.add-definition-card {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 40px;
+  border: 1px solid #2f7d63;
+  border-radius: 16px;
+}
+
+.add-definition-card {
+  padding: 20px;
+}
+
+.form-label,
+.add-term-label {
+  font-family: "Lato", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  white-space: nowrap;
+  margin-bottom: 0;
+}
+
+.form-card .form-control,
+.form-card .form-select,
+.add-term-card .form-control,
+.add-term-card .form-select,
+.add-definition-card .form-control,
+.add-definition-card .form-select {
+  border: 1px solid #6d7f76;
+  border-radius: 12px;
+  font-size: 1.1rem;
+}
+
+.meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.meta-col {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.meta-label {
+  line-height: 1;
+}
+
+.difficulty-select {
+  width: 150px;
+}
+
+.week-select {
+  width: 80px;
+}
+
+.requires-image-switch {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0;
+  font-weight: 700;
+}
+
+.submit-button {
+  font-family: "Lato", sans-serif;
+  font-weight: 600;
+  background: #e8f5e9;
+  color: #024731;
+  border: 2px solid #024731;
+  border-radius: 10px;
+  width: 40%;
+  padding: 10px 24px;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.15s;
+}
+
+.submit-button:hover {
+  background-color: #024731;
+  color: #e8f5e9;
+  border: 2px solid #024731;
+}
+
+/* Specific styles for JoinCourseForm and ClaimCourseForm */
+.course-page {
+  padding: 60px 0;
+}
+
+.back-link {
+  max-width: 800px;
+  margin: 0 auto 20px;
+  font-family: "Lato", sans-serif;
+  color: #024731;
+  font-weight: 600;
+}
+
+.course-card {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px;
+  border: 1px solid #2f7d63;
+  border-radius: 16px;
+}
+
+.course-title {
+  text-align: center;
+  font-family: "Belanosima", sans-serif;
+  color: #004d35;
+  font-size: 3rem;
+  font-weight: 800;
+}
+
+.course-subtitle {
+  text-align: center;
+  color: #5f6975;
+  margin-bottom: 24px;
+}
+
+.course-label {
+  font-family: "Lato", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  white-space: nowrap;
+  margin-bottom: 0;
+}
+
+.course-card .form-control {
+  border: 1px solid #6d7f76;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  padding: 10px 14px;
+}
+
+.course-info-text {
+  display: block;
+  background-color: #eef8f1;
+  border: 1px solid #cfe5d6;
+  border-radius: 10px;
+  padding: 14px 18px;
+  color: #064d2c;
+}
+
+.course-button {
+  font-family: "Lato", sans-serif;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 10px 24px;
+}
+
+.course-button-outline {
+  background: #e8f5e9;
+  color: #024731;
+  border: 2px solid #024731;
+  width: 40%;
+}
+
+.course-button-outline:hover {
+  background-color: #024731;
+  color: #e8f5e9;
+  border: 2px solid #024731;
+}
+
+.course-button-full {
+  width: 100%;
+  background-color: #024731;
+  color: white;
+  border: none;
+  padding: 12px;
+}
+
+.course-button-full:hover {
+  background-color: #013824;
+}
+
+.or-divider {
+  align-items: center;
+  margin: 30px 0;
+  text-align: center;
+}
+
+.browse-link {
+  color: #024731;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.help-card {
+  max-width: 800px;
+  margin: 20px auto 0;
+  padding: 20px;
+  border-radius: 16px;
+}
+
+.two-user-icon {
+  display: block;
+  margin: 0 auto 20px;
+  width: 100px;
+  height: 100px;
+}
+
+.course-code-icon {
+  width: 30px;
+  height: 30px;
+  padding: 4px;
+}

@@ -10,7 +10,7 @@ const SignIn = () => {
   const [error, setError] = useState('');
   const handleSubmit = async (e: any) => {
     e.preventDefault();
-    const target = e.target as typeof e.target & {
+      const target = e.currentTarget as HTMLFormElement & {
       email: { value: string };
       password: { value: string };
     };
