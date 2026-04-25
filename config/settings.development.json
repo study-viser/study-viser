@@ -1,11 +1,14 @@
 {
   "defaultUsers": [
-    { "name": "Admin", "email": "admin@foo.com", "password": "changeme", "role": "STUDENT" },
+    { "name": "Admin", "email": "admin@foo.com", "password": "changeme", "role": "ADMIN" },
     { "name": "John Doe", "email": "john@foo.com", "password": "changeme" },
     { "name": "Smarty Pants", "email": "smarty@foo.com", "password": "changeme", "courses": ["ICS 111", "ICS 211"], "role": "TA" },
-    { "name": "Square Pants", "email": "spongebob@foo.com", "password": "changeme", "courses": ["ICS 111", "ICS 211"], "role": "STUDENT" }
+    { "name": "Square Pants", "email": "spongebob@foo.com", "password": "changeme", "courses": ["ICS 111", "ICS 211"], "role": "STUDENT" },
+    { "name": "Alice Kealoha", "email": "alice@foo.com", "password": "changeme", "courses": ["ICS 111"], "role": "STUDENT" },
+    { "name": "Brian Tanaka", "email": "brian@foo.com", "password": "changeme", "courses": ["ICS 111"], "role": "STUDENT" },
+    { "name": "Chloe Akana", "email": "chloe@foo.com", "password": "changeme", "courses": ["ICS 111"], "role": "STUDENT" }
   ],
-  
+
   "defaultCourses": [
     {
       "code": "ICS 111",
@@ -29,6 +32,42 @@
     },
     {
       "code": "ICS 315"
+    }
+  ],
+
+  "defaultTerms": [
+    {
+      "courseCode": "ICS 111",
+      "name": "homework",
+      "maxSubmissions": 3,
+      "week": 1
+    }
+  ],
+
+  "defaultSubmissions": [
+    {
+      "termName": "homework",
+      "courseCode": "ICS 111",
+      "creatorEmail": "spongebob@foo.com",
+      "definition": "A variable is a named container for storing data values. In Java, you declare a variable with a type: `int x = 5;`. See also: https://docs.oracle.com/javase/tutorial/java/nutsandbolts/variables.html",
+      "points": 8.5,
+      "wasReviewed": true
+    },
+    {
+      "termName": "homework",
+      "courseCode": "ICS 111",
+      "creatorEmail": "alice@foo.com",
+      "definition": "Variables store data that can change during program execution. They have a type, a name, and a value. Reference: /uploads/alice-variables-notes.pdf",
+      "points": 0,
+      "wasReviewed": false
+    },
+    {
+      "termName": "homework",
+      "courseCode": "ICS 111",
+      "creatorEmail": "brian@foo.com",
+      "definition": "In Java, a variable is a memory location with a name. Primitive types include int, double, boolean, and char. Example: `double gpa = 3.9;`",
+      "points": 9.0,
+      "wasReviewed": true
     }
   ]
 }
