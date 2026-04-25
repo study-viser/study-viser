@@ -24,6 +24,7 @@ const ClaimCourseForm = () => {
 
       <Card className="course-card">
         <Card.Body>
+          <Image src="/claim-icon.png" className="two-user-icon" alt="Claim Course" />
           <h1 className="course-title">Claim a Course</h1>
 
           <p className="course-subtitle">
