@@ -27,7 +27,7 @@ const SignIn = () => {
       setError('Invalid email or password. Please try again.');
       return;
     }
-
+    
     const{getSession} = await import('next-auth/react');
     const session = await getSession();
     const role = (session?.user as {role?: string})?.role;
