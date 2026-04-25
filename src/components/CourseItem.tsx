@@ -1,38 +1,40 @@
 import { Prisma } from '@/generated/prisma/client';
 
-// This creates a type that includes the related user
-type CourseWithUser = Prisma.CourseGetPayload<{
-  include: { user: true }
-}>
+type CourseWithRelations = Prisma.CourseGetPayload<{
+  include: {
+    instructor: true;
+    students: true;
+    listing: true;
+    terms: true;
+  };
+}>;
 
-/* Renders a single row in the List Courses table. */
-const CourseItem = ({ id, code, title, description, user, externalURLs }: CourseWithUser) => (
+const CourseItem = ({ id, code, title, description, location, instructor, students, listing, externalURLs }: CourseWithRelations) => (
   <tr>
     <td>...{id.slice(-4)}</td>
     <td><strong>{code}</strong></td>
     <td>{title}</td>
-    <td>{description || 'No description provided'}</td>
+    <td>{description || <span className="text-muted">None</span>}</td>
+    <td>{location}</td>
     <td>
-      {user ? (
-        <span>{user.name} <small className="text-muted">({user.email})</small></span>
+      {instructor ? (
+        <span>{instructor.name} <small className="text-muted">({instructor.email})</small></span>
       ) : (
-        <span className="text-muted italic">Unassigned</span>
+        <span className="text-muted">Unassigned</span>
       )}
     </td>
+    <td>{students.length > 0 ? students.length : <span className="text-muted">None</span>}</td>
+    <td>{listing ? <strong>{listing.code}</strong> : <span className="text-muted">None</span>}</td>
     <td>
-      {externalURLs && externalURLs.length > 0 ? (
-          <ul style={{ paddingLeft: '20px', marginBottom: '0' }}>
-            {externalURLs.map((url: string, index: number) => (
-              <li key={index}>
-                <a href={url} target="_blank" rel="noopener noreferrer">
-                  {url}
-                </a>
-              </li>
-            ))}
-          </ul>
-        ) : (
-          "None"
-        )}
+      {externalURLs.length > 0 ? (
+        <ul style={{ paddingLeft: '20px', marginBottom: 0 }}>
+          {externalURLs.map((url, i) => (
+            <li key={i}>
+              <a href={url} target="_blank" rel="noopener noreferrer">{url}</a>
+            </li>
+          ))}
+        </ul>
+      ) : 'None'}
     </td>
   </tr>
 );

@@ -1,23 +1,34 @@
 import { Prisma } from '@/generated/prisma/client';
 
-// This creates a type that exactly matches a User with its Courses included
-type UserWithCourses = Prisma.UserGetPayload<{
-  include: { courses: true }
-}>
+type UserWithRelations = Prisma.UserGetPayload<{
+  include: {
+    taughtCourses: true;
+    enrolledCourses: true;
+    submissions: true;
+  };
+}>;
 
-/* Renders a single row in the List Users table. See testDB/page.tsx. */
-const UserItem = ({id, name, email, role, courses}: UserWithCourses) => (
+const UserItem = ({ id, name, email, role, taughtCourses, enrolledCourses, submissions }: UserWithRelations) => (
   <tr>
-    <td>...{id.slice(-8)}</td>
+    <td>...{id.slice(-4)}</td>
     <td>{name}</td>
     <td>{email}</td>
-    <td>{role}</td>
+    <td><span className="badge bg-secondary">{role}</span></td>
     <td>
-      {/* Map the course codes into a comma-separated string */}
-      {courses && courses.length > 0 
-        ? courses.map((course) => course.code).join(', ') 
-        : 'No courses'}
+      {taughtCourses.length > 0 ? (
+        <ul style={{ paddingLeft: '20px', marginBottom: 0 }}>
+          {taughtCourses.map((c) => <li key={c.id}><strong>{c.code}</strong> — {c.title}</li>)}
+        </ul>
+      ) : <span className="text-muted">None</span>}
     </td>
+    <td>
+      {enrolledCourses.length > 0 ? (
+        <ul style={{ paddingLeft: '20px', marginBottom: 0 }}>
+          {enrolledCourses.map((c) => <li key={c.id}><strong>{c.code}</strong> — {c.title}</li>)}
+        </ul>
+      ) : <span className="text-muted">None</span>}
+    </td>
+    <td>{submissions.length > 0 ? submissions.length : <span className="text-muted">0</span>}</td>
   </tr>
 );
 
