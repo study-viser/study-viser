@@ -1,34 +1,78 @@
 {
   "defaultUsers": [
-    { "name": "Admin", "email": "admin@foo.com", "password": "changeme", "role": "STUDENT" },
+    { "name": "Admin", "email": "admin@foo.com", "password": "changeme", "role": "ADMIN" },
     { "name": "John Doe", "email": "john@foo.com", "password": "changeme" },
-    { "name": "Smarty Pants", "email": "smarty@foo.com", "password": "changeme", "courses": ["ICS 111", "ICS 211"], "role": "TA" },
-    { "name": "Square Pants", "email": "spongebob@foo.com", "password": "changeme", "courses": ["ICS 111", "ICS 211"], "role": "STUDENT" }
+    { "name": "Smarty Pants", "email": "smarty@foo.com", "password": "changeme", "courses": [2824, 1409], "role": "TA" },
+    { "name": "Square Pants", "email": "spongebob@foo.com", "password": "changeme", "courses": [2824, 1409], "role": "STUDENT" },
+    { "name": "Alice Kealoha", "email": "alice@foo.com", "password": "changeme", "courses": [2824], "role": "STUDENT" },
+    { "name": "Brian Tanaka", "email": "brian@foo.com", "password": "changeme", "courses": [2824], "role": "STUDENT" },
+    { "name": "Chloe Akana", "email": "chloe@foo.com", "password": "changeme", "courses": [2824], "role": "STUDENT" }
   ],
-  
+
   "defaultCourses": [
     {
+      "crn": 2824,
       "code": "ICS 111",
       "title": "Introduction to Computer Science I",
       "description": "Overview of computer science emphasizing problem solving, algorithm development, implementation, and debugging/testing using an object-oriented programming language."
     },
     {
+      "crn": 1409,
       "code": "ICS 211",
       "title": "Introduction to Computer Science II",
       "description": "Reinforce and strengthen problem-solving skills using abstract data types and introduction to algorithms and their complexity."
     },
     {
+      "crn": 5506,
       "code": "ICS 311",
       "title": "Algorithms",
       "description": "Design and efficiency of algorithms for sorting, searching, graph problems, and string matching. Analysis of worst-case and average-case complexity."
     },
     {
+      "crn": 5012,
       "code": "ICS 314",
       "title": "Software Engineering I",
       "description": "Systematic definition, development, and maintenance of software systems. Software life-cycle, compilers, and project management tools."
     },
     {
+      "crn": 4657,
       "code": "ICS 315"
+    }
+  ],
+
+  "defaultTerms": [
+    {
+      "crn": 2824,
+      "word": "homework",
+      "maxSubmissions": 3,
+      "week": 1
+    }
+  ],
+
+  "defaultSubmissions": [
+    {
+      "wordName": "homework",
+      "crn": 2824,
+      "creatorEmail": "spongebob@foo.com",
+      "definition": "A variable is a named container for storing data values. In Java, you declare a variable with a type: `int x = 5;`. See also: https://docs.oracle.com/javase/tutorial/java/nutsandbolts/variables.html",
+      "points": 8.5,
+      "wasReviewed": true
+    },
+    {
+      "wordName": "homework",
+      "crn": 2824,
+      "creatorEmail": "alice@foo.com",
+      "definition": "Variables store data that can change during program execution. They have a type, a name, and a value. Reference: /uploads/alice-variables-notes.pdf",
+      "points": 0,
+      "wasReviewed": false
+    },
+    {
+      "wordName": "homework",
+      "crn": 2824,
+      "creatorEmail": "brian@foo.com",
+      "definition": "In Java, a variable is a memory location with a name. Primitive types include int, double, boolean, and char. Example: `double gpa = 3.9;`",
+      "points": 9.0,
+      "wasReviewed": true
     }
   ]
 }
