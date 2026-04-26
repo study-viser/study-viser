@@ -1,15 +1,9 @@
-<<<<<<< HEAD
-import NextAuth from 'next-auth';
-=======
 import NextAuth, { type DefaultSession } from 'next-auth';
->>>>>>> 7b0677cda5c8430c49c3ec9dea1969ce7a05fb91
 import { getServerSession } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { prisma } from './prisma';
 import bcrypt from 'bcrypt';
 
-<<<<<<< HEAD
-=======
 declare module 'next-auth' {
   interface Session {
     user: {
@@ -18,13 +12,12 @@ declare module 'next-auth' {
   }
 }
 
->>>>>>> 7b0677cda5c8430c49c3ec9dea1969ce7a05fb91
 export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
   providers: [
     Credentials({
       credentials: {
-        email: { label: 'Email', type: 'email' },
+        email: { label: 'Email', type: 'email', placeholder: 'john@foo.com' },
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials: any) {
