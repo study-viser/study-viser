@@ -4,7 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
-import { Container, Nav, Navbar } from 'react-bootstrap';
+import { Container, Nav, Navbar, Badge } from 'react-bootstrap';
+import { PersonFill } from 'react-bootstrap-icons';
 
 const NavBar: React.FC = () => {
   const { data: session, status } = useSession();
@@ -131,12 +132,21 @@ const NavBar: React.FC = () => {
           <Nav className="d-flex align-items-lg-center gap-2 ms-lg-auto">
             {session ? (
               <>
-                <Navbar.Text
-                  className="fw-medium me-2"
-                  style={{ color: '#024731' }}
+                <Badge
+                  pill
+                  className="me-2 fw-medium d-flex align-items-center gap-2"
+                  bg=""
+                  style={{
+                    backgroundColor: '#024731',
+                    color: 'white',
+                    fontSize: '16px',
+                    padding: '7px 14px',
+                    fontWeight: 500,
+                  }}
                 >
+                  <PersonFill size={14} />
                   {currentUser}
-                </Navbar.Text>
+                </Badge>
 
                 <Nav.Link
                   as={Link}
