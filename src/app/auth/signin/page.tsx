@@ -2,13 +2,13 @@
 
 import { signIn } from 'next-auth/react'; // v5 compatible
 import { Button, Card, Col, Container, Form, Row, Image } from 'react-bootstrap';
-import { useState } from 'react';
+import { useState, type FormEvent } from 'react';
 import '@/styles/auth.css';
 
 /** The sign in page. */
 const SignIn = () => {
   const [error, setError] = useState('');
-  const handleSubmit = async (e: any) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
       const target = e.currentTarget as HTMLFormElement & {
       email: { value: string };
@@ -74,7 +74,7 @@ const SignIn = () => {
                       />
                   <Form.Control
                       name="email"
-                      type="text"
+                      type="email"
                       placeholder="Email"
                       className="login-input"
                       />
