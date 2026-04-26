@@ -1,0 +1,240 @@
+/* =====================
+   term-view.css
+   ===================== */
+
+/* --- Google Fonts --- */
+@import url('https://fonts.googleapis.com/css2?family=Belanosima:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+
+/* --- Font variables --- */
+:root {
+  --font-title: 'Belanosima', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+/* --- Page layout --- */
+.term-view-page {
+  font-family: var(--font-body);
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+/* --- Back link --- */
+.term-back-link {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2E7D32;
+  text-decoration: none;
+  margin-bottom: 24px;
+}
+
+.term-back-link:hover {
+  text-decoration: underline;
+}
+
+/* --- Term header --- */
+.term-view-header {
+  margin-bottom: 8px;
+}
+
+.term-view-meta {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+  flex-wrap: wrap;
+}
+
+.term-view-week {
+  font-size: 14px;
+  color: #6B7280;
+  background: #F3F4F6;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.term-view-difficulty {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.difficulty-basic {
+  background: #d4edda;
+  color: #155724;
+}
+
+.difficulty-intermediate {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.difficulty-advanced {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+.term-view-visual {
+  font-size: 13px;
+  color: #555;
+}
+
+.term-view-title {
+  font-family: var(--font-title);
+  font-size: 40px;
+  font-weight: 700;
+  color: #2E7D32;
+  margin: 0 0 6px 0;
+}
+
+.term-view-course {
+  font-size: 15px;
+  color: #6B7280;
+  margin: 0 0 16px 0;
+}
+
+/* --- Submission cap bar --- */
+.term-view-cap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.term-cap-bar-wrap {
+  width: 160px;
+  height: 8px;
+  background: #E5E7EB;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.term-cap-bar-fill {
+  height: 100%;
+  background: #6DB089;
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.term-cap-text {
+  font-size: 14px;
+  color: #6B7280;
+}
+
+/* --- Submit button --- */
+.term-submit-btn {
+  display: inline-block;
+  background: #2E7D32;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 10px 20px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.term-submit-btn:hover {
+  background: #1a4731;
+  color: #fff;
+}
+
+/* --- Status notices --- */
+.term-status-notice {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 16px;
+  border-radius: 10px;
+}
+
+.term-status-notice.submitted {
+  background: #cce5ff;
+  color: #004085;
+}
+
+.term-status-notice.full {
+  background: #e2e3e5;
+  color: #383d41;
+}
+
+/* --- Divider --- */
+.term-divider {
+  border: none;
+  border-top: 1px solid #E5E7EB;
+  margin: 24px 0;
+}
+
+/* --- Sections --- */
+.term-section {
+  margin-bottom: 32px;
+}
+
+.term-section-title {
+  font-family: var(--font-title);
+  font-size: 22px;
+  font-weight: 600;
+  color: #1F2937;
+  margin-bottom: 14px;
+}
+
+.term-no-approved {
+  font-size: 15px;
+  color: #9CA3AF;
+}
+
+.term-not-found {
+  font-size: 15px;
+  color: #9CA3AF;
+  text-align: center;
+  margin-top: 4rem;
+}
+
+/* --- Submission cards --- */
+.submission-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.submission-card {
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: 14px;
+  padding: 18px 20px;
+  box-shadow: 0 4px 12px rgba(171, 190, 209, 0.18);
+}
+
+.submission-card--approved {
+  border-color: #6DB089;
+  background: #F0FAF4;
+}
+
+.submission-definition {
+  font-size: 16px;
+  color: #1F2937;
+  line-height: 1.7;
+  margin: 0 0 14px 0;
+}
+
+.submission-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.submission-author {
+  font-size: 14px;
+  color: #6B7280;
+}
+
+.submission-points {
+  font-size: 14px;
+  font-weight: 700;
+  color: #2E7D32;
+  background: #DCFCE7;
+  padding: 3px 10px;
+  border-radius: 999px;
+}
