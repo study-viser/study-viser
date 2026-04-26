@@ -18,8 +18,6 @@ const JoinCourseForm = () => {
 
   return (
     <Container className="course-page">
-      <p className="back-link">← Back to Dashboard</p>
-
       <Card className="course-card">
         <Card.Body>
 

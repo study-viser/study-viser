@@ -36,14 +36,16 @@
     },
     {
       "crn": 4657,
-      "code": "ICS 315"
+      "code": "ICS 315",
+      "title": "Software Engineering II",
+      "description": "Continuation of ICS 314. Emphasis on software design, testing, and maintenance. Software design patterns, refactoring, and team-based software development."
     }
   ],
 
   "defaultTerms": [
     {
       "crn": 2824,
-      "word": "homework",
+      "word": "Variable",
       "maxSubmissions": 3,
       "week": 1
     }
@@ -51,26 +53,29 @@
 
   "defaultSubmissions": [
     {
-      "wordName": "homework",
+      "wordName": "Variable",
       "crn": 2824,
       "creatorEmail": "spongebob@foo.com",
       "definition": "A variable is a named container for storing data values. In Java, you declare a variable with a type: `int x = 5;`. See also: https://docs.oracle.com/javase/tutorial/java/nutsandbolts/variables.html",
+      "difficulty": "Easy",
       "points": 0,
       "wasReviewed": false
     },
     {
-      "wordName": "homework",
+      "wordName": "Variable",
       "crn": 2824,
       "creatorEmail": "alice@foo.com",
       "definition": "Variables store data that can change during program execution. They have a type, a name, and a value. Reference: /uploads/alice-variables-notes.pdf",
+      "difficulty": "Easy",
       "points": 0,
       "wasReviewed": false
     },
     {
-      "wordName": "homework",
+      "wordName": "Variable",
       "crn": 2824,
       "creatorEmail": "brian@foo.com",
       "definition": "In Java, a variable is a memory location with a name. Primitive types include int, double, boolean, and char. Example: `double gpa = 3.9;`",
+      "difficulty": "Easy",
       "points": 0,
       "wasReviewed": false
     }

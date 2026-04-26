@@ -1,32 +1,46 @@
 'use client';
 
 import { Form, Button, Col, Container, Card, Row } from 'react-bootstrap';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import '@/styles/forms.css';
-import '@/app/globals.css';
-
-
 
 const AddDefinitionForm = () => {
+  const searchParams = useSearchParams();
+  const termId = searchParams.get('termId');
+
+  const [word, setWord] = useState('');
+  const [isImageRequired, setIsImageRequired] = useState(false);
+
+  useEffect(() => {
+    const fetchTerm = async () => {
+      if (!termId) return;
+
+      const res = await fetch(`/api/terms/${termId}`);
+      const data = await res.json();
+
+      setWord(data.word);
+    };
+
+    fetchTerm();
+  }, [termId]);
+
   const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
-  e.preventDefault();
-  const formData = new FormData(e.currentTarget);
-  console.log({
-    definition: formData.get('definition'),
-    image: formData.get('image'),
-  })
-  // TODO: connect to createSubmission() once backend is ready
-  // await createSubmission({ definition, image });
+    e.preventDefault();
 
-  alert('Submitted!');
-};
+    const formData = new FormData(e.currentTarget);
 
-// State to track whether image upload is required
-const [isImageRequired, setIsImageRequired] = useState(false);
+    console.log({
+      termId,
+      definition: formData.get('definition'),
+      image: formData.get('image'),
+    });
+
+    alert('Submitted!');
+  };
 
   return (
     <Container>
-      
     {/* Toggle switch to require image upload */}
     <Form.Check
         type="switch"
@@ -36,7 +50,9 @@ const [isImageRequired, setIsImageRequired] = useState(false);
         className="mb-3"
       />
 
-      <h1 className="text-center py-1">Add Definition for *Term* </h1>
+      <h1 className="text-center py-1">
+        Add Definition for {word || '...'}
+      </h1>
       <Card className="add-definition-card">
         <Card.Body>
           <Form onSubmit={handleSubmit}>

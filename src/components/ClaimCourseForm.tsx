@@ -2,7 +2,6 @@
 
 import { Form, Button, Col, Container, Card, Row, Image } from 'react-bootstrap';
 import '@/styles/forms.css';
-import '@/app/globals.css';
 
 const ClaimCourseForm = () => {
   const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
@@ -20,8 +19,6 @@ const ClaimCourseForm = () => {
 
   return (
     <Container className="course-page">
-      <p className="back-link">← Back to Dashboard</p>
-
       <Card className="course-card">
         <Card.Body>
           <Image src="/claim-icon.png" className="two-user-icon" alt="Claim Course" />
