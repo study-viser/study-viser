@@ -2,44 +2,29 @@ import './dashboard.css';
 import {
   Book, Award, Users, ClipboardList, BookOpen,
   PlusCircle, FileOutput, Bell, CheckCircle2,
-  AlertCircle, Lock, Clock
-} from 'lucide-react'
+  AlertCircle, Lock, Clock, ChevronRight
+} from 'lucide-react';
+import { auth } from '@/lib/auth';
+import { getUserByEmail, getUserById, getExtraCreditByCourse } from '@/lib/dbActions';
+import Link from 'next/link';
 
-const courses = [
-  {
-    id: 'ics314',
-    name: 'ICS 314',
-    fullName: 'Software Engineering',
-    terms: [
-      { name: 'Encapsulation', submitted: 3, cap: 3, approved: false, week: 'Week 10' },
-      { name: 'Inheritance', submitted: 2, cap: 3, approved: true, week: 'Week 10' },
-      { name: 'Design Patterns', submitted: 3, cap: 3, approved: false, week: 'Week 10' },
-      { name: 'Polymorphism', submitted: 1, cap: 3, approved: false, week: 'Week 9' },
-    ]
-  },
-  {
-    id: 'ics211',
-    name: 'ICS 211',
-    fullName: 'Introduction to CS',
-    terms: [
-      { name: 'Algorithm', submitted: 1, cap: 3, approved: false, week: 'Week 10' },
-      { name: 'Recursion', submitted: 3, cap: 3, approved: true, week: 'Week 9' },
-    ]
-  }
-]
+export default async function InstructorDashboardPage() {
+  const session = await auth();
+  if (!session?.user?.email) return <p>Not logged in.</p>;
 
-const totalUnapproved = courses.flatMap(c => c.terms).filter(t => !t.approved).length
-const totalApproved = courses.flatMap(c => c.terms).filter(t => t.approved).length
-const newSubmissionsToday = 3
-const termsThisWeek = courses.flatMap(c => c.terms).filter(t => t.week === 'Week 10').length
+  const sessionUser = await getUserByEmail(session.user.email);
+  if (!sessionUser) return <p>User not found.</p>;
+  const instructor = await getUserById(sessionUser.id);
+  if (!instructor) return <p>User not found.</p>;
 
-function getTermStatus(term: { submitted: number; cap: number; approved: boolean }) {
-  if (term.approved) return 'approved'
-  if (term.submitted >= term.cap) return 'cap-reached'
-  return 'pending'
-}
+  const courses = instructor.taughtCourses;
 
-export default function InstructorDashboardPage() {
+  // Derive stat card values — these will be properly wired in a future issue
+  const totalApproved = 0;
+  const totalUnapproved = 0;
+  const newSubmissionsToday = 0;
+  const termsThisWeek = 0;
+
   return (
     <main className="dashboard-container">
       <section className="section">
@@ -96,57 +81,42 @@ export default function InstructorDashboardPage() {
         </div>
       </section>
 
-      {/* Term Status — Full Width */}
+      {/* Courses */}
       <section className="section">
         <div className="card full-width-card">
           <div className="section-header">
-            <h2 className="card-title">Term Submission Status</h2>
-            <button className="add-course-btn">+ add courses</button>
+            <h2 className="card-title">My Courses</h2>
           </div>
 
+          {courses.length === 0 && (
+            <p style={{ color: '#6B7280', fontSize: '15px' }}>No courses assigned yet.</p>
+          )}
+
           {courses.map(course => (
-            <div key={course.id} className="course-block">
-              <div className="course-label">
-                <span className="course-code">{course.name}</span>
-                <span className="course-fullname">— {course.fullName}</span>
-              </div>
-
-              <div className="term-table">
-                <div className="term-table-header">
-                  <span>Term</span>
-                  <span>Week</span>
-                  <span>Submissions</span>
-                  <span>Status</span>
+            <Link
+              key={course.crn}
+              href={`/instructor-dashboard/courses/${course.crn}`}
+              style={{ textDecoration: 'none' }}
+            >
+              <div className="course-block" style={{
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'space-between',
+                padding: '12px',
+                border: '1px solid #E5E7EB',
+                borderRadius: '10px',
+                marginBottom: '8px',
+                cursor: 'pointer',
+                color: '#1F2937',
+              }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <BookOpen size={16} style={{ color: '#6DB089' }} />
+                  <span style={{ fontWeight: 700 }}>{course.code}</span>
+                  <span style={{ color: '#9CA3AF', fontSize: '14px' }}>— {course.title}</span>
                 </div>
-
-                {course.terms.map(term => {
-                  const status = getTermStatus(term)
-                  return (
-                    <div key={term.name} className="term-row">
-                      <span className="term-name">
-                        <BookOpen size={13} className="term-icon" />
-                        {term.name}
-                      </span>
-                      <span className="term-week">{term.week}</span>
-                      <span className="term-submissions">
-                        <div className="submission-bar-wrap">
-                          <div
-                            className="submission-bar-fill"
-                            style={{ width: `${(term.submitted / term.cap) * 100}%` }}
-                          />
-                        </div>
-                        <span className="submission-count">{term.submitted}/{term.cap}</span>
-                      </span>
-                      <span className={`term-status term-status-${status}`}>
-                        {status === 'approved' && <><CheckCircle2 size={12} /> Approved</>}
-                        {status === 'cap-reached' && <><Lock size={12} /> Cap Reached</>}
-                        {status === 'pending' && <><Clock size={12} /> Pending</>}
-                      </span>
-                    </div>
-                  )
-                })}
+                <ChevronRight size={16} style={{ color: '#9CA3AF' }} />
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
@@ -157,10 +127,6 @@ export default function InstructorDashboardPage() {
         <div className="card">
           <h2 className="card-title">Glossary Management</h2>
           <div className="glossary-list">
-            <a href="#" className="glossary-item">
-              <PlusCircle size={15} className="glossary-icon glossary-icon-green" />
-              <span>Add New Term</span>
-            </a>
             <a href="#" className="glossary-item">
               <BookOpen size={15} className="glossary-icon glossary-icon-green" />
               <span>Manage Glossary</span>
@@ -173,7 +139,7 @@ export default function InstructorDashboardPage() {
           <button className="manage-glossary-btn">Manage Full Glossary</button>
         </div>
 
-        {/* Recent Activity */}
+        {/* Recent Activity — still hardcoded, future issue */}
         <div className="card">
           <div className="section-header">
             <h2 className="card-title">Recent Activity</h2>
@@ -223,32 +189,25 @@ export default function InstructorDashboardPage() {
         <div className="card">
           <h2 className="card-title">Course Analytics</h2>
           <div className="analytics-course-list">
-            {courses.map(course => {
-              const approved = course.terms.filter(t => t.approved).length
-              const total = course.terms.length
-              const enrolled = course.id === 'ics314' ? 24 : 18
+            {await Promise.all(courses.map(async course => {
+              const extraCredit = await getExtraCreditByCourse(course.crn);
               return (
-                <div key={course.id} className="analytics-course-block">
+                <div key={course.crn} className="analytics-course-block">
                   <div className="analytics-course-header">
-                    <span className="analytics-course-name">{course.name}</span>
-                    <span className="analytics-course-full">{course.fullName}</span>
+                    <span className="analytics-course-name">{course.code}</span>
+                    <span className="analytics-course-full">{course.title}</span>
                   </div>
                   <div className="analytics-row-item">
                     <Users size={13} className="analytics-row-icon" />
                     <span className="analytics-row-label">Students Enrolled</span>
-                    <span className="analytics-row-value">{enrolled}</span>
-                  </div>
-                  <div className="analytics-row-item">
-                    <CheckCircle2 size={13} className="analytics-row-icon" />
-                    <span className="analytics-row-label">Approved / Total Terms</span>
-                    <span className="analytics-row-value">{approved}/{total}</span>
+                    <span className="analytics-row-value">{extraCredit?.length ?? 0}</span>
                   </div>
                 </div>
-              )
-            })}
+              );
+            }))}
           </div>
         </div>
       </section>
     </main>
-  )
+  );
 }
