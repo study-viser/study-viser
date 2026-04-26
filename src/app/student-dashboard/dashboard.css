@@ -265,12 +265,22 @@
   cursor: pointer;
   justify-self: start;
   min-width: 88px;
+  text-decoration: none;
+  text-align: center;
 }
 
 .submit-button:hover {
   background-color: #5c9b76;
 }
 
+.submit-button:visited,
+.submit-button:active {
+  text-decoration: none;
+}
+.submit-btn-wrapper {
+  display: flex;
+  justify-content: center;
+}
 .course-card-header {
   display: flex;
   align-items: center;
@@ -450,7 +460,9 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  text-decoration: none;
   transition: background-color 0.2s ease;
+
 }
 
 .weekly-submit-btn:hover {

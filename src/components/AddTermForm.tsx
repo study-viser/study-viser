@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { Form, Button, Col, Container, Card, Row } from 'react-bootstrap';
 import '@/styles/forms.css';
-import '@/app/globals.css';
 
 const AddTermForm = () => {
   const [requiresImage, setRequiresImage] = useState(true);
