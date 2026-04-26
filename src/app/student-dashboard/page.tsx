@@ -8,10 +8,9 @@ import Link from 'next/link';
 export default async function StudentDashboardPage() {
   const session = await auth();
 
-  // protect page
-  if (!session) {
-    redirect('/auth/signin'); // or your login route
-  }
+    if (!session?.user?.email) {
+    redirect('/auth/signin');
+    }
 
   const user = await prisma.user.findUnique({
     where: {
