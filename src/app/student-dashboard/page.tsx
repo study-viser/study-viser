@@ -14,7 +14,7 @@ export default async function StudentDashboardPage() {
 
   const user = await prisma.user.findUnique({
     where: {
-      email: session.user.email,
+      email: session.user.email ?? undefined,
     },
     include: {
         enrolledCourses: {
