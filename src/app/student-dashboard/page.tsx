@@ -62,11 +62,18 @@ const weeklyLimit = 2; // Weekly Limit
 const weeklyCount = submissions.length;
 const remaining = Math.max(weeklyLimit - weeklyCount, 0);
 const percent = Math.min((weeklyCount / weeklyLimit) * 100, 100);
-const totalSubmissions = submissions.length;
 const approvedCount = submissions.filter(
   (s) => s.wasReviewed && s.points > 0
 ).length;
 const enrolledCount = user?.enrolledCourses.length ?? 0;
+const totalSubmissions = submissions.length;
+const approvedSubmissions = submissions.filter(
+  (s) => s.wasReviewed && s.points > 0
+);
+const totalPoints = approvedSubmissions.reduce(
+  (sum, s) => sum + s.points,
+  0
+);
 
   return (
     <main className="dashboard-container">
@@ -209,19 +216,23 @@ const enrolledCount = user?.enrolledCourses.length ?? 0;
                     <Link href="/courses/join" className="course-btn course-btn-add">+ Add Course</Link>
             </div>
         </div>
-
+        
+        {/* Extra Credit Card */}  
         <div className="card extra-card">
-            <div className="extra-header">
-                <div className="extra-title-wrap">
-                <div className="extra-icon">
-                    <Award size={18} />
-                </div>
-                <h2 className="card-title">Extra Credit Earned</h2>
-                </div>
+        <div className="extra-header">
+            <div className="extra-title-wrap">
+            <div className="extra-icon">
+                <Award size={18} />
             </div>
+            <h2 className="card-title">Extra Credit Earned</h2>
+            </div>
+        </div>
 
-            <p className="extra-points">10 points</p>
-            <p className="extra-sub">2 approved submissions</p>
+        <p className="extra-points">{totalPoints} point{totalPoints !== 1 ? 's' : ''}</p>
+
+        <p className="extra-sub">
+            {approvedSubmissions.length} approved submission{approvedSubmissions.length !== 1 ? 's' : ''}
+        </p>
         </div>
 
         {/* Weekly Submission Progress */}

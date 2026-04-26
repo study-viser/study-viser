@@ -25,19 +25,30 @@ const AddDefinitionForm = () => {
     fetchTerm();
   }, [termId]);
 
-  const handleSubmit = (e: React.SyntheticEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const formData = new FormData(e.currentTarget);
-
-    console.log({
-      termId,
-      definition: formData.get('definition'),
-      image: formData.get('image'),
+    const res = await fetch('/api/submissions', {
+      method: 'POST',
+       credentials: 'include',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        termId,
+        definition: formData.get('definition'),
+      }),
     });
+    if (!res.ok) {
+      const errorText = await res.text();
+      alert(errorText || 'Something went wrong.');
+      return;
+    }
 
-    alert('Submitted!');
-  };
+  alert('Submitted!');
+  window.location.href = '/student-dashboard';
+};
 
   return (
     <Container>

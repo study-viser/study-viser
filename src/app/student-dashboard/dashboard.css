@@ -460,7 +460,9 @@
   font-size: 14px;
   font-weight: 600;
   cursor: pointer;
+  text-decoration: none;
   transition: background-color 0.2s ease;
+
 }
 
 .weekly-submit-btn:hover {

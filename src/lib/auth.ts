@@ -7,10 +7,10 @@ import bcrypt from 'bcrypt';
 declare module 'next-auth' {
   interface Session {
     user: {
+      id?: string;
       role?: string;
     } & DefaultSession['user'];
-  }
-}
+  }}
 
 export const authOptions = {
   secret: process.env.NEXTAUTH_SECRET,
@@ -33,11 +33,22 @@ export const authOptions = {
   pages: { signIn: '/auth/signin' },
   callbacks: {
     async jwt({ token, user }: { token: any; user: any }) {
-      if (user) token.role = user.role;
+      if (user) {
+        token.id = user.id;
+        token.role = user.role;
+      }
       return token;
     },
+
     async session({ session, token }: { session: any; token: any }) {
-      return { ...session, user: { ...session.user, role: token.role } };
+      return {
+        ...session,
+        user: {
+          ...session.user,
+          id: token.id,
+          role: token.role,
+        },
+      };
     },
   },
 };
