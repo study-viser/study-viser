@@ -2,6 +2,7 @@
   "defaultUsers": [
     { "name": "Admin", "email": "admin@foo.com", "password": "changeme", "role": "ADMIN" },
     { "name": "John Doe", "email": "john@foo.com", "password": "changeme" },
+    { "name": "Albus Dumbledore", "email": "dumbledore@hogwarts.com", "password": "sherbetLemon", "courses": [2824, 5506], "role": "INSTRUCTOR" },
     { "name": "Smarty Pants", "email": "smarty@foo.com", "password": "changeme", "courses": [2824, 1409], "role": "TA" },
     { "name": "Square Pants", "email": "spongebob@foo.com", "password": "changeme", "courses": [2824, 1409], "role": "STUDENT" },
     { "name": "Alice Kealoha", "email": "alice@foo.com", "password": "changeme", "courses": [2824], "role": "STUDENT" },
