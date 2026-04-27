@@ -402,6 +402,7 @@ export async function createTerm(data: {
   courseCRN: number;
   word: string;
   maxSubmissions: number;
+  referenceDefinition?: string;
   week?: number;
   coveredOn?: Date;
   difficulty?: 'Basic' | 'Moderate' | 'Advanced';
@@ -446,6 +447,7 @@ export async function updateTerm(
   data: Partial<{
     maxSubmissions: number;
     word: string;
+    referenceDefinition: string;
     week: number;
     coveredOn: Date;
     difficulty: 'Basic' | 'Moderate' | 'Advanced';
