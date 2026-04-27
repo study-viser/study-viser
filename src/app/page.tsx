@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Image from "next/image";
 import "./globals.css"; 
+import Link from "next/link";
  
 export default function HomePage() {
   const [searchQuery, setSearchQuery] = useState("");
@@ -32,7 +33,7 @@ export default function HomePage() {
             Earn Credit. Build Knowledge.<br />
             Learn Better Together.
           </h1>
-          <button className="visit-btn">Visit Courses</button>
+          <Link href="/courses" target="_blank" className="visit-btn">Visit Courses</Link>
         </div>
  
         {/* Triangle Background */}
