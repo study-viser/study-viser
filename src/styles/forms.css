@@ -239,3 +239,21 @@ h1,
   height: 30px;
   padding: 4px;
 }
+
+.back-link-btn {
+  display: inline-block;    
+  margin-bottom: 6px;
+  padding: 0;
+  background: none;
+  border: none;
+  box-shadow: none;
+  outline: none;
+  color: #024731;
+  font-weight: 600;
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.back-link-btn:hover {
+  text-decoration: none;
+}

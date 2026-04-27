@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Form, Button, Col, Container, Card, Row } from 'react-bootstrap';
+import BackButton from '@/components/BackButton';
 import '@/styles/forms.css';
 
 const AddTermForm = () => {
@@ -29,6 +30,7 @@ const AddTermForm = () => {
 
   return (
     <Container className="add-term-page">
+      <BackButton /> 
       <div className="form-heading-wrap">
         <h1 className="add-term-title">Add Glossary Term</h1>
       </div>

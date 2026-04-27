@@ -1,6 +1,8 @@
 'use client';
 
 import { Form, Button, Col, Container, Card, Row, Image } from 'react-bootstrap';
+import BackButton from '@/components/BackButton';
+
 import '@/styles/forms.css';
 
 const ClaimCourseForm = () => {
@@ -19,6 +21,7 @@ const ClaimCourseForm = () => {
 
   return (
     <Container className="course-page">
+      <BackButton /> 
       <Card className="course-card">
         <Card.Body>
           <Image src="/claim-icon.png" className="two-user-icon" alt="Claim Course" />

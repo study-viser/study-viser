@@ -4,6 +4,8 @@ import { Form, Button, Col, Container, Card, Row, Image } from 'react-bootstrap'
 import { useState } from 'react';
 import { enrollStudent } from '@/lib/dbActions';
 import { useSession } from 'next-auth/react';
+import BackButton from '@/components/BackButton';
+
 import '@/styles/forms.css';
 
 const JoinCourseForm = () => {
@@ -32,6 +34,7 @@ const JoinCourseForm = () => {
       // enrollStudent looks up course by secret, then connects the student
       await enrollStudent(secret, session.user.id);
       setSuccess(true);
+      window.location.href = '/student-dashboard';
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to join course.');
     }
@@ -39,9 +42,9 @@ const JoinCourseForm = () => {
 
   return (
     <Container className="course-page">
+      <BackButton /> 
       <Card className="course-card">
         <Card.Body>
-
         <Image src="/courseaddicon.png" className="two-user-icon" alt="Join Course" />
           <h1 className="course-title">Join a Course</h1>
 

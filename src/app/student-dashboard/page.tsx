@@ -5,6 +5,7 @@ import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
 import { Difficulty } from '@/generated/prisma/enums';
+import ExitCourseButton from '@/components/ExitCourseButton';
 
 export default async function StudentDashboardPage() {
   const session = await auth();
@@ -62,6 +63,15 @@ const availableTerms = await prisma.term.findMany({
 });
 
 const weeklyLimit = 2; // Weekly Limit
+const startOfWeek = new Date();
+startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+startOfWeek.setHours(0, 0, 0, 0);
+
+const weeklySubmissionCount = submissions.filter(
+  (submission) => submission.createdAt >= startOfWeek
+).length;
+
+const hasReachedWeeklyLimit = weeklySubmissionCount >= weeklyLimit;
 const weeklyCount = submissions.length;
 const remaining = Math.max(weeklyLimit - weeklyCount, 0);
 const percent = Math.min((weeklyCount / weeklyLimit) * 100, 100);
@@ -195,8 +205,8 @@ const totalPoints = approvedSubmissions.reduce(
                 </div>
 
                 {availableTerms
-                .filter((term) => term.submissions.length < term.maxSubmissions) //  hide FULL terms
-                .map((term) => {
+                .filter((term) => term.submissions.length < term.maxSubmissions)
+                .map((term) => { //  hide FULL terms
                     const submissionCount = term.submissions.length;
                     return (
                     <div className="submission-row" 
@@ -228,12 +238,15 @@ const totalPoints = approvedSubmissions.reduce(
                         {submissionCount} / {term.maxSubmissions}
                         </span>
                         <div className="submit-btn-wrapper">
-                        <a
-                            href={`/add-definition?termId=${term.id}`}
-                            className="submit-button"
-                        >
+                        {!hasReachedWeeklyLimit ? (
+                        <a href={`/add-definition?termId=${term.id}`} className="submit-button">
                             Submit Definition
                         </a>
+                        ) : (
+                        <span className="term-status-badge full">
+                            Weekly limit reached
+                        </span>
+                        )}
                         </div>
                     </div>
                     );
@@ -259,16 +272,19 @@ const totalPoints = approvedSubmissions.reduce(
                 <p>No courses yet</p>
             ) : (
                 user?.enrolledCourses.map((course) => (
-            <Link
-            href={`/student-course/${course.crn}`}
-            className="course-item course-link"
-            key={course.crn}
-            >
-            <span className="course-bullet">•</span>
-            <span>
-                <strong>{course.code}: {course.title}</strong><br />
-            </span>
-            </Link>
+                <div className="course-item-wrapper" key={course.crn}>
+                <Link
+                    href={`/student-course/${course.crn}`}
+                    className="course-item course-link"
+                >
+                    <span className="course-bullet">•</span>
+                    <span>
+                    <strong>{course.code}: {course.title}</strong>
+                    </span>
+                </Link>
+
+                <ExitCourseButton crn={course.crn} userId={user.id} />
+                </div>
                 ))
             )}
             </div>

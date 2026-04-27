@@ -218,7 +218,7 @@
 .submission-table {
   border: 1px solid #E5E7EB;
   border-radius: 14px;
-  overflow: hidden;
+  overflow: auto;
   background-color: #ffffff;
 }
 
@@ -361,6 +361,24 @@
   font-size: 20px;
   line-height: 1;
   margin-top: 2px;
+}
+
+.course-item-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.course-exit-btn {
+  background: none;
+  border: none;
+  color: #b42318;
+  font-size: 12px;
+  cursor: pointer;
+}
+
+.course-exit-btn:hover {
+  text-decoration: underline;
 }
 
 /* Extra Credit Card */

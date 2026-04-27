@@ -41,6 +41,7 @@ type StudentCourseViewProps = {
         id: string;
         creatorId: string;
         wasReviewed: boolean;
+        createdAt: Date;
       }[];
     }[];
   };
@@ -48,9 +49,15 @@ type StudentCourseViewProps = {
 
 const DIFFICULTIES: Difficulty[] = ['Basic', 'Moderate', 'Advanced'];
 
-// --- Inline term card (static only) ---
-// TODO: Replace with DB-wired TermItem once Khloe wires up the submission flow
-function TermCard({ term, crn }: { term: Term; crn: number }) {
+function TermCard({
+  term,
+  crn,
+  hasReachedWeeklyLimit,
+}: {
+  term: Term;
+  crn: number;
+  hasReachedWeeklyLimit: boolean;
+}) {
   const isFull = term.status === 'full';
   const isApproved = term.status === 'approved';
   const isSubmitted = term.status === 'submitted';
@@ -86,11 +93,15 @@ function TermCard({ term, crn }: { term: Term; crn: number }) {
           View Term →
         </Link>
 
-        {/* Temporary link — replace with a server action once DB is wired up */}
-        {!isFull && !isSubmitted && !isApproved && (
+        {term.status === 'available' && !hasReachedWeeklyLimit && (
           <Link href={`/add-definition?termId=${term.id}`} className="btn-submit-term">
             Submit Definition
           </Link>
+        )}
+        {term.status === 'available' && hasReachedWeeklyLimit && (
+          <span className="term-status-badge full">
+            Weekly limit reached
+          </span>
         )}
       </div>
     </div>
@@ -98,6 +109,22 @@ function TermCard({ term, crn }: { term: Term; crn: number }) {
 }
 
 export default function StudentCourseView({ course, userId }: StudentCourseViewProps) {
+const weeklyLimit = 2;
+
+const startOfWeek = new Date();
+startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+startOfWeek.setHours(0, 0, 0, 0);
+
+const weeklySubmissionCount = course.terms
+  .flatMap((term) => term.submissions)
+  .filter(
+    (submission) =>
+      submission.creatorId === userId &&
+      submission.createdAt >= startOfWeek
+  ).length;
+
+const hasReachedWeeklyLimit = weeklySubmissionCount >= weeklyLimit;
+
 const dbTerms: Term[] = course.terms.map((term) => {
   const userSubmission = term.submissions.find(
     (s) => s.creatorId === userId
@@ -105,13 +132,11 @@ const dbTerms: Term[] = course.terms.map((term) => {
 
   let status: Status = 'available';
 
-  if (term.submissions.length >= term.maxSubmissions) {
-    status = 'full';
-  }
-
-  if (userSubmission) {
-    status = userSubmission.wasReviewed ? 'approved' : 'submitted';
-  }
+if (term.submissions.length >= term.maxSubmissions) {
+  status = 'full';
+} else if (userSubmission) {
+  status = userSubmission.wasReviewed ? 'approved' : 'submitted';
+}
 
   return {
     id: term.id,
@@ -128,11 +153,11 @@ const dbTerms: Term[] = course.terms.map((term) => {
   const WEEKS = Array.from(
     new Set(dbTerms.map((term) => term.week).filter((week) => week > 0))
   ).sort((a, b) => a - b);
-  
+
   const [selectedWeeks, setSelectedWeeks] = useState<number[]>([]);
   const [selectedDifficulties, setSelectedDifficulties] = useState<Difficulty[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<Status[]>([]);
-  const [bookmarksOnly, setBookmarksOnly] = useState(false);
+  // const [bookmarksOnly, setBookmarksOnly] = useState(false);
   const [search, setSearch] = useState('');
 
   // Helper to toggle an item in a filter list
@@ -222,7 +247,7 @@ const filteredTerms = dbTerms.filter((term) => {
             ))}
           </div>
 
-          {/* Bookmarks */}
+          {/* Bookmarks 
           <div className="sidebar-section">
             <h3 className="sidebar-label">
               <span className="sidebar-icon">🔖</span> Bookmarks
@@ -235,7 +260,7 @@ const filteredTerms = dbTerms.filter((term) => {
               />
               Bookmarked Only
             </label>
-          </div>
+          </div> */}
         </aside>
 
         {/* Main content area */}
@@ -256,7 +281,11 @@ const filteredTerms = dbTerms.filter((term) => {
           {filteredTerms.length > 0 ? (
             <div className="term-grid">
               {filteredTerms.map((term) => (
-                <TermCard key={term.id} term={term} crn={course.crn} />
+                <TermCard key=
+                  {term.id} 
+                  term={term} 
+                  crn={course.crn}   
+                  hasReachedWeeklyLimit={hasReachedWeeklyLimit}/>
               ))}
             </div>
           ) : (

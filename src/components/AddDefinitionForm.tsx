@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { getTermById, createSubmission } from '@/lib/dbActions';
+import BackButton from '@/components/BackButton';
+
 import '@/styles/forms.css';
 
 const AddDefinitionForm = () => {
@@ -90,12 +92,12 @@ const AddDefinitionForm = () => {
 
   return (
   <Container>
+    <BackButton /> 
     <div className="form-heading-wrap">
       <h1 className="form-title py-1">
         Add Definition for <em>{word}</em>
       </h1>
     </div>
-
       {/* Difficulty badge — read from Term.difficulty, not user-editable */}
       <p className="form-meta-text text-muted mb-1">
         Difficulty:&nbsp;
@@ -107,7 +109,6 @@ const AddDefinitionForm = () => {
           {difficulty}
         </span>
       </p>
-
       <Card className="add-definition-card">
         <Card.Body>
           <Form onSubmit={handleSubmit}>
