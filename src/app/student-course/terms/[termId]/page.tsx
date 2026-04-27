@@ -1,9 +1,11 @@
 import TermView from '@/components/TermView';
+import { use } from 'react';
 
 interface TermPageProps {
-  params: { termId: string };
+  params: Promise<{ termId: string }>;
 }
 
 export default function TermPage({ params }: TermPageProps) {
-  return <TermView termId={Number(params.termId)} />;
+  const { termId } = use(params);
+  return <TermView termId={Number(termId)} />;
 }
