@@ -259,12 +259,16 @@ const totalPoints = approvedSubmissions.reduce(
                 <p>No courses yet</p>
             ) : (
                 user?.enrolledCourses.map((course) => (
-                <p className="course-item" key={course.crn}>
-                    <span className="course-bullet">•</span>
-                    <span>
-                    <strong>{course.code}: {course.title}</strong><br />
-                    </span>
-                </p>
+            <Link
+            href={`/student-course/${course.crn}`}
+            className="course-item course-link"
+            key={course.crn}
+            >
+            <span className="course-bullet">•</span>
+            <span>
+                <strong>{course.code}: {course.title}</strong><br />
+            </span>
+            </Link>
                 ))
             )}
             </div>

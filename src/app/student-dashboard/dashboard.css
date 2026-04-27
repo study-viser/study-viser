@@ -14,6 +14,18 @@
   font-family: 'Belanosima', sans-serif;
 }
 
+.course-link {
+  text-decoration: none;
+  color: #1F2937;
+  padding: 8px;
+  border-radius: 10px;
+}
+
+.course-link:hover {
+  background-color: #F5F7FA;
+  color: #024731;
+}
+
 .section {
   margin-bottom: 16px;
 }
@@ -331,7 +343,7 @@
   display: flex;
   flex-direction: column;
   gap: 14px;
-  margin-bottom: 20px;
+  margin-bottom: 18px;
 }
 
 .course-item {
@@ -340,13 +352,13 @@
   gap: 12px;
   margin: 0;
   font-size: 16px;
-  line-height: 1.5;
+  line-height: 1.4;
   color: #1F2937;
 }
 
 .course-bullet {
   color: #2f5da8;
-  font-size: 22px;
+  font-size: 20px;
   line-height: 1;
   margin-top: 2px;
 }
