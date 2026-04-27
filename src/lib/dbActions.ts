@@ -2,7 +2,7 @@
 
 import { hash } from 'bcrypt';
 import { prisma } from './prisma';
-import { Prisma } from '@prisma/client';
+import { Prisma } from '@/generated/prisma/client';
 
 // ---------------------------------------------------------------------------
 // Available Actions
@@ -49,9 +49,13 @@ import { Prisma } from '@prisma/client';
 //   getSubmissionsByTerm(termId)     — list all submissions for a term
 //   getSubmissionsByUser(creatorId)  — list all submissions by a user
 //   reviewSubmission(id, points)     — mark submission reviewed and assign points
-//   updateSubmission(id, data)        — update submission fields
+//   updateSubmission(id, data)       — update submission fields
 //   deleteSubmission(id)             — delete submission by ID
-//
+//   reviewSubmission(id)             — mark a submission as reviewed, grants 1 participation point
+//   approveSubmission(termId, subId) — set the winning submission, grants 4 bonus points
+//   clearTermApproval(termId, subId) — remove the winning submission, drops winner back to 1 point
+//   getExtraCreditByUser(userId)     — total points + breakdown for a user
+//   getExtraCreditByCourse(courseCRN)— per-student extra credit totals for a course
 // ---------------------------------------------------------------------------
 // Helpers
 // ---------------------------------------------------------------------------
@@ -536,11 +540,12 @@ export async function getSubmissionsByUser(creatorId: string) {
   }
 }
 
-export async function reviewSubmission(id: string, points: number) {
+/** Mark a submission as reviewed by the instructor, grants 1 participation point */
+export async function reviewSubmission(id: string, points: number = 1) {
   try {
     return await prisma.submission.update({
       where: { id },
-      data: { wasReviewed: true, points },
+      data: { wasReviewed: true, points: points},
     });
   } catch (error) {
     handlePrismaError(error);
@@ -567,6 +572,111 @@ export async function deleteSubmission(id: string) {
   try {
     await prisma.submission.delete({ where: { id } });
     return { success: true };
+  } catch (error) {
+    handlePrismaError(error);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Approval Flow
+// ---------------------------------------------------------------------------
+
+/** Set the winning submission for a term, grants 4 bonus points on top of the participation point */
+export async function approveSubmission(termId: string, submissionId: string) {
+  try {
+    return await prisma.$transaction(async (tx) => {
+      // 1. Set the winner on the term
+      await tx.term.update({
+        where: { id: termId },
+        data: { bestSubmissionId: submissionId },
+      });
+
+      // 2. Reset all OTHER submissions in this term back to 1 point
+      await tx.submission.updateMany({
+        where: {
+          termId,
+          id: { not: submissionId },
+        },
+        data: {
+          points: 1,
+        },
+      });
+
+      // 3. Set winner to 5 points (1 + 4 bonus)
+      await tx.submission.update({
+        where: { id: submissionId },
+        data: {
+          wasReviewed: true,
+          points: 5,
+        },
+      });
+    });
+  } catch (error) {
+    handlePrismaError(error);
+  }
+}
+
+/** Remove the winning submission from a term, drops winner back to 1 participation point */
+export async function clearTermApproval(termId: string, submissionId: string) {
+  try {
+    return await prisma.$transaction(async (tx) => {
+      await tx.term.update({
+        where: { id: termId },
+        data: { bestSubmissionId: null },
+      });
+      await tx.submission.update({
+        where: { id: submissionId },
+        data: { points: 1 },
+      });
+    });
+  } catch (error) {
+    handlePrismaError(error);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Extra Credit Tracking
+// ---------------------------------------------------------------------------
+
+/** Get total extra credit earned by a user, with a per-submission breakdown */
+export async function getExtraCreditByUser(userId: string) {
+  try {
+    const submissions = await prisma.submission.findMany({
+      where: { creatorId: userId, wasReviewed: true, points: { gt: 0 } },
+      include: { term: true },
+    });
+
+    const total = submissions.reduce((sum, s) => sum + s.points, 0);
+    return { total, breakdown: submissions };
+  } catch (error) {
+    handlePrismaError(error);
+  }
+}
+
+/** Get extra credit totals for all students in a course */
+export async function getExtraCreditByCourse(courseCRN: number) {
+  try {
+    const course = await prisma.course.findUnique({
+      where: { crn: courseCRN },
+      include: {
+        students: {
+          include: {
+            submissions: {
+              where: { wasReviewed: true, points: { gt: 0 } },
+              include: { term: true },
+            },
+          },
+        },
+      },
+    });
+
+    if (!course) return null;
+
+    return course.students.map((student) => ({
+      student: { id: student.id, name: student.name, email: student.email },
+      total: student.submissions.reduce((sum, s) => sum + s.points, 0),
+      breakdown: student.submissions,
+    }));
   } catch (error) {
     handlePrismaError(error);
   }
