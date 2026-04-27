@@ -52,8 +52,7 @@ const AddTermForm = () => {
         difficulty,
         imageRequired: requiresImage,
       });
-      router.push(`/instructor-dashboard/courses/${crn}`);
-      router.refresh();
+      window.location.href = `/instructor-dashboard/courses/${crn}`;
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to create term.');
       setSubmitting(false);
