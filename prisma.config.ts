@@ -1,6 +1,6 @@
 import * as dotenv from "dotenv";
-dotenv.config({ path: ".env.local" }); // for vercel deployment
-// dotenv.config({ path: ".env" }); // for local dev
+// dotenv.config({ path: ".env.local" }); // for vercel deployment
+dotenv.config({ path: ".env" }); // for local dev
 import { defineConfig } from "prisma/config";
 
 export default defineConfig({

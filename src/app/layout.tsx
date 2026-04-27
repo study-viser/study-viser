@@ -16,8 +16,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body className="d-flex flex-column min-vh-100">
+    <html lang="en" data-scroll-behavior="smooth">
+      <body className="d-flex flex-column min-vh-100" suppressHydrationWarning>
         <Providers>
           <Navbar />
           <main className="flex-grow-1">{children}</main>

@@ -2,24 +2,43 @@
 
 import { signIn } from 'next-auth/react'; // v5 compatible
 import { Button, Card, Col, Container, Form, Row, Image } from 'react-bootstrap';
+import { useState, type FormEvent } from 'react';
 import '@/styles/auth.css';
 
 /** The sign in page. */
 const SignIn = () => {
-  const handleSubmit = async (e: React.SubmitEvent<HTMLFormElement>) => {
+  const [error, setError] = useState('');
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    const target = e.target as typeof e.target & {
+      const target = e.currentTarget as HTMLFormElement & {
       email: { value: string };
       password: { value: string };
     };
     const email = target.email.value;
     const password = target.password.value;
 
-    await signIn('credentials', {
-      callbackUrl: '/list',
+    const result = await signIn('credentials', {
+      redirect: false,
       email,
       password,
     });
+
+    if (result?.error || !result?.ok) {
+      setError('Invalid email or password. Please try again.');
+      return;
+    }
+    
+    const{getSession} = await import('next-auth/react');
+    const session = await getSession();
+    const role = (session?.user as {role?: string})?.role;
+
+    if (role === 'INSTRUCTOR') {
+      window.location.href = '/instructor-dashboard';
+    } else if (role === 'TA') {
+      window.location.href = '/ta-dashboard';
+    } else {
+      window.location.href = '/student-dashboard';
+    }
   };
 
   return (
@@ -55,7 +74,7 @@ const SignIn = () => {
                       />
                   <Form.Control
                       name="email"
-                      type="text"
+                      type="email"
                       placeholder="Email"
                       className="login-input"
                       />
@@ -78,6 +97,9 @@ const SignIn = () => {
                     </div>
                   </Form.Group>
 
+                  {error && (
+                    <p className="text-danger text-center mb-3">{error}</p>
+                  )}
                   <Button type="submit" className="login-button d-block mx-auto">
                     Login
                   </Button>

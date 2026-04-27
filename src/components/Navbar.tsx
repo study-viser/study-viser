@@ -4,7 +4,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
-import { Container, Nav, Navbar } from 'react-bootstrap';
+import { Container, Nav, Navbar, Badge } from 'react-bootstrap';
+import { PersonFill } from 'react-bootstrap-icons';
 
 const NavBar: React.FC = () => {
   const { data: session, status } = useSession();
@@ -12,7 +13,7 @@ const NavBar: React.FC = () => {
 
   if (status === 'loading') return null;
 
-  const currentUser = session?.user?.email;
+  const currentUser = session?.user?.name;
   const role = session?.user?.role;
 
   return (
@@ -81,28 +82,38 @@ const NavBar: React.FC = () => {
               Contact
             </Nav.Link>
 
-            {currentUser && (
-              <>
-                <Nav.Link
-                  as={Link}
-                  href="/add"
-                  active={pathName === '/add'}
-                  className="fw-medium"
-                  style={{ color: '#024731' }}
-                >
-                  Add Stuff
-                </Nav.Link>
-
-                <Nav.Link
-                  as={Link}
-                  href="/list"
-                  active={pathName === '/list'}
-                  className="fw-medium"
-                  style={{ color: '#024731' }}
-                >
-                  List Stuff
-                </Nav.Link>
-              </>
+            {currentUser && role === 'STUDENT' && (
+              <Nav.Link
+                as={Link}
+                href="/student-dashboard"
+                active={pathName.startsWith('/student-dashboard')}
+                className="fw-medium"
+                style={{ color: '#024731' }}
+              >
+                Dashboard
+              </Nav.Link>
+            )}
+            {currentUser && role === 'INSTRUCTOR' && (
+              <Nav.Link
+                as={Link}
+                href="/instructor-dashboard"
+                active={pathName.startsWith('/instructor-dashboard')}
+                className="fw-medium"
+                style={{ color: '#024731' }}
+              >
+                Dashboard
+              </Nav.Link>
+            )}
+            {currentUser && role === 'TA' && (
+              <Nav.Link
+                as={Link}
+                href="/ta-dashboard"
+                active={pathName.startsWith('/ta-dashboard')}
+                className="fw-medium"
+                style={{ color: '#024731' }}
+              >
+                Dashboard
+              </Nav.Link>
             )}
 
             {currentUser && role === 'ADMIN' && (
@@ -121,12 +132,21 @@ const NavBar: React.FC = () => {
           <Nav className="d-flex align-items-lg-center gap-2 ms-lg-auto">
             {session ? (
               <>
-                <Navbar.Text
-                  className="fw-medium me-2"
-                  style={{ color: '#024731' }}
+                <Badge
+                  pill
+                  className="me-2 fw-medium d-flex align-items-center gap-2"
+                  bg=""
+                  style={{
+                    backgroundColor: '#024731',
+                    color: 'white',
+                    fontSize: '16px',
+                    padding: '7px 14px',
+                    fontWeight: 500,
+                  }}
                 >
+                  <PersonFill size={14} />
                   {currentUser}
-                </Navbar.Text>
+                </Badge>
 
                 <Nav.Link
                   as={Link}

@@ -1,5 +1,5 @@
-
-import NextAuth, { type DefaultSession } from 'next-auth';
+import NextAuth, { type DefaultSession, type AuthOptions } from 'next-auth';
+import { getServerSession } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { prisma } from './prisma';
 import bcrypt from 'bcrypt';
@@ -7,13 +7,23 @@ import bcrypt from 'bcrypt';
 declare module 'next-auth' {
   interface Session {
     user: {
+      id?: string;
       role?: string;
     } & DefaultSession['user'];
   }
+  interface User {
+    id: string;
+    role?: string;
+  }
 }
 
-// Export v5 handlers and helpers
-export const { auth, signIn, signOut, handlers } = NextAuth({
+export const authOptions: AuthOptions = {
+  secret: process.env.NEXTAUTH_SECRET,
+
+  session: {
+    strategy: 'jwt' as const,
+  },
+
   providers: [
     Credentials({
       credentials: {
@@ -21,48 +31,54 @@ export const { auth, signIn, signOut, handlers } = NextAuth({
         password: { label: 'Password', type: 'password' },
       },
       async authorize(credentials) {
-        // Type guard for credentials
-        if (
-          !credentials ||
-          typeof credentials.email !== 'string' ||
-          typeof credentials.password !== 'string'
-        ) {
-          return null;
-        }
-        const user = await prisma.user.findUnique({ where: { email: credentials.email } });
+        if (!credentials?.email || !credentials?.password) return null;
+
+        const user = await prisma.user.findUnique({
+          where: { email: credentials.email },
+        });
+
         if (!user || typeof user.password !== 'string') return null;
-        const isValid = await bcrypt.compare(credentials.password, user.password);
+
+        const isValid = await bcrypt.compare(
+          credentials.password,
+          user.password
+        );
+
         if (!isValid) return null;
-        // Return user object for session
+
         return {
-          id: user.id.toString(),
+          id: user.id,
           email: user.email,
-          name: user.email,
+          name: user.name,
           role: user.role,
         };
       },
     }),
   ],
-  pages: {
-    signIn: '/auth/signin',
-    signOut: '/auth/signout',
-  },
+
+  pages: { signIn: '/auth/signin' },
+
   callbacks: {
-    session({ session, token }) {
+    async jwt({ token, user }) {
+      if (user) {
+        token.id = user.id;
+        token.role = user.role;
+      }
+      return token;
+    },
+
+    async session({ session, token }) {
       return {
         ...session,
         user: {
           ...session.user,
-          role: (token as { role?: string }).role,
+          id: token.id as string,
+          role: token.role as string,
         },
       };
     },
-    jwt({ token, user }) {
-      // user is type: { id?: string; email?: string; name?: string; role?: string }
-      if (user && typeof (user as { role?: string }).role === 'string') {
-        token.role = (user as { role?: string }).role;
-      }
-      return token;
-    },
   },
-});
+};
+
+export const auth = () => getServerSession(authOptions);
+export default NextAuth(authOptions);

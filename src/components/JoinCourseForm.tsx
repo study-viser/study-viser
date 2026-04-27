@@ -1,0 +1,103 @@
+'use client';
+
+import { Form, Button, Col, Container, Card, Row, Image } from 'react-bootstrap';
+import { useState } from 'react';
+import { enrollStudent } from '@/lib/dbActions';
+import { useSession } from 'next-auth/react';
+import BackButton from '@/components/BackButton';
+
+import '@/styles/forms.css';
+
+const JoinCourseForm = () => {
+  const { data: session } = useSession();
+  // test
+  // const { data: session, status } = useSession();
+  // console.log('status:', status, 'session:', session);
+  // end test
+  const [error, setError] = useState<string | null>(null);
+  const [success, setSuccess] = useState(false);
+
+  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError(null);
+    setSuccess(false);
+
+    const formData = new FormData(e.currentTarget);
+    const secret = formData.get('courseSecret') as string;
+
+    if (!session?.user?.id) {
+      setError('You must be signed in to join a course.');
+      return;
+    }
+
+    try {
+      // enrollStudent looks up course by secret, then connects the student
+      await enrollStudent(secret, session.user.id);
+      setSuccess(true);
+      window.location.href = '/student-dashboard';
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Failed to join course.');
+    }
+  };
+
+  return (
+    <Container className="course-page">
+      <div className="form-heading-wrap">
+        <BackButton />
+      </div>
+      <Card className="course-card">
+        <Card.Body>
+        <Image src="/courseaddicon.png" className="two-user-icon" alt="Join Course" />
+          <h1 className="course-title">Join a Course</h1>
+
+          <p className="course-subtitle">
+            Enter the course enrollment code provided by your instructor to enroll in a course.
+          </p>
+
+          <hr />
+
+          {error && <p className="text-danger">{error}</p>}
+          {success && <p className="text-success">Successfully joined the course!</p>}
+
+          <Form onSubmit={handleSubmit}>
+            <Form.Group as={Row} className="mb-4" controlId="courseSecret">
+              <Form.Label column sm={12} className="course-label">
+                Course Enrollment Code
+              </Form.Label>
+
+              <Col sm={12}>
+                <Form.Control
+                  name="courseSecret"
+                  type="text"
+                  placeholder="Enter code"
+                  required
+                />
+              </Col>
+            </Form.Group>
+
+            <div className="text-center">
+              <Button type="submit" className="submit-form-button">
+                Join Course
+              </Button>
+            </div>
+          </Form>
+          
+        {/*
+          <Row className="or-divider">
+            <Col><hr /></Col>
+            <Col xs="auto">OR</Col>
+            <Col><hr /></Col>
+          </Row>
+          <div className="text-center">
+            <Button variant="link" className="browse-link">
+              Browse Available Courses
+            </Button>
+          </div>
+          */}
+        </Card.Body>
+      </Card>
+    </Container>
+  );
+};
+
+export default JoinCourseForm;

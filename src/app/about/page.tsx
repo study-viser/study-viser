@@ -1,5 +1,6 @@
 "use client";
  
+import Link from "next/link";
 import { useState } from "react";
 
 const roles = [
@@ -724,8 +725,8 @@ export default function AboutPage() {
         <h2>Ready to study better together?</h2>
         <p>Join StudyViser and help build the study resources your courses actually need.</p>
         <div className="cta-buttons">
-          <button className="cta-primary">Get Started</button>
-          <button className="cta-secondary">Visit Courses</button>
+          <Link href="/auth/signup" className="cta-primary">Get Started</Link>
+          <Link href="/courses" className="cta-secondary">Visit Courses</Link>
         </div>
       </section>
  

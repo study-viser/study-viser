@@ -1,0 +1,78 @@
+@import url('https://fonts.googleapis.com/css2?family=Belanosima:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --green-dark: #024731;
+  --green-mid: #2d6a44;
+  --green-light: #4a9b65;
+  --green-pale: #a8d5b5;
+  --green-muted: #E8F5E9;
+  --white: #ffffff;
+  --gray-text: #d9d9d9;
+}
+
+* {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--green-muted);
+}
+
+/* Page layout */
+.contact-page {
+  min-height: 100vh;
+  padding: 60px 24px;
+  display: flex;
+  justify-content: center;
+}
+
+/* Card container */
+.contact-card {
+  background: white;
+  width: 100%;
+  max-width: 900px;
+  border-radius: 16px;
+  padding: 40px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+}
+
+/* Title */
+.contact-title {
+  font-family: 'Belanosima', serif;
+  font-size: 2.4rem;
+  color: var(--green-dark);
+  margin-bottom: 24px;
+}
+
+/* Sections */
+.contact-section {
+  margin-top: 28px;
+}
+
+.contact-section h2 {
+  font-size: 1.2rem;
+  color: var(--green-dark);
+  margin-bottom: 10px;
+}
+
+.contact-section p,
+.contact-section li {
+  font-size: 1rem;
+  color: var(--green-mid);
+  line-height: 1.6;
+}
+
+/* Links */
+.contact-section a {
+  color: var(--green-dark);
+  font-weight: 600;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.contact-section a:hover {
+  color: var(--green-mid);
+}
