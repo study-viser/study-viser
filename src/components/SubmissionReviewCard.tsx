@@ -17,10 +17,9 @@ type Props = {
   submission: Submission;
   termId: string;
   isWinner: boolean;
-  crn: number;
 };
 
-export default function SubmissionReviewCard({ submission, termId, isWinner, crn }: Props) {
+export default function SubmissionReviewCard({ submission, termId, isWinner }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 

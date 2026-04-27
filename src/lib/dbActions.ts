@@ -532,13 +532,30 @@ export async function deleteSubmission(id: string) {
 export async function approveSubmission(termId: string, submissionId: string) {
   try {
     return await prisma.$transaction(async (tx) => {
+      // 1. Set the winner on the term
       await tx.term.update({
         where: { id: termId },
         data: { bestSubmissionId: submissionId },
       });
+
+      // 2. Reset all OTHER submissions in this term back to 1 point
+      await tx.submission.updateMany({
+        where: {
+          termId,
+          id: { not: submissionId },
+        },
+        data: {
+          points: 1,
+        },
+      });
+
+      // 3. Set winner to 5 points (1 + 4 bonus)
       await tx.submission.update({
         where: { id: submissionId },
-        data: { points: { increment: 4 } },
+        data: {
+          wasReviewed: true,
+          points: 5,
+        },
       });
     });
   } catch (error) {
