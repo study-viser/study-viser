@@ -17,7 +17,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className="d-flex flex-column min-vh-100">
+      <body className="d-flex flex-column min-vh-100" suppressHydrationWarning>
         <Providers>
           <Navbar />
           <main className="flex-grow-1">{children}</main>

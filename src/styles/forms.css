@@ -55,7 +55,8 @@ h1,
 .meta-row {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 16px;
 }
 
 .meta-col {
@@ -73,6 +74,10 @@ h1,
 }
 
 .week-select {
+  width: 80px;
+}
+
+.max-submissions-input {
   width: 80px;
 }
 

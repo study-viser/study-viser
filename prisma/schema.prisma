@@ -52,7 +52,7 @@ model User {
 model Course {
   crn          Int       @id
   code         String  // if listing is set, should match listing.code
-  secret       String    @unique @default(uuid()) // given to students to enroll
+  secret       String    @unique @default(dbgenerated("gen_random_uuid()::text"))
   title        String
   description  String?
   createdAt    DateTime  @default(now())
@@ -97,6 +97,7 @@ model Listing {
 model Term {
   id               String       @id @default(uuid())
   word             String       // term to be defined
+  referenceDefinition String?   // instructor-provided refernce text/context
   maxSubmissions   Int          // set by INSTRUCTOR
   submissions      Submission[] @relation("TermSubmissions")
   bestSubmission   Submission?  @relation("BestSubmission", fields: [bestSubmissionId], references: [id])
