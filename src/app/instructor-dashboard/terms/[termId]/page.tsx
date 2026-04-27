@@ -63,7 +63,6 @@ export default async function TermReviewPage({ params }: { params: Promise<{ ter
             submission={submission}
             termId={term.id}
             isWinner={submission.id === term.bestSubmissionId}
-            crn={term.courseCRN}
           />
         ))}
       </div>
