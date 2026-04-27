@@ -21,6 +21,7 @@ import { Prisma } from '@/generated/prisma/client';
 //   getCourseByCrn(crn)              — find course by CRN, includes instructor/students/terms
 //   getCoursesByCode(code)           — find all courses by code (multiple sections allowed)
 //   getCourseBySecret(secret)        — find course by enrollment secret
+//   getSecretCode(crn)               — get the enrollment secret for a course by CRN
 //   getAllCourses()                  — list all courses with instructor and listing
 //   updateCourse(crn, data)          — update course fields
 //   deleteCourse(crn)                — delete course by CRN
@@ -39,6 +40,7 @@ import { Prisma } from '@/generated/prisma/client';
 //   getTermById(id)                  — find term by ID, includes submissions
 //   getTermsByCourse(courseCRN)      — list all terms for a course, ordered by date
 //   updateTerm(id, data)             — update term fields
+//   setBestSubmission(termId, subId) — set the accepted submission for a term
 //   deleteTerm(id)                   — delete term by ID
 //
 // Submission
@@ -202,11 +204,10 @@ export async function getCourseByCrn(crn: number) {
   }
 }
 
-export async function getCoursesByCode(code: string) {
-  // Returns all courses with this code — multiple sections can share a code
+export async function getCourseBySecret(secret: string) {
   try {
-    return await prisma.course.findMany({
-      where: { code },
+    return await prisma.course.findUnique({
+      where: { secret },
       include: {
         instructor: true,
         students: true,
@@ -219,10 +220,24 @@ export async function getCoursesByCode(code: string) {
   }
 }
 
-export async function getCourseBySecret(secret: string) {
+/** Returns only the secret for a course — useful for displaying to instructors */
+export async function getSecretCode(crn: number) {
   try {
-    return await prisma.course.findUnique({
-      where: { secret },
+    const course = await prisma.course.findUnique({
+      where: { crn },
+      select: { secret: true }, // select only secret — avoids over-fetching
+    });
+    return course?.secret ?? null;
+  } catch (error) {
+    handlePrismaError(error);
+  }
+}
+
+export async function getCoursesByCode(code: string) {
+  // Returns all courses with this code — multiple sections can share a code
+  try {
+    return await prisma.course.findMany({
+      where: { code },
       include: {
         instructor: true,
         students: true,
@@ -441,6 +456,18 @@ export async function updateTerm(
 ) {
   try {
     return await prisma.term.update({ where: { id }, data });
+  } catch (error) {
+    handlePrismaError(error);
+  }
+}
+
+/** Set the accepted best submission for a term */
+export async function setBestSubmission(termId: string, submissionId: string) {
+  try {
+    return await prisma.term.update({
+      where: { id: termId },
+      data: { bestSubmissionId: submissionId },
+    });
   } catch (error) {
     handlePrismaError(error);
   }
