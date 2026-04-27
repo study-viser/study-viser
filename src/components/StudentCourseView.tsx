@@ -21,6 +21,7 @@ interface Term {
 }
 
 type StudentCourseViewProps = {
+  userId?: string;
   course: {
     crn: number;
     code: string;
@@ -38,12 +39,13 @@ type StudentCourseViewProps = {
       week: number | null;
       submissions: {
         id: string;
+        creatorId: string;
+        wasReviewed: boolean;
       }[];
     }[];
   };
 };
 
-const WEEKS = [1, 2, 3];
 const DIFFICULTIES: Difficulty[] = ['Basic', 'Moderate', 'Advanced'];
 
 // --- Inline term card (static only) ---
@@ -60,7 +62,7 @@ function TermCard({ term, crn }: { term: Term; crn: number }) {
 
       {/* Submission count */}
       <p className="term-submissions">
-        Status: {term.submissionsCount} / {term.submissionsCap}
+        Submissions: {term.submissionsCount} / {term.submissionsCap}
       </p>
 
       {/* Requires visual badge */}
@@ -95,22 +97,38 @@ function TermCard({ term, crn }: { term: Term; crn: number }) {
   );
 }
 
-export default function StudentCourseView({ course }: StudentCourseViewProps) {
+export default function StudentCourseView({ course, userId }: StudentCourseViewProps) {
 const dbTerms: Term[] = course.terms.map((term) => {
-  const status: Status =
-    term.submissions.length >= term.maxSubmissions ? 'full' : 'available';
+  const userSubmission = term.submissions.find(
+    (s) => s.creatorId === userId
+  );
+
+  let status: Status = 'available';
+
+  if (term.submissions.length >= term.maxSubmissions) {
+    status = 'full';
+  }
+
+  if (userSubmission) {
+    status = userSubmission.wasReviewed ? 'approved' : 'submitted';
+  }
 
   return {
-      id: term.id,
-      name: term.word,
-      difficulty: term.difficulty,
-      requiresVisual: term.imageRequired,
-      submissionsCount: term.submissions.length,
-      submissionsCap: term.maxSubmissions,
-      week: term.week ?? 0,
-      status,
-    };
-  });
+    id: term.id,
+    name: term.word,
+    difficulty: term.difficulty,
+    requiresVisual: term.imageRequired,
+    submissionsCount: term.submissions.length,
+    submissionsCap: term.maxSubmissions,
+    week: term.week ?? 0,
+    status,
+  };
+});
+
+  const WEEKS = Array.from(
+    new Set(dbTerms.map((term) => term.week).filter((week) => week > 0))
+  ).sort((a, b) => a - b);
+  
   const [selectedWeeks, setSelectedWeeks] = useState<number[]>([]);
   const [selectedDifficulties, setSelectedDifficulties] = useState<Difficulty[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<Status[]>([]);

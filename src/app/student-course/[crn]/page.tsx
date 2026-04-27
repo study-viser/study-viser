@@ -1,6 +1,7 @@
 import StudentCourseView from '@/components/StudentCourseView';
 import { prisma } from '@/lib/prisma';
 import { notFound } from 'next/navigation';
+import { auth } from '@/lib/auth';
 
 type Props = {
   params: Promise<{
@@ -9,6 +10,7 @@ type Props = {
 };
 
 export default async function StudentCoursePage({ params }: Props) {
+  const session = await auth();
   const { crn } = await params;
 
   const course = await prisma.course.findUnique({
@@ -19,7 +21,11 @@ export default async function StudentCoursePage({ params }: Props) {
       instructor: true,
       terms: {
         include: {
-          submissions: true,
+          submissions: {
+            include: {
+              creator: true,
+            },
+          },
         },
       },
     },
@@ -29,5 +35,5 @@ export default async function StudentCoursePage({ params }: Props) {
     notFound();
   }
 
-  return <StudentCourseView course={course} />;
+  return <StudentCourseView course={course} userId={session?.user?.id} />;
 }
