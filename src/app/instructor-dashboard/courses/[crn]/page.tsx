@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { auth } from '@/lib/auth';
-import { getCourseBycrn, getTermsByCourse } from '@/lib/dbActions';
+import { getCourseByCrn, getTermsByCourse } from '@/lib/dbActions';
 import { ChevronRight, BookOpen, CheckCircle2, Lock, Clock, PlusCircle } from 'lucide-react';
 
 function getTermStatus(term: { submissions: any[]; maxSubmissions: number; bestSubmissionId: string | null }) {
@@ -16,7 +16,7 @@ export default async function CoursePage({ params }: { params: Promise<{ crn: st
   const { crn: crnParam } = await params;
   const crn = parseInt(crnParam);
 
-  const course = await getCourseBycrn(crn);
+  const course = await getCourseByCrn(crn);
   if (!course) return <p>Course not found.</p>;
 
   const terms = await getTermsByCourse(crn) ?? [];
