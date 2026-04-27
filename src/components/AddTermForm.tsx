@@ -12,13 +12,16 @@ const AddTermForm = () => {
 
     const formData = new FormData(e.currentTarget);
 
-    console.log({
-      termName: formData.get('termName'),
-      referenceDefinition: formData.get('referenceDefinition'),
-      difficultyLevel: formData.get('difficultyLevel'),
-      week: formData.get('week'),
-      requiresImage,
-    });
+    const newTerm = {
+      word: formData.get('termName') as string,
+      maxSubmissions: 3,
+      difficulty: formData.get('difficultyLevel') as 'BASIC' | 'MODERATE' | 'ADVANCED',
+      imageRequired: requiresImage,
+      week: Number(formData.get('week')),
+      courseCRN: 12345, // temporary until you pass the real course CRN
+    };
+
+    console.log(newTerm);
 
     // TODO: connect to createGlossaryTerm() once backend is ready
     alert('Glossary term submitted!');

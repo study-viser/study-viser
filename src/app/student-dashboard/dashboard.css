@@ -212,7 +212,9 @@
 
 .submission-table-head {
   display: grid;
-  grid-template-columns: 1.7fr 0.9fr 0.8fr 1fr;
+  grid-template-columns: 1.2fr 0.75fr 0.95fr 0.75fr 1.1fr;
+  column-gap: 10px;
+  align-items: center;
   padding: 12px 16px;
   background-color: #F5F7FA;
   color: #6B7280;
@@ -222,11 +224,25 @@
 
 .submission-row {
   display: grid;
-  grid-template-columns: 1.7fr 0.9fr 0.8fr 1fr;
+  grid-template-columns: 1.2fr 0.75fr 0.95fr 0.75fr 1.1fr;
+  column-gap: 10px;
   align-items: center;
   padding: 12px 16px;
   border-top: 1px solid #E5E7EB;
   font-size: 15px;
+}
+
+.submission-table-head span,
+.submission-row > span,
+.submit-btn-wrapper {
+  min-width: 0;
+}
+
+.difficulty-badge,
+.course-pill,
+.slot-status {
+  width: fit-content;
+  white-space: nowrap;
 }
 
 .slot-status {
@@ -258,13 +274,13 @@
   color: #ffffff;
   border: none;
   border-radius: 10px;
-  padding: 4px 6px;
+  padding: 6px 8px;
   font-size: 12px;
   font-weight: 600;
   line-height: 1.2;
   cursor: pointer;
   justify-self: start;
-  min-width: 88px;
+  width: 100px;
   text-decoration: none;
   text-align: center;
 }
@@ -279,7 +295,7 @@
 }
 .submit-btn-wrapper {
   display: flex;
-  justify-content: center;
+  justify-content: flex-end;
 }
 .course-card-header {
   display: flex;
@@ -469,14 +485,33 @@
   background-color: #5c9b76;
 }
 
-/* Bottom section layout */
+.course-actions {
+  display: flex;
+}
+
+.course-btn-add {
+  padding: 7px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  background-color: #6DB089;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.course-btn-add:hover {
+  background-color: #5c9b76;
+} 
+
+/* Bottom section layout 
 .grid-2-bottom {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 16px;
 }
 
-/* Quick Study Actions */
+/* Quick Study Actions 
 .quick-actions-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -526,7 +561,7 @@
   line-height: 1.4;
 }
 
-/* Notifications */
+/* Notifications 
 .notif-list {
   display: flex;
   flex-direction: column;
@@ -574,23 +609,4 @@
   color: #9CA3AF;
   white-space: nowrap;
   flex-shrink: 0;
-}
-
-.course-actions {
-  display: flex;
-}
-
-.course-btn-add {
-  padding: 7px 14px;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 600;
-  text-decoration: none;
-  background-color: #6DB089;
-  color: #ffffff;
-  cursor: pointer;
-}
-
-.course-btn-add:hover {
-  background-color: #5c9b76;
-}
+} */

@@ -36,8 +36,8 @@ const AddDefinitionForm = () => {
           return;
         }
         setWord(term.word);
-        setDifficulty('Basic');
-        setImageRequired(false);
+        setDifficulty(term.difficulty);
+        setImageRequired(term.imageRequired);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load term.');
       } finally {

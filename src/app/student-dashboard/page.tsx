@@ -4,6 +4,7 @@ import { Book, Award } from 'lucide-react' // Add FolderPlus to imports when you
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
+import { Difficulty } from '@/generated/prisma/enums';
 
 export default async function StudentDashboardPage() {
   const session = await auth();
@@ -118,7 +119,22 @@ const totalPoints = approvedSubmissions.reduce(
                     {submission.term?.course?.code ?? 'No Course'}
                     </span>
 
-                    <span>Basic</span>
+                    <span
+                    className={`difficulty-badge ${
+                        submission.term?.difficulty === Difficulty.Basic
+                        ? 'difficulty-basic'
+                        : submission.term?.difficulty === Difficulty.Moderate
+                            ? 'difficulty-moderate'
+                            : submission.term?.difficulty === Difficulty.Advanced
+                            ? 'difficulty-advanced'
+                            : ''
+                    }`}
+                    >
+                    {submission.term?.difficulty
+                        ? submission.term.difficulty.charAt(0) +
+                        submission.term.difficulty.slice(1).toLowerCase()
+                        : '—'}
+                    </span>
 
                     <span
                     className={`status-pill ${
@@ -173,6 +189,7 @@ const totalPoints = approvedSubmissions.reduce(
                 <div className="submission-table-head">
                 <span>Term</span>
                 <span>Course</span>
+                <span>Difficulty</span>
                 <span>Status</span>
                 <span></span>
                 </div>
@@ -187,6 +204,24 @@ const totalPoints = approvedSubmissions.reduce(
                         <span className="term-name">{term.word}</span>
                         <span className="course-pill">
                         {term.course.code}
+                        </span>
+
+                        <span
+                        className={`difficulty-badge ${
+                            term.difficulty === Difficulty.Basic
+                            ? 'difficulty-basic'
+                            : term.difficulty === Difficulty.Moderate
+                                ? 'difficulty-moderate'
+                                : term.difficulty === Difficulty.Advanced
+                                ? 'difficulty-advanced'
+                                : ''
+                        }`}
+                        >
+                            
+                        {term.difficulty
+                            ? term.difficulty.charAt(0) +
+                            term.difficulty.slice(1).toLowerCase()
+                            : '—'}
                         </span>
                         <span className="slot-status">
                             <span className="slot-dot slot-gray"></span>
