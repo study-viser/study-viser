@@ -1,6 +1,11 @@
 import { prisma } from '@/lib/prisma';
 import TestDBTabs from '@/components/TestDBTabs';
 
+// Render this debug page at request time, not build time.
+// Static prerender was failing on Vercel because the build queried
+// the DB before it could see the latest schema (referenceDefinition).
+export const dynamic = 'force-dynamic';
+
 /** Fetch all data server-side and pass to client tabs component. */
 const TestPage = async () => {
 
