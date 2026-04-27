@@ -8,7 +8,7 @@ type TermWithRelations = Prisma.TermGetPayload<{
   };
 }>;
 
-const TermItem = ({ id, word, week, coveredOn, maxSubmissions, courseCRN, course, submissions, bestSubmission }: TermWithRelations) => (
+const TermItem = ({ id, word, week, coveredOn, maxSubmissions, difficulty, imageRequired, courseCRN, course, submissions, bestSubmission }: TermWithRelations) => (
   <tr>
     <td>...{id.slice(-4)}</td>
     <td><strong>{word}</strong></td>
@@ -29,6 +29,16 @@ const TermItem = ({ id, word, week, coveredOn, maxSubmissions, courseCRN, course
         <span className="text-muted">Not selected</span>
       )}
     </td>
+    <td>
+      <span className={`badge ${
+        difficulty === 'Basic' ? 'bg-success'
+        : difficulty === 'Moderate' ? 'bg-warning text-dark'
+        : 'bg-danger'
+      }`}>
+        {difficulty.charAt(0) + difficulty.slice(1).toLowerCase()}
+      </span>
+    </td>
+    <td>{imageRequired ? '✅' : '—'}</td>
   </tr>
 );
 

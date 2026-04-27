@@ -3,23 +3,46 @@
 import { Form, Button, Col, Container, Card, Row } from 'react-bootstrap';
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
+import { useSession } from 'next-auth/react';
+import { getTermById, createSubmission } from '@/lib/dbActions';
 import '@/styles/forms.css';
 
 const AddDefinitionForm = () => {
   const searchParams = useSearchParams();
   const termId = searchParams.get('termId');
+  const { data: session } = useSession();
 
   const [word, setWord] = useState('');
-  const [isImageRequired, setIsImageRequired] = useState(false);
+  const [difficulty, setDifficulty] = useState<string>('');
+  // imageRequired is driven by Term.imageRequired — not a user toggle
+  const [imageRequired, setImageRequired] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
 
+  // Fetch term data on mount using dbActions
   useEffect(() => {
     const fetchTerm = async () => {
-      if (!termId) return;
+      if (!termId) {
+        setError('No term ID provided.');
+        setLoading(false);
+        return;
+      }
 
-      const res = await fetch(`/api/terms/${termId}`);
-      const data = await res.json();
-
-      setWord(data.word);
+      try {
+        // getTermById returns the full term including difficulty and imageRequired
+        const term = await getTermById(termId);
+        if (!term) {
+          setError('Term not found.');
+          return;
+        }
+        setWord(term.word);
+        setDifficulty(term.difficulty);
+        setImageRequired(term.imageRequired);
+      } catch (err) {
+        setError(err instanceof Error ? err.message : 'Failed to load term.');
+      } finally {
+        setLoading(false);
+      }
     };
 
     fetchTerm();
@@ -27,46 +50,68 @@ const AddDefinitionForm = () => {
 
   const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
     e.preventDefault();
+    setError(null);
 
-    const formData = new FormData(e.currentTarget);
-    const res = await fetch('/api/submissions', {
-      method: 'POST',
-       credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        termId,
-        definition: formData.get('definition'),
-      }),
-    });
-    if (!res.ok) {
-      const errorText = await res.text();
-      alert(errorText || 'Something went wrong.');
+    if (!session?.user?.id) {
+      setError('You must be signed in to submit a definition.');
       return;
     }
 
-  alert('Submitted!');
-  window.location.href = '/student-dashboard';
-};
+    if (!termId) {
+      setError('No term ID provided.');
+      return;
+    }
+
+    const formData = new FormData(e.currentTarget);
+    const definition = formData.get('definition') as string;
+
+    // TODO: if image is provided, upload to storage and append URL to definition
+    // const image = formData.get('image') as File | null;
+    // const imageUrl = image ? await uploadImage(image) : null;
+    // const fullDefinition = imageUrl ? `${definition}\n${imageUrl}` : definition;
+
+    try {
+      // createSubmission saves the definition — points default to 0 until reviewed
+      await createSubmission({
+        creatorId: session.user.id,
+        termId,
+        definition,
+      });
+
+      alert('Submitted!');
+      window.location.href = '/student-dashboard';
+    } catch (err) {
+      setError(err instanceof Error ? err.message : 'Something went wrong.');
+    }
+  };
+
+  if (loading) return <p className="text-center mt-4">Loading term...</p>;
+  if (error)   return <p className="text-danger text-center mt-4">{error}</p>;
 
   return (
     <Container>
-    {/* Toggle switch to require image upload */}
-    <Form.Check
-        type="switch"
-        label="Require image upload"
-        checked={isImageRequired}
-        onChange={(e) => setIsImageRequired(e.target.checked)}
-        className="mb-3"
-      />
-
       <h1 className="text-center py-1">
-        Add Definition for {word || '...'}
+        Add Definition for <em>{word}</em>
       </h1>
+
+      {/* Difficulty badge — read from Term.difficulty, not user-editable */}
+      <p className="text-center text-muted mb-1">
+        Difficulty:&nbsp;
+        <span className={`badge ${
+          difficulty === 'Basic'    ? 'bg-success'
+          : difficulty === 'Moderate' ? 'bg-warning text-dark'
+          : 'bg-danger'
+        }`}>
+          {difficulty}
+        </span>
+      </p>
+
       <Card className="add-definition-card">
         <Card.Body>
           <Form onSubmit={handleSubmit}>
+
+            {error && <p className="text-danger">{error}</p>}
+
             <Form.Group as={Row} className="py-2" controlId="formDefinition">
               <Form.Label column sm={3}>
                 Definition:
@@ -87,16 +132,18 @@ const AddDefinitionForm = () => {
             <Form.Group as={Row} className="py-2" controlId="formFile">
               <Form.Label column sm={3}>
                 Image Upload:
-                  {isImageRequired && (
-                    <Form.Text style={{ color: 'red' }}> *</Form.Text>
-                  )}
+                {/* required marker driven by Term.imageRequired */}
+                {imageRequired && (
+                  <Form.Text style={{ color: 'red' }}> *</Form.Text>
+                )}
               </Form.Label>
 
               <Col sm={6}>
-                <Form.Control 
-                  type="file" 
+                <Form.Control
+                  type="file"
                   name="image"
-                  required={isImageRequired} 
+                  // required is set by Term.imageRequired, not a user toggle
+                  required={imageRequired}
                 />
               </Col>
             </Form.Group>
@@ -110,7 +157,7 @@ const AddDefinitionForm = () => {
         </Card.Body>
       </Card>
     </Container>
-  )
+  );
 };
 
 export default AddDefinitionForm;
