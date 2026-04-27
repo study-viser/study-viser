@@ -10,9 +10,10 @@ import SubmissionItem from '@/components/SubmissionItem';
 import { Prisma } from '@/generated/prisma/client';
 import {
   createUser, updateUser, deleteUser,
-  createCourse, updateCourse, deleteCourse, enrollStudent, unenrollStudent,
-  createTerm, updateTerm, deleteTerm,
+  createCourse, updateCourse, deleteCourse, enrollStudent, unenrollStudent, getSecretCode,
+  createTerm, updateTerm, deleteTerm, setBestSubmission,
   createSubmission, updateSubmission, deleteSubmission, reviewSubmission,
+  approveSubmission, clearTermApproval, getExtraCreditByUser, getExtraCreditByCourse,
 } from '@/lib/dbActions';
 
 // ---------------------------------------------------------------------------
@@ -54,7 +55,7 @@ const USER_OPS = [
 
 const COURSE_OPS = [
   'createCourse', 'updateCourse', 'deleteCourse',
-  'enrollStudent', 'unenrollStudent',
+  'enrollStudent', 'unenrollStudent', 'getSecretCode',
 ] as const;
 
 const TERM_OPS = [
@@ -62,7 +63,9 @@ const TERM_OPS = [
 ] as const;
 
 const SUBMISSION_OPS = [
-  'createSubmission', 'updateSubmission', 'deleteSubmission', 'reviewSubmission',
+  'createSubmission', 'updateSubmission', 'deleteSubmission',
+  'reviewSubmission', 'approveSubmission', 'clearTermApproval',
+  'getExtraCreditByUser', 'getExtraCreditByCourse',
 ] as const;
 
 type UserOp = typeof USER_OPS[number];
@@ -263,6 +266,13 @@ function CourseActionForm({ op, courses, users, onSuccess }: {
             f.get('studentId') as string,
           );
           break;
+
+        case 'getSecretCode': {
+          // getSecretCode returns the secret — display it in the feedback message
+          const secret = await getSecretCode(parseInt(f.get('crn') as string, 10));
+          setFeedback({ type: 'success', message: `Secret for CRN ${f.get('crn')}: ${secret ?? 'Not found'}` });
+          return; // skip the generic success message below
+        }
       }
 
       setFeedback({ type: 'success', message: `${op} succeeded.` });
@@ -280,8 +290,8 @@ function CourseActionForm({ op, courses, users, onSuccess }: {
     <Form onSubmit={handleSubmit} className="p-3 border rounded bg-light">
       <FeedbackAlert feedback={feedback} onClose={() => setFeedback(null)} />
 
-      {/* CRN selector for update/delete/unenroll */}
-      {(op === 'updateCourse' || op === 'deleteCourse' || op === 'unenrollStudent') && (
+      {/* CRN selector for update/delete/unenroll/getSecretCode */}
+      {(op === 'updateCourse' || op === 'deleteCourse' || op === 'unenrollStudent' || op === 'getSecretCode') && (
         <SelectField name="crn" label="Select Course (CRN)" options={courseOptions} required />
       )}
 
@@ -359,6 +369,10 @@ function TermActionForm({ op, courses, terms, submissions, onSuccess }: {
         case 'deleteTerm':
           await deleteTerm(f.get('id') as string);
           break;
+
+        case 'setBestSubmission':
+          await setBestSubmission(f.get('termId') as string, f.get('submissionId') as string);
+          break;
       }
 
       setFeedback({ type: 'success', message: `${op} succeeded.` });
@@ -427,11 +441,12 @@ function TermActionForm({ op, courses, terms, submissions, onSuccess }: {
 // Submission Action Form
 // ---------------------------------------------------------------------------
 
-function SubmissionActionForm({ op, users, terms, submissions, onSuccess }: {
+function SubmissionActionForm({ op, users, terms, submissions, courses, onSuccess }: {
   op: SubmissionOp;
   users: Props['users'];
   terms: Props['terms'];
   submissions: Props['submissions'];
+  courses: Props['courses'];
   onSuccess: () => void;
 }) {
   const [feedback, setFeedback] = useState<Feedback>(null);
@@ -468,9 +483,33 @@ function SubmissionActionForm({ op, users, terms, submissions, onSuccess }: {
         case 'reviewSubmission':
           await reviewSubmission(
             f.get('id') as string,
-            parseFloat(f.get('points') as string),
+            f.get('points') ? parseFloat(f.get('points') as string) : undefined,
           );
           break;
+
+        case 'approveSubmission':
+          // Sets winning submission and grants 4 bonus points
+          await approveSubmission(f.get('termId') as string, f.get('id') as string);
+          break;
+
+        case 'clearTermApproval':
+          // Removes winning submission and drops points back to 1
+          await clearTermApproval(f.get('termId') as string, f.get('id') as string);
+          break;
+
+        case 'getExtraCreditByUser': {
+          const result = await getExtraCreditByUser(f.get('creatorId') as string);
+          setFeedback({ type: 'success', message: `Total extra credit: ${result?.total ?? 0} pts across ${result?.breakdown.length ?? 0} submissions.` });
+          return;
+        }
+
+        case 'getExtraCreditByCourse': {
+          const rows = await getExtraCreditByCourse(parseInt(f.get('crn') as string, 10));
+          if (!rows) { setFeedback({ type: 'danger', message: 'Course not found.' }); return; }
+          const summary = rows.map((r: { student: { name: string }; total: number }) => `${r.student.name}: ${r.total} pts`).join(' | ');
+          setFeedback({ type: 'success', message: summary || 'No reviewed submissions yet.' });
+          return;
+        }
       }
 
       setFeedback({ type: 'success', message: `${op} succeeded.` });
@@ -489,9 +528,25 @@ function SubmissionActionForm({ op, users, terms, submissions, onSuccess }: {
     <Form onSubmit={handleSubmit} className="p-3 border rounded bg-light">
       <FeedbackAlert feedback={feedback} onClose={() => setFeedback(null)} />
 
-      {/* Submission selector for update/delete/review */}
-      {(op === 'updateSubmission' || op === 'deleteSubmission' || op === 'reviewSubmission') && (
+      {/* Submission selector for update/delete/review/approve/clear */}
+      {(op === 'updateSubmission' || op === 'deleteSubmission' || op === 'reviewSubmission'
+        || op === 'approveSubmission' || op === 'clearTermApproval') && (
         <SelectField name="id" label="Select Submission" options={submissionOptions} required />
+      )}
+
+      {/* Term selector for approve/clearTermApproval */}
+      {(op === 'approveSubmission' || op === 'clearTermApproval') && (
+        <SelectField name="termId" label="Select Term" options={termOptions} required />
+      )}
+
+      {/* User selector for getExtraCreditByUser */}
+      {op === 'getExtraCreditByUser' && (
+        <SelectField name="creatorId" label="Select User" options={userOptions} required />
+      )}
+
+      {/* Course selector for getExtraCreditByCourse */}
+      {op === 'getExtraCreditByCourse' && (
+        <SelectField name="crn" label="Select Course (CRN)" options={courses.map(c => ({ value: String(c.crn), label: `${c.crn} — ${c.code}` }))} required />
       )}
 
       {/* Fields for create */}
@@ -695,7 +750,7 @@ const TestDBTabs = ({ users, courses, terms, submissions }: Props) => {
                   {SUBMISSION_OPS.map(op => <option key={op} value={op}>{op}</option>)}
                 </Form.Select>
               </Form.Group>
-              <SubmissionActionForm op={submissionOp} users={users} terms={terms} submissions={submissions} onSuccess={handleSuccess} />
+              <SubmissionActionForm op={submissionOp} users={users} terms={terms} submissions={submissions} courses={courses} onSuccess={handleSuccess} />
             </>
           )}
 
