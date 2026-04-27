@@ -8,6 +8,10 @@ import '@/styles/forms.css';
 
 const JoinCourseForm = () => {
   const { data: session } = useSession();
+  // test
+  // const { data: session, status } = useSession();
+  // console.log('status:', status, 'session:', session);
+  // end test
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
