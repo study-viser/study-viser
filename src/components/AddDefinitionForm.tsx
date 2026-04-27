@@ -5,6 +5,8 @@ import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import { useSession } from 'next-auth/react';
 import { getTermById, createSubmission } from '@/lib/dbActions';
+import BackButton from '@/components/BackButton';
+
 import '@/styles/forms.css';
 
 const AddDefinitionForm = () => {
@@ -14,7 +16,7 @@ const AddDefinitionForm = () => {
 
   const [word, setWord] = useState('');
   const [difficulty, setDifficulty] = useState<string>('');
-  // imageRequired is driven by Term.imageRequired — not a user toggle
+  const [referenceDefinition, setReferenceDefinition] = useState<string>('');
   const [imageRequired, setImageRequired] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -31,13 +33,16 @@ const AddDefinitionForm = () => {
       try {
         // getTermById returns the full term including difficulty and imageRequired
         const term = await getTermById(termId);
+
         if (!term) {
           setError('Term not found.');
           return;
         }
+
         setWord(term.word);
         setDifficulty(term.difficulty);
         setImageRequired(term.imageRequired);
+        setReferenceDefinition(term.referenceDefinition ?? '');
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load term.');
       } finally {
@@ -64,6 +69,7 @@ const AddDefinitionForm = () => {
 
     const formData = new FormData(e.currentTarget);
     const definition = formData.get('definition') as string;
+    // const image = formData.get('image') as File | null;
 
     // TODO: if image is provided, upload to storage and append URL to definition
     // const image = formData.get('image') as File | null;
@@ -89,13 +95,16 @@ const AddDefinitionForm = () => {
   if (error)   return <p className="text-danger text-center mt-4">{error}</p>;
 
   return (
-    <Container>
-      <h1 className="text-center py-1">
+  <Container>
+    <div className="form-heading-wrap">
+      <BackButton /> 
+      <h1 className="form-title py-1">
         Add Definition for <em>{word}</em>
       </h1>
-
-      {/* Difficulty badge — read from Term.difficulty, not user-editable */}
-      <p className="text-center text-muted mb-1">
+    </div>
+    
+      {/* Difficulty badge*/}
+      <p className="form-meta-text text-muted mb-1">
         Difficulty:&nbsp;
         <span className={`badge ${
           difficulty === 'Basic'    ? 'bg-success'
@@ -105,6 +114,14 @@ const AddDefinitionForm = () => {
           {difficulty}
         </span>
       </p>
+      
+      {/*Refrerence Definition*/}
+      {referenceDefinition && (
+            <div className="reference-box reference-wrapper">
+              <p className="reference-title">Instructor Reference / Context</p>
+              <p className="reference-text">{referenceDefinition}</p>
+            </div>
+      )}
 
       <Card className="add-definition-card">
         <Card.Body>
@@ -149,7 +166,7 @@ const AddDefinitionForm = () => {
             </Form.Group>
 
             <div className="text-center mt-3">
-              <Button variant="primary" type="submit" className="submit-button">
+              <Button variant="primary" type="submit" className="submit-form-button">
                 Submit
               </Button>
             </div>

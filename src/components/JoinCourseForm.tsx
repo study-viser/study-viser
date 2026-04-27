@@ -4,6 +4,8 @@ import { Form, Button, Col, Container, Card, Row, Image } from 'react-bootstrap'
 import { useState } from 'react';
 import { enrollStudent } from '@/lib/dbActions';
 import { useSession } from 'next-auth/react';
+import BackButton from '@/components/BackButton';
+
 import '@/styles/forms.css';
 
 const JoinCourseForm = () => {
@@ -32,6 +34,7 @@ const JoinCourseForm = () => {
       // enrollStudent looks up course by secret, then connects the student
       await enrollStudent(secret, session.user.id);
       setSuccess(true);
+      window.location.href = '/student-dashboard';
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to join course.');
     }
@@ -39,11 +42,11 @@ const JoinCourseForm = () => {
 
   return (
     <Container className="course-page">
-      <p className="back-link">← Back to Dashboard</p>
-
+      <div className="form-heading-wrap">
+        <BackButton />
+      </div>
       <Card className="course-card">
         <Card.Body>
-
         <Image src="/courseaddicon.png" className="two-user-icon" alt="Join Course" />
           <h1 className="course-title">Join a Course</h1>
 
@@ -66,47 +69,31 @@ const JoinCourseForm = () => {
                 <Form.Control
                   name="courseSecret"
                   type="text"
-                  placeholder="Enter the enrollment code from your instructor"
+                  placeholder="Enter code"
                   required
                 />
               </Col>
             </Form.Group>
 
-            <Row className="mb-4">
-              <Col>
-                <Form.Text className="course-info-text">
-                  <Image src="/info-icon.png" className="course-code-icon" alt="Course Code" />
-                  The course enrollment code is provided by your instructor. Contact them if you
-                  don&#39;t have it.
-                </Form.Text>
-              </Col>
-            </Row>
-
             <div className="text-center">
-              <Button type="submit" className="submit-button">
+              <Button type="submit" className="submit-form-button">
                 Join Course
               </Button>
             </div>
           </Form>
-
+          
+        {/*
           <Row className="or-divider">
             <Col><hr /></Col>
             <Col xs="auto">OR</Col>
             <Col><hr /></Col>
           </Row>
-
           <div className="text-center">
             <Button variant="link" className="browse-link">
               Browse Available Courses
             </Button>
           </div>
-        </Card.Body>
-      </Card>
-
-      <Card className="help-card">
-        <Card.Body>
-          <h5>Need help?</h5>
-          <p>Contact your instructor if you don&#39;t have a course enrollment code.</p>
+          */}
         </Card.Body>
       </Card>
     </Container>

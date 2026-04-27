@@ -1,9 +1,11 @@
 import { auth } from '@/lib/auth';
 import './dashboard.css';
-import { Book, Award, FolderPlus } from 'lucide-react'
+import { Book, Award } from 'lucide-react' // Add FolderPlus to imports when you add the study set card back in
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
+import { Difficulty } from '@/generated/prisma/enums';
+import ExitCourseButton from '@/components/ExitCourseButton';
 
 export default async function StudentDashboardPage() {
   const session = await auth();
@@ -61,16 +63,24 @@ const availableTerms = await prisma.term.findMany({
 });
 
 const weeklyLimit = 2; // Weekly Limit
+const startOfWeek = new Date();
+startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+startOfWeek.setHours(0, 0, 0, 0);
+
+const weeklySubmissionCount = submissions.filter(
+  (submission) => submission.createdAt >= startOfWeek
+).length;
+
+const hasReachedWeeklyLimit = weeklySubmissionCount >= weeklyLimit;
 const weeklyCount = submissions.length;
 const remaining = Math.max(weeklyLimit - weeklyCount, 0);
 const percent = Math.min((weeklyCount / weeklyLimit) * 100, 100);
-const enrolledCount = user?.enrolledCourses.length ?? 0;
-const totalSubmissions = submissions.length;
+// const enrolledCount = user?.enrolledCourses.length ?? 0;
+// const totalSubmissions = submissions.length;
 const approvedSubmissions = submissions.filter(
   (s) => s.term?.bestSubmissionId === s.id
 );
-
-const approvedCount = approvedSubmissions.length;
+// const approvedCount = approvedSubmissions.length;
 const totalPoints = approvedSubmissions.reduce(
   (sum, s) => sum + s.points,
   0
@@ -119,7 +129,22 @@ const totalPoints = approvedSubmissions.reduce(
                     {submission.term?.course?.code ?? 'No Course'}
                     </span>
 
-                    <span>Basic</span>
+                    <span
+                    className={`difficulty-badge ${
+                        submission.term?.difficulty === Difficulty.Basic
+                        ? 'difficulty-basic'
+                        : submission.term?.difficulty === Difficulty.Moderate
+                            ? 'difficulty-moderate'
+                            : submission.term?.difficulty === Difficulty.Advanced
+                            ? 'difficulty-advanced'
+                            : ''
+                    }`}
+                    >
+                    {submission.term?.difficulty
+                        ? submission.term.difficulty.charAt(0) +
+                        submission.term.difficulty.slice(1).toLowerCase()
+                        : '—'}
+                    </span>
 
                     <span
                     className={`status-pill ${
@@ -174,13 +199,14 @@ const totalPoints = approvedSubmissions.reduce(
                 <div className="submission-table-head">
                 <span>Term</span>
                 <span>Course</span>
+                <span>Difficulty</span>
                 <span>Status</span>
                 <span></span>
                 </div>
 
                 {availableTerms
-                .filter((term) => term.submissions.length < term.maxSubmissions) //  hide FULL terms
-                .map((term) => {
+                .filter((term) => term.submissions.length < term.maxSubmissions)
+                .map((term) => { //  hide FULL terms
                     const submissionCount = term.submissions.length;
                     return (
                     <div className="submission-row" 
@@ -189,17 +215,38 @@ const totalPoints = approvedSubmissions.reduce(
                         <span className="course-pill">
                         {term.course.code}
                         </span>
+
+                        <span
+                        className={`difficulty-badge ${
+                            term.difficulty === Difficulty.Basic
+                            ? 'difficulty-basic'
+                            : term.difficulty === Difficulty.Moderate
+                                ? 'difficulty-moderate'
+                                : term.difficulty === Difficulty.Advanced
+                                ? 'difficulty-advanced'
+                                : ''
+                        }`}
+                        >
+                            
+                        {term.difficulty
+                            ? term.difficulty.charAt(0) +
+                            term.difficulty.slice(1).toLowerCase()
+                            : '—'}
+                        </span>
                         <span className="slot-status">
                             <span className="slot-dot slot-gray"></span>
                         {submissionCount} / {term.maxSubmissions}
                         </span>
                         <div className="submit-btn-wrapper">
-                        <a
-                            href={`/add-definition?termId=${term.id}`}
-                            className="submit-button"
-                        >
+                        {!hasReachedWeeklyLimit ? (
+                        <a href={`/add-definition?termId=${term.id}`} className="submit-button">
                             Submit Definition
                         </a>
+                        ) : (
+                        <span className="term-status-badge full">
+                            Weekly limit reached
+                        </span>
+                        )}
                         </div>
                     </div>
                     );
@@ -215,7 +262,7 @@ const totalPoints = approvedSubmissions.reduce(
                 <div className="course-icon-circle">
                     <Book size={18} />
                 </div>
-                <h2 className="card-title course-title">Enrolled Courses</h2>
+                <h2 className="card-title">Enrolled Courses</h2>
             </div>
 
             <div className="course-divider"></div>
@@ -225,12 +272,19 @@ const totalPoints = approvedSubmissions.reduce(
                 <p>No courses yet</p>
             ) : (
                 user?.enrolledCourses.map((course) => (
-                <p className="course-item" key={course.crn}>
+                <div className="course-item-wrapper" key={course.crn}>
+                <Link
+                    href={`/student-course/${course.crn}`}
+                    className="course-item course-link"
+                >
                     <span className="course-bullet">•</span>
                     <span>
-                    <strong>{course.code}: {course.title}</strong><br />
+                    <strong>{course.code}: {course.title}</strong>
                     </span>
-                </p>
+                </Link>
+
+                <ExitCourseButton crn={course.crn} userId={user.id} />
+                </div>
                 ))
             )}
             </div>
@@ -297,13 +351,14 @@ const totalPoints = approvedSubmissions.reduce(
       
       <section className="grid-2-bottom section">
 
-        {/* Quick Study Actions */}
+
+        {/* 
         <div className="card">
             <h2 className="card-title">Quick Study Actions</h2>
 
             <div className="quick-actions-grid">
 
-            {/* View Glossary */}
+            
             <a href="/student-dashboard" className="quick-action-item">
                 <div className="quick-action-icon">
                 <Book size={18} />
@@ -316,7 +371,7 @@ const totalPoints = approvedSubmissions.reduce(
                 </div>
             </a>
 
-            {/* Flashcards */}
+            
             <a href="/flashcards" className="quick-action-item">
                 <div className="quick-action-icon">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -331,7 +386,7 @@ const totalPoints = approvedSubmissions.reduce(
                 </div>
             </a>
 
-            {/* Bookmarks */}
+            
             <a href="/bookmarks" className="quick-action-item">
                 <div className="quick-action-icon">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -346,7 +401,7 @@ const totalPoints = approvedSubmissions.reduce(
                 </div>
             </a>
 
-            {/* Study Set */}
+            
             <a href="/study-set" className="quick-action-item">
                 <div className="quick-action-icon">
                 <FolderPlus size={18} />
@@ -362,7 +417,7 @@ const totalPoints = approvedSubmissions.reduce(
             </div>
         </div>
 
-        {/* Notifications */}
+        
         <div className="card">
             <div className="section-header">
                 <h2 className="card-title">Notifications</h2>
@@ -397,6 +452,7 @@ const totalPoints = approvedSubmissions.reduce(
                 </div>
             </div>
         </div>
+        */}
       </section>
     </main>
   );

@@ -1,6 +1,8 @@
 'use client';
 
 import { Form, Button, Col, Container, Card, Row, Image } from 'react-bootstrap';
+import BackButton from '@/components/BackButton';
+
 import '@/styles/forms.css';
 
 const ClaimCourseForm = () => {
@@ -19,6 +21,9 @@ const ClaimCourseForm = () => {
 
   return (
     <Container className="course-page">
+      <div className="form-heading-wrap">
+        <BackButton />
+      </div>
       <Card className="course-card">
         <Card.Body>
           <Image src="/claim-icon.png" className="two-user-icon" alt="Claim Course" />
@@ -73,7 +78,7 @@ const ClaimCourseForm = () => {
 
             <Row>
               <Col className="text-center">
-                <Button type="submit" className="submit-button">
+                <Button type="submit" className="submit-form-button">
                   Claim Course
                 </Button>
               </Col>

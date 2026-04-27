@@ -6,11 +6,11 @@ import { Container } from 'react-bootstrap';
 import '@/styles/student-course.css';
 
 // --- Type definitions ---
-type Difficulty = 'Basic' | 'Intermediate' | 'Advanced';
+type Difficulty = 'Basic' | 'Moderate' | 'Advanced';
 type Status = 'available' | 'submitted' | 'approved' | 'full';
 
 interface Term {
-  id: number;
+  id: string;
   name: string;
   difficulty: Difficulty;
   requiresVisual: boolean;
@@ -20,28 +20,44 @@ interface Term {
   status: Status;
 }
 
-// --- Static data for now; will be received as props once DB is wired up ---
-const COURSE_INFO = {
-  code: 'BIO 141',
-  name: 'Human Anatomy and Physiology',
-  instructor: 'Professor Philip M Johnson',
+type StudentCourseViewProps = {
+  userId?: string;
+  course: {
+    crn: number;
+    code: string;
+    title: string;
+    description: string | null;
+    instructor: {
+      name: string;
+    } | null;
+    terms: {
+      id: string;
+      word: string;
+      difficulty: 'Basic' | 'Moderate' | 'Advanced';
+      imageRequired: boolean;
+      maxSubmissions: number;
+      week: number | null;
+      submissions: {
+        id: string;
+        creatorId: string;
+        wasReviewed: boolean;
+        createdAt: Date;
+      }[];
+    }[];
+  };
 };
 
-const STATIC_TERMS: Term[] = [
-  { id: 1, name: 'Cranial Nerves',               difficulty: 'Basic',        requiresVisual: true,  submissionsCount: 1, submissionsCap: 3, week: 1, status: 'available' },
-  { id: 2, name: 'Thorax',                        difficulty: 'Basic',        requiresVisual: false, submissionsCount: 3, submissionsCap: 3, week: 1, status: 'full' },
-  { id: 3, name: 'Pulmonary Circulation',         difficulty: 'Intermediate', requiresVisual: true,  submissionsCount: 2, submissionsCap: 3, week: 2, status: 'available' },
-  { id: 4, name: 'Endocrine Gland',               difficulty: 'Intermediate', requiresVisual: false, submissionsCount: 2, submissionsCap: 2, week: 2, status: 'submitted' },
-  { id: 5, name: 'Anterior/Posterior',            difficulty: 'Intermediate', requiresVisual: false, submissionsCount: 1, submissionsCap: 2, week: 3, status: 'available' },
-  { id: 6, name: 'Excitation-Contraction Coupling', difficulty: 'Advanced',  requiresVisual: true,  submissionsCount: 3, submissionsCap: 3, week: 3, status: 'approved' },
-];
+const DIFFICULTIES: Difficulty[] = ['Basic', 'Moderate', 'Advanced'];
 
-const WEEKS = [1, 2, 3];
-const DIFFICULTIES: Difficulty[] = ['Basic', 'Intermediate', 'Advanced'];
-
-// --- Inline term card (static only) ---
-// TODO: Replace with DB-wired TermItem once Khloe wires up the submission flow
-function TermCard({ term }: { term: Term }) {
+function TermCard({
+  term,
+  crn,
+  hasReachedWeeklyLimit,
+}: {
+  term: Term;
+  crn: number;
+  hasReachedWeeklyLimit: boolean;
+}) {
   const isFull = term.status === 'full';
   const isApproved = term.status === 'approved';
   const isSubmitted = term.status === 'submitted';
@@ -53,7 +69,7 @@ function TermCard({ term }: { term: Term }) {
 
       {/* Submission count */}
       <p className="term-submissions">
-        Status: {term.submissionsCount} / {term.submissionsCap}
+        Submissions: {term.submissionsCount} / {term.submissionsCap}
       </p>
 
       {/* Requires visual badge */}
@@ -73,26 +89,75 @@ function TermCard({ term }: { term: Term }) {
 
       {/* Action buttons */}
       <div className="term-card-actions">
-        <Link href={`/student-course/terms/${term.id}`} className="btn-view-term">
+        <Link href={`/student-course/${crn}/terms/${term.id}`} className="btn-view-term">
           View Term →
         </Link>
 
-        {/* Temporary link — replace with a server action once DB is wired up */}
-        {!isFull && !isSubmitted && !isApproved && (
+        {term.status === 'available' && !hasReachedWeeklyLimit && (
           <Link href={`/add-definition?termId=${term.id}`} className="btn-submit-term">
             Submit Definition
           </Link>
+        )}
+        {term.status === 'available' && hasReachedWeeklyLimit && (
+          <span className="term-status-badge full">
+            Weekly limit reached
+          </span>
         )}
       </div>
     </div>
   );
 }
 
-export default function StudentCourseView() {
+export default function StudentCourseView({ course, userId }: StudentCourseViewProps) {
+const weeklyLimit = 2;
+
+const startOfWeek = new Date();
+startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+startOfWeek.setHours(0, 0, 0, 0);
+
+const weeklySubmissionCount = course.terms
+  .flatMap((term) => term.submissions)
+  .filter(
+    (submission) =>
+      submission.creatorId === userId &&
+      submission.createdAt >= startOfWeek
+  ).length;
+
+const hasReachedWeeklyLimit = weeklySubmissionCount >= weeklyLimit;
+
+const dbTerms: Term[] = course.terms.map((term) => {
+  const userSubmission = term.submissions.find(
+    (s) => s.creatorId === userId
+  );
+
+  let status: Status = 'available';
+
+if (term.submissions.length >= term.maxSubmissions) {
+  status = 'full';
+} else if (userSubmission) {
+  status = userSubmission.wasReviewed ? 'approved' : 'submitted';
+}
+
+  return {
+    id: term.id,
+    name: term.word,
+    difficulty: term.difficulty,
+    requiresVisual: term.imageRequired,
+    submissionsCount: term.submissions.length,
+    submissionsCap: term.maxSubmissions,
+    week: term.week ?? 0,
+    status,
+  };
+});
+
+  const WEEKS = Array.from(
+    new Set(dbTerms.map((term) => term.week).filter((week) => week > 0))
+  ).sort((a, b) => a - b);
+
   const [selectedWeeks, setSelectedWeeks] = useState<number[]>([]);
   const [selectedDifficulties, setSelectedDifficulties] = useState<Difficulty[]>([]);
   const [selectedStatuses, setSelectedStatuses] = useState<Status[]>([]);
-  const [bookmarksOnly, setBookmarksOnly] = useState(false);
+  // const [bookmarksOnly, setBookmarksOnly] = useState(false);
   const [search, setSearch] = useState('');
 
   // Helper to toggle an item in a filter list
@@ -101,7 +166,7 @@ export default function StudentCourseView() {
   }
 
   // Apply all active filters
-  const filteredTerms = STATIC_TERMS.filter((term) => {
+const filteredTerms = dbTerms.filter((term) => {
     if (selectedWeeks.length > 0 && !selectedWeeks.includes(term.week)) return false;
     if (selectedDifficulties.length > 0 && !selectedDifficulties.includes(term.difficulty)) return false;
     if (selectedStatuses.length > 0 && !selectedStatuses.includes(term.status)) return false;
@@ -115,13 +180,17 @@ export default function StudentCourseView() {
       <div className="course-breadcrumb">
         <Link href="/student-dashboard">Dashboard</Link>
         <span> / </span>
-        <span>{COURSE_INFO.code}: {COURSE_INFO.name}</span>
+        <span>
+          <span>{course.code}: {course.title}</span>
+        </span>
       </div>
 
       {/* Header */}
       <div className="course-header">
-        <h1 className="course-title">{COURSE_INFO.code} — {COURSE_INFO.name}</h1>
-        <p className="course-instructor">{COURSE_INFO.instructor}</p>
+        <h1 className="course-title">
+          {course.code} — {course.title} (CRN: {course.crn})
+        </h1>
+        {/*<p className="course-instructor">{COURSE_INFO.instructor}</p>*/}
       </div>
 
       <div className="course-body">
@@ -178,7 +247,7 @@ export default function StudentCourseView() {
             ))}
           </div>
 
-          {/* Bookmarks */}
+          {/* Bookmarks 
           <div className="sidebar-section">
             <h3 className="sidebar-label">
               <span className="sidebar-icon">🔖</span> Bookmarks
@@ -191,7 +260,7 @@ export default function StudentCourseView() {
               />
               Bookmarked Only
             </label>
-          </div>
+          </div> */}
         </aside>
 
         {/* Main content area */}
@@ -212,7 +281,11 @@ export default function StudentCourseView() {
           {filteredTerms.length > 0 ? (
             <div className="term-grid">
               {filteredTerms.map((term) => (
-                <TermCard key={term.id} term={term} />
+                <TermCard key=
+                  {term.id} 
+                  term={term} 
+                  crn={course.crn}   
+                  hasReachedWeeklyLimit={hasReachedWeeklyLimit}/>
               ))}
             </div>
           ) : (

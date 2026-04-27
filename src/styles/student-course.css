@@ -189,8 +189,12 @@
 }
 
 .term-card--full {
-  opacity: 0.65;
-  background: #f5f5f5;
+  background-color: #f9fafb;
+  border-color: #d1d5db;
+  opacity: 1;
+}
+.term-card--full .btn-submit-term {
+  display: none;
 }
 
 .term-name {
@@ -228,7 +232,7 @@
   color: #155724;
 }
 
-.difficulty-intermediate {
+.difficulty-moderate {
   background: #fff3cd;
   color: #856404;
 }

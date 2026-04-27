@@ -493,6 +493,19 @@ export async function createSubmission(data: {
   points?: number;
 }) {
   try {
+    const term = await prisma.term.findUnique({
+      where: { id: data.termId },
+      include: { submissions: true },
+    });
+
+    if (!term) {
+      throw new Error('Term not found.');
+    }
+
+    if (term.submissions.length >= term.maxSubmissions) {
+      throw new Error('This term has reached the maximum number of submissions.');
+    }
+
     return await prisma.submission.create({
       data: {
         creatorId: data.creatorId,
