@@ -165,7 +165,7 @@ h1,
 .course-card {
   max-width: 800px;
   margin: 0 auto;
-  padding: 40px;
+  padding: 20px;
   border: 1px solid #2f7d63;
   border-radius: 16px;
 }
@@ -273,19 +273,19 @@ h1,
 }
 
 .back-link-btn {
-  display: inline-block;    
+  display: block;   
+  margin-top: 20px; 
   margin-bottom: 6px;
-  padding: 0;
   background: none;
   border: none;
   box-shadow: none;
   outline: none;
-  color: #024731;
+  color: #2E7D32;
   font-weight: 600;
   font-size: 14px;
   cursor: pointer;
 }
 
 .back-link-btn:hover {
-  text-decoration: none;
+  text-decoration: underline;
 }

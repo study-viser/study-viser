@@ -189,9 +189,12 @@
 }
 
 .term-card--full {
-  opacity: 0.5;
-  background-color: #f3f4f6;
-  pointer-events: none;
+  background-color: #f9fafb;
+  border-color: #d1d5db;
+  opacity: 1;
+}
+.term-card--full .btn-submit-term {
+  display: none;
 }
 
 .term-name {

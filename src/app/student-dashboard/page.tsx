@@ -262,7 +262,7 @@ const totalPoints = approvedSubmissions.reduce(
                 <div className="course-icon-circle">
                     <Book size={18} />
                 </div>
-                <h2 className="card-title course-title">Enrolled Courses</h2>
+                <h2 className="card-title">Enrolled Courses</h2>
             </div>
 
             <div className="course-divider"></div>

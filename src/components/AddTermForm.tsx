@@ -65,10 +65,14 @@ const AddTermForm = () => {
 
   return (
     <Container className="add-term-page">
-      <BackButton />
+        <div className="form-heading-wrap">
+          <BackButton />
+          <h1 className="add-term-title">Add Glossary Term</h1>
+        </div>
       <Card className="add-term-card">
         <Card.Body>
-          <h1 className="add-term-title">Add Glossary Term</h1>
+
+
 
           <Form onSubmit={handleSubmit}>
             {error && <Alert variant="danger">{error}</Alert>}

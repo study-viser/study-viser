@@ -42,7 +42,9 @@ const JoinCourseForm = () => {
 
   return (
     <Container className="course-page">
-      <BackButton /> 
+      <div className="form-heading-wrap">
+        <BackButton />
+      </div>
       <Card className="course-card">
         <Card.Body>
         <Image src="/courseaddicon.png" className="two-user-icon" alt="Join Course" />
@@ -67,21 +69,11 @@ const JoinCourseForm = () => {
                 <Form.Control
                   name="courseSecret"
                   type="text"
-                  placeholder="Enter the enrollment code from your instructor"
+                  placeholder="Enter code"
                   required
                 />
               </Col>
             </Form.Group>
-
-            <Row className="mb-4">
-              <Col>
-                <Form.Text className="course-info-text">
-                  <Image src="/info-icon.png" className="course-code-icon" alt="Course Code" />
-                  The course enrollment code is provided by your instructor. Contact them if you
-                  don&#39;t have it.
-                </Form.Text>
-              </Col>
-            </Row>
 
             <div className="text-center">
               <Button type="submit" className="submit-form-button">
@@ -89,6 +81,7 @@ const JoinCourseForm = () => {
               </Button>
             </div>
           </Form>
+          
         {/*
           <Row className="or-divider">
             <Col><hr /></Col>

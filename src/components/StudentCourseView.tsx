@@ -89,7 +89,7 @@ function TermCard({
 
       {/* Action buttons */}
       <div className="term-card-actions">
-        <Link href={`/student-courses/${crn}/terms/${term.id}`} className="btn-view-term">
+        <Link href={`/student-course/${crn}/terms/${term.id}`} className="btn-view-term">
           View Term →
         </Link>
 

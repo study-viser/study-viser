@@ -21,7 +21,9 @@ const ClaimCourseForm = () => {
 
   return (
     <Container className="course-page">
-      <BackButton /> 
+      <div className="form-heading-wrap">
+        <BackButton />
+      </div>
       <Card className="course-card">
         <Card.Body>
           <Image src="/claim-icon.png" className="two-user-icon" alt="Claim Course" />

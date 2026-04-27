@@ -96,8 +96,8 @@ const AddDefinitionForm = () => {
 
   return (
   <Container>
-    <BackButton /> 
     <div className="form-heading-wrap">
+      <BackButton /> 
       <h1 className="form-title py-1">
         Add Definition for <em>{word}</em>
       </h1>
