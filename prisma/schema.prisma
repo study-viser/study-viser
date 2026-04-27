@@ -22,6 +22,13 @@ enum Role {
   TA
 }
 
+/// Term difficulty levels
+enum Difficulty {
+  Basic
+  Moderate
+  Advanced
+}
+
 // ---------------------------------------------------------------------------
 // Models
 // ---------------------------------------------------------------------------
@@ -44,7 +51,8 @@ model User {
 // a course is an instance of a Listing
 model Course {
   crn          Int       @id
-  code         String    @unique
+  code         String  // if listing is set, should match listing.code
+  secret       String    @unique @default(uuid()) // given to students to enroll
   title        String
   description  String?
   createdAt    DateTime  @default(now())
@@ -54,7 +62,7 @@ model Course {
   listing      Listing?  @relation(fields: [listingId], references: [code])
   listingId    String?
   externalURLs String[]  // list of external study sources, specific to course
-  location     String?
+  location     String?   // optional until set by instructor
   students     User[]    @relation("StudentCourses")
   terms        Term[]
 
@@ -95,6 +103,8 @@ model Term {
   bestSubmissionId String?      @unique
   coveredOn        DateTime     @default(now())
   week             Int?         // week covered
+  difficulty       Difficulty   @default(Basic)
+  imageRequired    Boolean      @default(false)
   course           Course       @relation(fields: [courseCRN], references: [crn])
   courseCRN        Int
 
