@@ -22,6 +22,26 @@ const SubmissionItem = ({ id, creator, term, definition, points, wasReviewed, cr
       )}
     </td>
     <td style={{ maxWidth: '300px', wordBreak: 'break-word' }}>{definition}</td>
+    <td>
+      {/* difficulty is sourced from the parent Term */}
+      {term ? (
+        <span className={`badge ${
+          term.difficulty === 'Basic'      ? 'bg-success'
+          : term.difficulty === 'Moderate' ? 'bg-warning text-dark'
+          : 'bg-danger'
+        }`}>
+          {term.difficulty}
+        </span>
+      ) : <span className="text-muted">—</span>}
+    </td>
+    <td>
+      {/* imageRequired is set by the instructor on the Term */}
+      {term ? (
+        term.imageRequired
+          ? <span className="badge bg-primary">Required</span>
+          : <span className="text-muted">—</span>
+      ) : <span className="text-muted">—</span>}
+    </td>
     <td>{points}</td>
     <td>
       {wasReviewed ? (

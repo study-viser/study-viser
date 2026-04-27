@@ -404,9 +404,9 @@ function TermActionForm({ op, courses, terms, submissions, onSuccess }: {
               <Form.Label>Difficulty{op === 'createTerm' && <span className="text-danger"> *</span>}</Form.Label>
               <Form.Select name="difficulty" required={op === 'createTerm'}>
                 <option value="">Select...</option>
-                <option value="BASIC">Basic</option>
-                <option value="MODERATE">Moderate</option>
-                <option value="ADVANCED">Advanced</option>
+                <option value="Basic">Basic</option>
+                <option value="Moderate">Moderate</option>
+                <option value="Advanced">Advanced</option>
               </Form.Select>
             </Form.Group>
           </Col>
@@ -632,23 +632,11 @@ const TestDBTabs = ({ users, courses, terms, submissions }: Props) => {
             <Table striped bordered hover responsive>
               <thead>
                 <tr>
-                  <th>CRN</th>
-                  <th>Secret</th>
-                  <th>Code</th>
-                  <th>Title</th>
-                  <th>Description</th>
-                  <th>Location</th>
-                  <th>Instructor</th>
-                  <th>Students</th>
-                  <th>Listing</th>
-                  <th>External URLs</th>
+                  <th>CRN</th><th>Code</th><th>Title</th><th>Description</th>
+                  <th>Location</th><th>Instructor</th><th>Students</th><th>Listing</th><th>External URLs</th>
                 </tr>
               </thead>
-              <tbody>
-                {courses.map((course) => (
-                  <CourseItem key={course.crn} {...course} />
-                ))}
-              </tbody>
+              <tbody>{courses.map(c => <CourseItem key={c.crn} {...c} />)}</tbody>
             </Table>
           )}
           {activeModel === 'courses' && activeSubTab === 'actions' && (
@@ -668,22 +656,11 @@ const TestDBTabs = ({ users, courses, terms, submissions }: Props) => {
             <Table striped bordered hover responsive>
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>Word</th>
-                  <th>Course</th>
-                  <th>Week</th>
-                  <th>Covered On</th>
-                  <th>Submissions</th>
-                  <th>Best Submission</th>
-                  <th>Difficulty</th>
-                  <th>Image Required</th>
+                  <th>ID</th><th>Word</th><th>Course</th><th>Week</th><th>Covered On</th>
+                  <th>Submissions</th><th>Best Submission</th><th>Difficulty</th><th>Image Required</th>
                 </tr>
               </thead>
-              <tbody>
-                {terms.map((term) => (
-                  <TermItem key={term.id} {...term} />
-                ))}
-              </tbody>
+              <tbody>{terms.map(t => <TermItem key={t.id} {...t} />)}</tbody>
             </Table>
           )}
           {activeModel === 'terms' && activeSubTab === 'actions' && (
@@ -703,20 +680,11 @@ const TestDBTabs = ({ users, courses, terms, submissions }: Props) => {
             <Table striped bordered hover responsive>
               <thead>
                 <tr>
-                  <th>ID</th>
-                  <th>Creator</th>
-                  <th>Term</th>
-                  <th>Definition</th>
-                  <th>Points</th>
-                  <th>Reviewed</th>
-                  <th>Created At</th>
+                  <th>ID</th><th>Creator</th><th>Term</th><th>Definition</th>
+                  <th>Difficulty</th><th>Image Required</th><th>Points</th><th>Reviewed</th><th>Created At</th>
                 </tr>
               </thead>
-              <tbody>
-                {submissions.map((submission) => (
-                  <SubmissionItem key={submission.id} {...submission} />
-                ))}
-              </tbody>
+              <tbody>{submissions.map(s => <SubmissionItem key={s.id} {...s} />)}</tbody>
             </Table>
           )}
           {activeModel === 'submissions' && activeSubTab === 'actions' && (
