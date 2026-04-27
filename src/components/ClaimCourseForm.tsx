@@ -73,7 +73,7 @@ const ClaimCourseForm = () => {
 
             <Row>
               <Col className="text-center">
-                <Button type="submit" className="submit-button">
+                <Button type="submit" className="submit-form-button">
                   Claim Course
                 </Button>
               </Col>

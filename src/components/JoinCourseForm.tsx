@@ -39,8 +39,6 @@ const JoinCourseForm = () => {
 
   return (
     <Container className="course-page">
-      <p className="back-link">← Back to Dashboard</p>
-
       <Card className="course-card">
         <Card.Body>
 
@@ -83,30 +81,23 @@ const JoinCourseForm = () => {
             </Row>
 
             <div className="text-center">
-              <Button type="submit" className="submit-button">
+              <Button type="submit" className="submit-form-button">
                 Join Course
               </Button>
             </div>
           </Form>
-
+        {/*
           <Row className="or-divider">
             <Col><hr /></Col>
             <Col xs="auto">OR</Col>
             <Col><hr /></Col>
           </Row>
-
           <div className="text-center">
             <Button variant="link" className="browse-link">
               Browse Available Courses
             </Button>
           </div>
-        </Card.Body>
-      </Card>
-
-      <Card className="help-card">
-        <Card.Body>
-          <h5>Need help?</h5>
-          <p>Contact your instructor if you don&#39;t have a course enrollment code.</p>
+          */}
         </Card.Body>
       </Card>
     </Container>

@@ -36,8 +36,8 @@ const AddDefinitionForm = () => {
           return;
         }
         setWord(term.word);
-        setDifficulty(term.difficulty);
-        setImageRequired(term.imageRequired);
+        setDifficulty('Basic');
+        setImageRequired(false);
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load term.');
       } finally {
@@ -89,13 +89,15 @@ const AddDefinitionForm = () => {
   if (error)   return <p className="text-danger text-center mt-4">{error}</p>;
 
   return (
-    <Container>
-      <h1 className="text-center py-1">
+  <Container>
+    <div className="form-heading-wrap">
+      <h1 className="form-title py-1">
         Add Definition for <em>{word}</em>
       </h1>
+    </div>
 
       {/* Difficulty badge — read from Term.difficulty, not user-editable */}
-      <p className="text-center text-muted mb-1">
+      <p className="form-meta-text text-muted mb-1">
         Difficulty:&nbsp;
         <span className={`badge ${
           difficulty === 'Basic'    ? 'bg-success'
@@ -149,7 +151,7 @@ const AddDefinitionForm = () => {
             </Form.Group>
 
             <div className="text-center mt-3">
-              <Button variant="primary" type="submit" className="submit-button">
+              <Button variant="primary" type="submit" className="submit-form-button">
                 Submit
               </Button>
             </div>

@@ -1,6 +1,6 @@
 import { auth } from '@/lib/auth';
 import './dashboard.css';
-import { Book, Award, FolderPlus } from 'lucide-react'
+import { Book, Award } from 'lucide-react' // Add FolderPlus to imports when you add the study set card back in
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
@@ -64,13 +64,12 @@ const weeklyLimit = 2; // Weekly Limit
 const weeklyCount = submissions.length;
 const remaining = Math.max(weeklyLimit - weeklyCount, 0);
 const percent = Math.min((weeklyCount / weeklyLimit) * 100, 100);
-const enrolledCount = user?.enrolledCourses.length ?? 0;
-const totalSubmissions = submissions.length;
+// const enrolledCount = user?.enrolledCourses.length ?? 0;
+// const totalSubmissions = submissions.length;
 const approvedSubmissions = submissions.filter(
   (s) => s.term?.bestSubmissionId === s.id
 );
-
-const approvedCount = approvedSubmissions.length;
+// const approvedCount = approvedSubmissions.length;
 const totalPoints = approvedSubmissions.reduce(
   (sum, s) => sum + s.points,
   0
@@ -297,13 +296,14 @@ const totalPoints = approvedSubmissions.reduce(
       
       <section className="grid-2-bottom section">
 
-        {/* Quick Study Actions */}
+
+        {/* 
         <div className="card">
             <h2 className="card-title">Quick Study Actions</h2>
 
             <div className="quick-actions-grid">
 
-            {/* View Glossary */}
+            
             <a href="/student-dashboard" className="quick-action-item">
                 <div className="quick-action-icon">
                 <Book size={18} />
@@ -316,7 +316,7 @@ const totalPoints = approvedSubmissions.reduce(
                 </div>
             </a>
 
-            {/* Flashcards */}
+            
             <a href="/flashcards" className="quick-action-item">
                 <div className="quick-action-icon">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -331,7 +331,7 @@ const totalPoints = approvedSubmissions.reduce(
                 </div>
             </a>
 
-            {/* Bookmarks */}
+            
             <a href="/bookmarks" className="quick-action-item">
                 <div className="quick-action-icon">
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
@@ -346,7 +346,7 @@ const totalPoints = approvedSubmissions.reduce(
                 </div>
             </a>
 
-            {/* Study Set */}
+            
             <a href="/study-set" className="quick-action-item">
                 <div className="quick-action-icon">
                 <FolderPlus size={18} />
@@ -362,7 +362,7 @@ const totalPoints = approvedSubmissions.reduce(
             </div>
         </div>
 
-        {/* Notifications */}
+        
         <div className="card">
             <div className="section-header">
                 <h2 className="card-title">Notifications</h2>
@@ -397,6 +397,7 @@ const totalPoints = approvedSubmissions.reduce(
                 </div>
             </div>
         </div>
+        */}
       </section>
     </main>
   );

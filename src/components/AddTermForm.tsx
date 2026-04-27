@@ -26,7 +26,9 @@ const AddTermForm = () => {
 
   return (
     <Container className="add-term-page">
-      <h1 className="add-term-title">Add Glossary Term</h1>
+      <div className="form-heading-wrap">
+        <h1 className="add-term-title">Add Glossary Term</h1>
+      </div>
 
       <Card className="add-term-card">
         <Card.Body>
@@ -59,7 +61,6 @@ const AddTermForm = () => {
                   name="referenceDefinition"
                   rows={6}
                   placeholder="References / Context"
-                  required
                 />
               </Col>
             </Form.Group>
@@ -106,7 +107,7 @@ const AddTermForm = () => {
 </Row>
 
             <div className="text-center">
-              <Button type="submit" className="submit-button">
+              <Button type="submit" className="submit-form-button">
                 Submit
               </Button>
             </div>
