@@ -27,7 +27,8 @@ h1,
   border-radius: 16px;
   background-color: #ffffff;
   border: 1px solid #E5E7EB;
-  padding: 16px;
+  padding: 20px;
+  margin-bottom: 40px;
   box-shadow: 0 4px 12px rgba(171, 190, 209, 0.18);
 }
 
@@ -121,6 +122,32 @@ h1,
 .submit-form-button:hover {
   background-color: #5c9b76;
 }
+
+/* Styles for the reference definition */
+.reference-box {
+  width: 100%;
+  background-color: #eef8f1;
+  border: 1px solid #cfe5d6;
+  border-radius: 10px;
+  padding: 12px 16px;
+}
+
+.reference-title {
+  font-weight: 700;
+  color: #024731;
+  margin-bottom: 6px;
+}
+
+.reference-text {
+  margin: 0;
+  color: #064d2c;
+}
+
+.reference-wrapper {
+  max-width: 900px;
+  margin: 0 auto 16px auto; /* center + spacing */
+}
+
 
 /* Specific styles for JoinCourseForm and ClaimCourseForm */
 .course-page {

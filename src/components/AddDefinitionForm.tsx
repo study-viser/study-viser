@@ -16,7 +16,7 @@ const AddDefinitionForm = () => {
 
   const [word, setWord] = useState('');
   const [difficulty, setDifficulty] = useState<string>('');
-  // imageRequired is driven by Term.imageRequired — not a user toggle
+  const [referenceDefinition, setReferenceDefinition] = useState<string>('');
   const [imageRequired, setImageRequired] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
@@ -33,13 +33,16 @@ const AddDefinitionForm = () => {
       try {
         // getTermById returns the full term including difficulty and imageRequired
         const term = await getTermById(termId);
+
         if (!term) {
           setError('Term not found.');
           return;
         }
+
         setWord(term.word);
         setDifficulty(term.difficulty);
         setImageRequired(term.imageRequired);
+        setReferenceDefinition(term.referenceDefinition ?? '');
       } catch (err) {
         setError(err instanceof Error ? err.message : 'Failed to load term.');
       } finally {
@@ -66,6 +69,7 @@ const AddDefinitionForm = () => {
 
     const formData = new FormData(e.currentTarget);
     const definition = formData.get('definition') as string;
+    // const image = formData.get('image') as File | null;
 
     // TODO: if image is provided, upload to storage and append URL to definition
     // const image = formData.get('image') as File | null;
@@ -98,7 +102,8 @@ const AddDefinitionForm = () => {
         Add Definition for <em>{word}</em>
       </h1>
     </div>
-      {/* Difficulty badge — read from Term.difficulty, not user-editable */}
+    
+      {/* Difficulty badge*/}
       <p className="form-meta-text text-muted mb-1">
         Difficulty:&nbsp;
         <span className={`badge ${
@@ -109,6 +114,15 @@ const AddDefinitionForm = () => {
           {difficulty}
         </span>
       </p>
+      
+      {/*Refrerence Definition*/}
+      {referenceDefinition && (
+            <div className="reference-box reference-wrapper">
+              <p className="reference-title">Instructor Reference / Context</p>
+              <p className="reference-text">{referenceDefinition}</p>
+            </div>
+      )}
+
       <Card className="add-definition-card">
         <Card.Body>
           <Form onSubmit={handleSubmit}>
