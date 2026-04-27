@@ -3,7 +3,11 @@ import { auth } from '@/lib/auth';
 import { getCourseBycrn, getTermsByCourse } from '@/lib/dbActions';
 import { ChevronRight, BookOpen, CheckCircle2, Lock, Clock, PlusCircle } from 'lucide-react';
 
-function getTermStatus(term: { submissions: any[]; maxSubmissions: number; bestSubmissionId: string | null }) {
+function getTermStatus(term: {
+  submissions: { id: string }[];
+  maxSubmissions: number;
+  bestSubmissionId: string | null;
+}) {
   if (term.bestSubmissionId) return 'approved';
   if (term.submissions.length >= term.maxSubmissions) return 'cap-reached';
   return 'pending';

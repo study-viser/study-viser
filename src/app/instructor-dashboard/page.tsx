@@ -1,8 +1,8 @@
 import './dashboard.css';
 import {
   Book, Award, Users, ClipboardList, BookOpen,
-  PlusCircle, FileOutput, Bell, CheckCircle2,
-  AlertCircle, Lock, Clock, ChevronRight
+  FileOutput, Bell, CheckCircle2,
+  AlertCircle, Lock, ChevronRight
 } from 'lucide-react';
 import { auth } from '@/lib/auth';
 import { getUserByEmail, getUserById, getExtraCreditByCourse } from '@/lib/dbActions';

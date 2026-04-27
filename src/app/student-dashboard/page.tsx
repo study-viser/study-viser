@@ -14,7 +14,7 @@ export default async function StudentDashboardPage() {
 
   const user = await prisma.user.findUnique({
     where: {
-      email: session.user.email ?? undefined,
+      email: session.user.email,
     },
     include: {
         enrolledCourses: {
@@ -25,9 +25,12 @@ export default async function StudentDashboardPage() {
     },
   });
 
+if (!user?.id) {
+  return <p>User not found</p>;
+}
   const submissions = await prisma.submission.findMany({
   where: {
-    creatorId: user?.id,
+    creatorId: user.id,
   },
   include: {
     term: {
@@ -61,14 +64,13 @@ const weeklyLimit = 2; // Weekly Limit
 const weeklyCount = submissions.length;
 const remaining = Math.max(weeklyLimit - weeklyCount, 0);
 const percent = Math.min((weeklyCount / weeklyLimit) * 100, 100);
-const approvedCount = submissions.filter(
-  (s) => s.wasReviewed && s.points > 0
-).length;
 const enrolledCount = user?.enrolledCourses.length ?? 0;
 const totalSubmissions = submissions.length;
 const approvedSubmissions = submissions.filter(
-  (s) => s.wasReviewed && s.points > 0
+  (s) => s.term?.bestSubmissionId === s.id
 );
+
+const approvedCount = approvedSubmissions.length;
 const totalPoints = approvedSubmissions.reduce(
   (sum, s) => sum + s.points,
   0
@@ -101,23 +103,45 @@ const totalPoints = approvedSubmissions.reduce(
                     <span>Status</span>
                 </div>
 
-                {submissions.length === 0 ? (
-                <p>No submissions yet</p>
-                ) : (
-                submissions.map((submission) => (
+            {submissions.length === 0 ? (
+            <p>No submissions yet</p>
+            ) : (
+            submissions.map((submission) => {
+                const isWinner = submission.term?.bestSubmissionId === submission.id;
+
+                return (
                 <div className="terms-row" key={submission.id}>
-                    <span className="term-name">{submission.term?.word ?? 'Unknown Term'}</span>
-                    <span className="course-pill">{submission.term?.course?.code ?? 'No Course'}</span>
+                    <span className="term-name">
+                    {submission.term?.word ?? 'Unknown Term'}
+                    </span>
+
+                    <span className="course-pill">
+                    {submission.term?.course?.code ?? 'No Course'}
+                    </span>
+
                     <span>Basic</span>
-                    <span className={`status-pill ${
-                        submission.wasReviewed ? 'status-approved' : 'status-pending'
-                        }`}>
-                        {submission.wasReviewed ? 'Approved' : 'Pending'}
+
+                    <span
+                    className={`status-pill ${
+                        isWinner
+                        ? 'status-approved'
+                        : submission.wasReviewed
+                        ? 'status-reviewed'
+                        : 'status-pending'
+                    }`}
+                    >
+                    {isWinner
+                        ? 'Winner'
+                        : submission.wasReviewed
+                        ? 'Reviewed'
+                        : 'Pending'}
                     </span>
                 </div>
-                ))
-                )}
+                );
+                })
+            )}
             </div>
+
             <div className="terms-footer">
             <span>
                 {remaining > 0
