@@ -22,4 +22,8 @@ jobs:
     - name: Run Playwright tests
       env:
         DATABASE_URL: ${{ secrets.DATABASE_URL }}
-      run: npx playwright test
+        NEXTAUTH_URL: http://localhost:3000 
+        NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+      run: 
+        npx tsx scripts/cleanup.ts
+        npx playwright test
