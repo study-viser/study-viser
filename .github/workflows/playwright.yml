@@ -25,5 +25,5 @@ jobs:
         NEXTAUTH_URL: http://localhost:3000 
         NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
       run: 
-        npx tsx scripts/cleanup.ts
+        npx tsx scripts/cleanup.js
         npx playwright test
