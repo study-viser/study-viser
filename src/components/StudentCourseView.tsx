@@ -269,6 +269,9 @@ const filteredTerms = dbTerms.filter((term) => {
               <Link href={`/student-course/${course.crn}/glossary`} className="btn-view-all-terms">
                 View All Terms →
               </Link>
+              <Link href={`/student-course/${course.crn}/study-guide`} className="btn-view-all-terms">
+                Study Guide →
+              </Link>
             </div>
             <input
               type="text"

@@ -37,6 +37,14 @@
   margin-bottom: 2rem;
 }
 
+.glossary-view-heading-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
 .glossary-view-title {
   font-family: var(--font-title);
   font-size: 36px;
@@ -49,6 +57,24 @@
   font-size: 16px;
   color: #6B7280;
   margin: 0;
+}
+
+.glossary-study-guide-btn {
+  font-size: 13px;
+  font-weight: 600;
+  color: #fff;
+  background: #2d7a4f;
+  text-decoration: none;
+  border-radius: 6px;
+  padding: 8px 16px;
+  white-space: nowrap;
+  align-self: center;
+  transition: background 0.15s;
+}
+
+.glossary-study-guide-btn:hover {
+  background: #1a4731;
+  color: #fff;
 }
 
 /* --- Week section --- */
