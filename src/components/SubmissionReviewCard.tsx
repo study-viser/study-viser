@@ -64,14 +64,14 @@ export default function SubmissionReviewCard({ submission, termId, isWinner }: P
         </div>
       )}
 
-      <div style={{ marginBottom: '8px' }}>
+      {/* <div style={{ marginBottom: '8px' }}>
         <span style={{ fontWeight: 700, fontSize: '15px', color: '#1F2937' }}>
           {submission.creator.name}
         </span>
         <span style={{ color: '#9CA3AF', fontSize: '13px', marginLeft: '8px' }}>
           {submission.creator.email}
         </span>
-      </div>
+      </div> */}
 
       <p style={{
         fontSize: '15px', color: '#374151', lineHeight: '1.6',

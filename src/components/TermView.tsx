@@ -113,14 +113,6 @@ export default function TermView({ term, crn }: TermViewProps) {
         {approvedSubmission ? (
           <div className="submission-card submission-card--approved">
             <p className="submission-definition">{approvedSubmission.definition}</p>
-            <div className="submission-footer">
-              <span className="submission-author">
-                — {approvedSubmission.creator.name}
-              </span>
-              <span className="submission-points">
-                {approvedSubmission.points} pts
-              </span>
-            </div>
           </div>
         ) : (
           <p className="term-no-approved">No approved definition yet.</p>
@@ -137,11 +129,6 @@ export default function TermView({ term, crn }: TermViewProps) {
             {otherSubmissions.map((submission) => (
               <div key={submission.id} className="submission-card">
                 <p className="submission-definition">{submission.definition}</p>
-                <div className="submission-footer">
-                  <span className="submission-author">
-                    — {submission.creator.name}
-                  </span>
-                </div>
               </div>
             ))}
           </div>
