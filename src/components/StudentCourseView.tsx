@@ -88,22 +88,19 @@ function TermCard({
       {isFull && <span className="term-status-badge full">Full</span>}
 
       {/* Action buttons */}
-      <div className="term-card-actions">
-        <Link href={`/student-course/${crn}/terms/${term.id}`} className="btn-view-term">
-          View Term →
-        </Link>
-
-        {term.status === 'available' && !hasReachedWeeklyLimit && (
-          <Link href={`/add-definition?termId=${term.id}`} className="btn-submit-term">
-            Submit Definition
-          </Link>
-        )}
-        {term.status === 'available' && hasReachedWeeklyLimit && (
-          <span className="term-status-badge full">
-            Weekly limit reached
-          </span>
-        )}
-      </div>
+      {term.status === 'available' && (
+        <div className="term-card-actions">
+          {!hasReachedWeeklyLimit ? (
+            <Link href={`/add-definition?termId=${term.id}`} className="btn-submit-term">
+              Submit Definition
+            </Link>
+          ) : (
+            <span className="term-status-badge full">
+              Weekly limit reached
+            </span>
+          )}
+        </div>
+      )}
     </div>
   );
 }
@@ -267,7 +264,12 @@ const filteredTerms = dbTerms.filter((term) => {
         <main className="course-main">
           {/* Search bar and section title */}
           <div className="course-main-header">
-            <h2 className="glossary-title">Glossary Terms</h2>
+            <div className="glossary-title-group">
+              <h2 className="glossary-title">Glossary Terms</h2>
+              <Link href={`/student-course/${course.crn}/glossary`} className="btn-view-all-terms">
+                View All Terms →
+              </Link>
+            </div>
             <input
               type="text"
               className="glossary-search"
