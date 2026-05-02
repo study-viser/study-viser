@@ -48,10 +48,20 @@ export default function GlossaryView({ course }: GlossaryViewProps) {
       </Link>
 
       <div className="glossary-view-header">
-        <h1 className="glossary-view-title">
-          {course.code} — {course.title}
-        </h1>
-        <p className="glossary-view-subtitle">Full Glossary</p>
+        <div className="glossary-view-heading-row">
+          <div>
+            <h1 className="glossary-view-title">
+              {course.code} — {course.title}
+            </h1>
+            <p className="glossary-view-subtitle">Full Glossary</p>
+          </div>
+          <Link
+            href={`/student-course/${course.crn}/study-guide`}
+            className="glossary-study-guide-btn"
+          >
+            Study Guide →
+          </Link>
+        </div>
       </div>
 
       {weeks.map((week) => (
