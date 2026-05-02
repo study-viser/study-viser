@@ -1,0 +1,151 @@
+/* =====================
+   glossary-view.css
+   ===================== */
+
+@import url('https://fonts.googleapis.com/css2?family=Belanosima:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+
+:root {
+  --font-title: 'Belanosima', sans-serif;
+  --font-body: 'Inter', sans-serif;
+}
+
+.glossary-view-page {
+  font-family: var(--font-body);
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem;
+}
+
+/* --- Back link --- */
+.glossary-back-link {
+  display: inline-block;
+  font-size: 14px;
+  font-weight: 600;
+  color: #2E7D32;
+  text-decoration: none;
+  margin-bottom: 1.5rem;
+}
+
+.glossary-back-link:hover {
+  text-decoration: underline;
+}
+
+/* --- Page header --- */
+.glossary-view-header {
+  border-bottom: 2px solid #2d7a4f;
+  padding-bottom: 1rem;
+  margin-bottom: 2rem;
+}
+
+.glossary-view-title {
+  font-family: var(--font-title);
+  font-size: 36px;
+  font-weight: 700;
+  color: #2E7D32;
+  margin: 0 0 0.25rem 0;
+}
+
+.glossary-view-subtitle {
+  font-size: 16px;
+  color: #6B7280;
+  margin: 0;
+}
+
+/* --- Week section --- */
+.glossary-week-section {
+  margin-bottom: 2.5rem;
+}
+
+.glossary-week-heading {
+  font-family: var(--font-title);
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a4731;
+  margin-bottom: 1rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid #d9ede3;
+}
+
+/* --- Term list --- */
+.glossary-term-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+/* --- Term item --- */
+.glossary-term-item {
+  background: #fff;
+  border: 1px solid #d9ede3;
+  border-radius: 10px;
+  padding: 1rem 1.25rem;
+  transition: box-shadow 0.2s;
+}
+
+.glossary-term-item:hover {
+  box-shadow: 0 4px 12px rgba(45, 122, 79, 0.1);
+}
+
+.glossary-term-top {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  margin-bottom: 0.5rem;
+}
+
+.glossary-term-word {
+  font-family: var(--font-title);
+  font-size: 17px;
+  font-weight: 700;
+  color: #1a4731;
+}
+
+.glossary-term-difficulty {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 3px 9px;
+  border-radius: 999px;
+}
+
+.difficulty-basic {
+  background: #d4edda;
+  color: #155724;
+}
+
+.difficulty-moderate {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.difficulty-advanced {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* --- Approved definition --- */
+.glossary-approved-definition {
+  background: #f0faf4;
+  border-left: 3px solid #6DB089;
+  border-radius: 0 6px 6px 0;
+  padding: 0.6rem 0.85rem;
+}
+
+.glossary-definition-text {
+  font-size: 15px;
+  color: #1F2937;
+  line-height: 1.65;
+  margin: 0 0 0.4rem 0;
+}
+
+.glossary-definition-author {
+  font-size: 13px;
+  color: #6B7280;
+}
+
+/* --- No definition placeholder --- */
+.glossary-no-definition {
+  font-size: 14px;
+  color: #9CA3AF;
+  margin: 0;
+  font-style: italic;
+}
