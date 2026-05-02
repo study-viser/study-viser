@@ -1,52 +1,33 @@
 import { prisma } from '@/lib/prisma';
+import MapWrapper from '@/components/MapWrapper'; // Standard import
 import "./courses.css";
 
 export default async function CoursesPage() {
   const courses = await prisma.course.findMany({
-    include: {
-      instructor: true,   // include instructor info
-      students: true,     // optional: shows student count
-    },
-    orderBy: {
-      createdAt: 'desc',
-    },
+    include: { instructor: true, students: true },
+    orderBy: { createdAt: 'desc' },
   });
 
   return (
-    <main style={{ padding: '2rem' }}>
-      <h1>Courses</h1>
-
-      {courses.length === 0 ? (
-        <p>No courses found.</p>
-      ) : (
-        <ul>
+    <main style={{ display: 'flex', gap: '2rem', padding: '2rem', height: '100vh' }}>
+      {/* LEFT SIDE: LIST */}
+      <div style={{ flex: '1', overflowY: 'auto', paddingRight: '1rem' }}>
+        <h1>Courses</h1>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
           {courses.map((course) => (
-            <li key={course.crn} style={{ marginBottom: '1.5rem' }}>
-              <h2>{course.code} - {course.title}</h2>
-
-              {course.description && <p>{course.description}</p>}
-
-              <p><strong>CRN:</strong> {course.crn}</p>
-
-              <p>
-                <strong>Instructor:</strong>{' '}
-                {course.instructor
-                  ? course.instructor.name
-                  : 'Not assigned'}
-              </p>
-
-              <p>
-                <strong>Students enrolled:</strong>{' '}
-                {course.students.length}
-              </p>
-
-              {course.location && (
-                <p><strong>Location:</strong> {course.location}</p>
-              )}
-            </li>
+            <div key={course.crn} style={{ padding: '1.5rem', border: '1px solid #e5e7eb', borderRadius: '12px' }}>
+              <h2>{course.code}</h2>
+              <p>{course.title}</p>
+              <p>📍 {course.location || 'TBD'}</p>
+            </div>
           ))}
-        </ul>
-      )}
+        </div>
+      </div>
+
+      {/* RIGHT SIDE: MAP */}
+      <div style={{ flex: '1', position: 'sticky', top: '2rem', height: 'calc(100vh - 4rem)' }}>
+        <MapWrapper courses={courses} />
+      </div>
     </main>
   );
 }
