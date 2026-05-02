@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "study-viser",
   "version": "0.1.0",
   "private": true,
@@ -36,6 +37,7 @@
     "yup": "^1.7.1"
   },
   "devDependencies": {
+    "@neondatabase/api-client": "^2.7.1",
     "@playwright/test": "^1.59.1",
     "@tailwindcss/postcss": "^4",
     "@types/bcrypt": "^6.0.0",

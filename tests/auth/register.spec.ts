@@ -8,7 +8,8 @@ test('user can register as student', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Name' }).click();
   await page.getByRole('textbox', { name: 'Name' }).fill('Stewart Dents');
   await page.getByRole('textbox', { name: 'Email' }).click();
-  await page.getByRole('textbox', { name: 'Email' }).fill('stewdent@foo.com');
+  const uniqueEmail = `test-${Date.now()}@example.com`;;
+  await page.getByRole('textbox', { name: 'Email' }).fill(uniqueEmail);
   await page.getByRole('textbox', { name: 'Password', exact: true }).click();
   await page.getByRole('textbox', { name: 'Password', exact: true }).fill('changeme');
   await page.getByRole('textbox', { name: 'Confirm Password' }).click();
@@ -24,7 +25,8 @@ test('user can register as instructor', async ({ page }) => {
   await page.getByRole('textbox', { name: 'Name' }).click();
   await page.getByRole('textbox', { name: 'Name' }).fill('Tee Char');
   await page.getByRole('textbox', { name: 'Email' }).click();
-  await page.getByRole('textbox', { name: 'Email' }).fill('teechar@foo.com');
+  const uniqueEmail = `test-${Date.now()}@example.com`;;
+  await page.getByRole('textbox', { name: 'Email' }).fill(uniqueEmail);
   await page.getByRole('textbox', { name: 'Password', exact: true }).click();
   await page.getByRole('textbox', { name: 'Password', exact: true }).fill('changeme');
   await page.getByRole('textbox', { name: 'Confirm Password' }).click();
