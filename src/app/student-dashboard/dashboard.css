@@ -587,6 +587,10 @@
   white-space: nowrap;
 }
 
+.notif-pending {
+  background-color: #E0B548;
+}
+
 /* ---------- Responsive ---------- */
 
 @media (max-width: 900px) {

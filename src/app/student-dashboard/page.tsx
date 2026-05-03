@@ -1,7 +1,6 @@
 import { auth } from '@/lib/auth';
 import './dashboard.css';
-import { Book, Award } from 'lucide-react';
-import { FolderPlus } from 'lucide-react';
+import { Book, Award, FolderPlus } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
@@ -94,6 +93,33 @@ const approvedSubmissions = submissions.filter(
   (s) => s.term?.bestSubmissionId === s.id
 );
 const approvedCount = approvedSubmissions.length;
+
+const notifications = [
+  ...approvedSubmissions.map((submission) => ({
+    type: 'success',
+    message: `Your definition for '${submission.term?.word ?? 'a term'}' was approved.`,
+    time: 'Approved',
+  })),
+
+  ...(hasReachedWeeklyLimit
+    ? [
+        {
+          type: 'warning',
+          message: 'You have reached your weekly submission limit.',
+          time: 'This week',
+        },
+      ]
+    : []),
+
+  ...availableTerms
+    .filter((term) => term.submissions.length >= term.maxSubmissions)
+    .map((term) => ({
+      type: 'warning',
+      message: `The term '${term.word}' has reached its submission cap.`,
+      time: 'Full',
+    })),
+].slice(0, 5);
+
 const totalPoints = approvedSubmissions.reduce(
   (sum, s) => sum + s.points,
   0
@@ -247,11 +273,8 @@ const totalPoints = approvedSubmissions.reduce(
                     <line x1="12" y1="12" x2="16" y2="14"/>
                 </svg>
                 </div>
-
                 <h2 className="card-title">My Recent Submissions</h2>
             </div>
-
-            <a href="#" className="view-all">View All</a>
             </div>
 
             <div className="terms-table">
@@ -340,8 +363,6 @@ const totalPoints = approvedSubmissions.reduce(
       </section>
       
       <section className="grid-2-bottom section">
-
-
         <div className="card">
             <h2 className="card-title">Quick Study Actions</h2>
 
@@ -410,36 +431,32 @@ const totalPoints = approvedSubmissions.reduce(
         <div className="card">
             <div className="section-header">
                 <h2 className="card-title">Notifications</h2>
-                <a href="#" className="view-all">View All &gt;</a>
             </div>
 
-            <div className="notif-list">
-                <div className="notif-item">
-                    <div className="notif-icon notif-success">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                        <polyline points="20 6 9 17 4 12"/>
-                    </svg>
-                    </div>
-                    <p className="notif-text">
-                    Your definition for <strong>&apos;Algorithm&apos;</strong> was approved.
-                    </p>
-                    <span className="notif-time">4h ago</span>
+        <div className="notif-list">
+        {notifications.length === 0 ? (
+            <p>No notifications yet.</p>
+        ) : (
+            notifications.map((notification, index) => (
+            <div className="notif-item" key={index}>
+                <div
+                className={`notif-icon ${
+                    notification.type === 'success'
+                    ? 'notif-success'
+                    : 'notif-warning'
+                }`}
+                >
+                {notification.type === 'success' ? '✓' : '!'}
                 </div>
 
-                <div className="notif-item">
-                    <div className="notif-icon notif-warning">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3" strokeLinecap="round" strokeLinejoin="round">
-                        <circle cx="12" cy="12" r="10"/>
-                        <line x1="12" y1="8" x2="12" y2="12"/>
-                        <line x1="12" y1="16" x2="12.01" y2="16"/>
-                    </svg>
-                    </div>
-                    <p className="notif-text">
-                    The term <strong>&apos;API&apos;</strong> has reached its submission cap.
-                    </p>
-                    <span className="notif-time">1d ago</span>
-                </div>
+                <p className="notif-text">{notification.message}</p>
+
+                <span className="notif-time">{notification.time}</span>
             </div>
+            ))
+        )}
+        </div>
+
         </div>
       </section>
     </main>
