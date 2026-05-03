@@ -51,11 +51,9 @@ const DIFFICULTIES: Difficulty[] = ['Basic', 'Moderate', 'Advanced'];
 
 function TermCard({
   term,
-  crn,
   hasReachedWeeklyLimit,
 }: {
   term: Term;
-  crn: number;
   hasReachedWeeklyLimit: boolean;
 }) {
   const isFull = term.status === 'full';
@@ -288,8 +286,7 @@ const filteredTerms = dbTerms.filter((term) => {
               {filteredTerms.map((term) => (
                 <TermCard key=
                   {term.id} 
-                  term={term} 
-                  crn={course.crn}   
+                  term={term}  
                   hasReachedWeeklyLimit={hasReachedWeeklyLimit}/>
               ))}
             </div>

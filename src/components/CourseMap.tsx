@@ -14,7 +14,14 @@ const DefaultIcon = L.icon({
 });
 L.Marker.prototype.options.icon = DefaultIcon;
 
-export default function CourseMap({ courses }: { courses: any[] }) {
+type CourseMapCourse = {
+  crn: number;
+  code: string;
+  title: string;
+  location: string | null;
+};
+
+export default function CourseMap({ courses }: { courses: CourseMapCourse[] }) {
   return (
     <MapContainer 
       center={MANOA_CENTER} 

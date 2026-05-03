@@ -1,6 +1,6 @@
 import { prisma } from '@/lib/prisma';
 import { auth } from '@/lib/auth';
-import GlossaryView from '@/components/GlossaryView';
+import ApprovedGlossaryView from '@/components/ApprovedGlossaryView';
 
 export default async function GlossaryPage() {
   const session = await auth();
@@ -36,5 +36,5 @@ export default async function GlossaryPage() {
     ],
   });
 
-  return <GlossaryView terms={terms} mode="all" />;
+  return <ApprovedGlossaryView terms={terms} mode="all" />;
 }

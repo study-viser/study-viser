@@ -2,6 +2,14 @@
 
 import dynamic from 'next/dynamic';
 
+
+type CourseMapCourse = {
+  crn: number;
+  code: string;
+  title: string;
+  location: string | null;
+};
+
 // Move the dynamic import here. 
 // Now it's inside a Client Component ('use client'), so ssr: false is allowed.
 const CourseMap = dynamic(() => import('./CourseMap'), { 
@@ -13,6 +21,6 @@ const CourseMap = dynamic(() => import('./CourseMap'), {
   )
 });
 
-export default function MapWrapper({ courses }: { courses: any[] }) {
+export default function MapWrapper({ courses }: { courses: CourseMapCourse[] }) {
   return <CourseMap courses={courses} />;
 }
