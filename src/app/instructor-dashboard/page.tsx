@@ -186,6 +186,9 @@ export default async function InstructorDashboardPage() {
               </div>
             </Link>
           ))}
+          <Link href="/courses/claim">
+            <button className="add-course-btn">Claim a Course</button>
+          </Link>
         </div>
       </section>
 
