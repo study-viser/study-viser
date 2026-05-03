@@ -1,4 +1,5 @@
 {
+  "type": "module",
   "name": "study-viser",
   "version": "0.1.0",
   "private": true,
@@ -10,7 +11,8 @@
     "db:generate": "prisma generate",
     "db:migrate": "prisma migrate deploy",
     "db:seed": "prisma db seed",
-    "postinstall": "prisma generate"
+    "postinstall": "prisma generate",
+    "test": "playwright test"
   },
   "prisma": {
     "seed": "tsx prisma/seed.ts"
@@ -22,7 +24,8 @@
     "bcrypt": "^6.0.0",
     "bootstrap": "^5.3.8",
     "csv-parse": "^5.6.0",
-    "lucide-react": "^1.9.0",
+    "leaflet": "^1.9.4",
+    "lucide-react": "^1.14.0",
     "next": "^16.2.4",
     "next-auth": "^4.24.14",
     "pg": "^8.20.0",
@@ -32,11 +35,15 @@
     "react-bootstrap-icons": "^1.11.6",
     "react-dom": "19.2.4",
     "react-hook-form": "^7.72.1",
+    "react-leaflet": "^5.0.0",
     "yup": "^1.7.1"
   },
   "devDependencies": {
+    "@neondatabase/api-client": "^2.7.1",
+    "@playwright/test": "^1.59.1",
     "@tailwindcss/postcss": "^4",
     "@types/bcrypt": "^6.0.0",
+    "@types/leaflet": "^1.9.21",
     "@types/node": "^20",
     "@types/pg": "^8.20.0",
     "@types/react": "^19",

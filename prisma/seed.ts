@@ -28,7 +28,7 @@ async function main() {
   console.log('Seeding the database');
 
   // ── Load ICS Review Sites ───────────────────────────────────────────────
-  const reviewCsvPath = path.join(__dirname, 'ics_review_sites.csv');
+  const reviewCsvPath = path.join(process.cwd(), 'prisma', 'ics_review_sites.csv');
   const reviewContent = fs.readFileSync(reviewCsvPath, 'utf-8');
 
   const reviewRecords = parse(reviewContent, {
@@ -40,7 +40,7 @@ async function main() {
   console.log(`Loaded ${reviewRecords.length} review site URLs`);
 
   // ── Listings ────────────────────────────────────────────────────────────
-  const csvPath = path.join(__dirname, 'uh_manoa_courses.csv');
+  const csvPath = path.join(process.cwd(), 'prisma', 'uh_manoa_courses.csv');
   const content = fs.readFileSync(csvPath, 'utf-8');
 
   const records = parse(content, {
