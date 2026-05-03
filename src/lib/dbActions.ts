@@ -415,7 +415,9 @@ export async function createTerm(data: {
   }
 }
 
-export async function getTermById(id: string) {
+export async function getTermById(id: string): Promise<Prisma.TermGetPayload<{
+  include: { course: true; submissions: true; bestSubmission: true };
+}> | null> {
   try {
     return await prisma.term.findUnique({
       where: { id },
@@ -424,9 +426,10 @@ export async function getTermById(id: string) {
         submissions: true,
         bestSubmission: true,
       },
-    });
+    }) ?? null;
   } catch (error) {
     handlePrismaError(error);
+    return null;
   }
 }
 
