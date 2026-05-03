@@ -74,12 +74,13 @@ const uniqueSubmissions = Object.values(
     return acc;
   }, {} as Record<string, typeof submissions[number]>)
 );
-const weeklyLimit = 2; // Weekly Limit
+const weeklyLimit = 2;
+
 const startOfWeek = new Date();
 startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
 startOfWeek.setHours(0, 0, 0, 0);
 
-const weeklySubmissionCount = submissions.filter(
+const weeklySubmissionCount = uniqueSubmissions.filter(
   (submission) => submission.createdAt >= startOfWeek
 ).length;
 
@@ -87,6 +88,7 @@ const hasReachedWeeklyLimit = weeklySubmissionCount >= weeklyLimit;
 const weeklyCount = weeklySubmissionCount;
 const remaining = Math.max(weeklyLimit - weeklyCount, 0);
 const percent = Math.min((weeklyCount / weeklyLimit) * 100, 100);
+
 const approvedSubmissions = submissions.filter(
   (s) => s.term?.bestSubmissionId === s.id
 );

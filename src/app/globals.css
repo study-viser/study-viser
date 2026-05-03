@@ -297,3 +297,22 @@
           .figure-wrapper { width: min(180px, 30vw); right: 2%; }
           .hero-content { margin-top: 40px; }
         }
+
+        /* --- Back Button --- */
+        .back-link-btn {
+          display: block;   
+          margin-top: 20px; 
+          margin-bottom: 6px;
+          background: none;
+          border: none;
+          box-shadow: none;
+          outline: none;
+          color: #2E7D32;
+          font-weight: 600;
+          font-size: 14px;
+          cursor: pointer;
+      }
+
+      .back-link-btn:hover {
+        text-decoration: underline;
+      }

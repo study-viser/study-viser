@@ -292,6 +292,14 @@
   white-space: nowrap;
 }
 
+.difficulty-badge {
+  display: inline-block;
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 14px;
+  font-weight: 600;
+}
+
 .difficulty-badge,
 .status-pill {
   justify-self: start;
