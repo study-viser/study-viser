@@ -9,11 +9,10 @@ export default async function GlossaryApprovedPage() {
   const terms = await prisma.term.findMany({
     where: {
       course: {
-        students: {
-          some: {
-            id: userId,
-          },
-        },
+        OR: [
+          { students: { some: { id: userId } } },
+          { instructorId: userId },
+        ],
       },
       submissions: {
         some: {
@@ -39,14 +38,9 @@ export default async function GlossaryApprovedPage() {
       },
     },
     orderBy: [
-      {
-        course: {
-          code: 'asc',
-        },
-      },
-      {
-        word: 'asc',
-      },
+      { course: { code: 'asc' } },
+      { week: 'asc' },
+      { word: 'asc' },
     ],
   });
 
