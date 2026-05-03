@@ -1,0 +1,83 @@
+import Link from 'next/link';
+import { prisma } from '@/lib/prisma';
+import { auth } from '@/lib/auth';
+import BackButton from '@/components/BackButton';
+
+export default async function GlossaryPage() {
+  const session = await auth();
+  const userId = session?.user?.id;
+
+  const terms = await prisma.term.findMany({
+    where: {
+      course: {
+        students: {
+          some: {
+            id: userId,
+          },
+        },
+      },
+    },
+    include: {
+      course: true,
+      submissions: true,
+    },
+    orderBy: [
+      {
+        course: {
+          code: 'asc',
+        },
+      },
+      {
+        word: 'asc',
+      },
+    ],
+  });
+
+  return (
+    <main className="page-container">
+      <BackButton />
+
+      <section className="section">
+        <div className="card">
+          <h1 className="card-title">All Glossary Terms</h1>
+          <p>View all terms from your enrolled courses.</p>
+        </div>
+      </section>
+
+      <section className="section">
+        <div className="card">
+          {terms.length === 0 ? (
+            <p>No glossary terms yet.</p>
+          ) : (
+            <div className="term-grid">
+              {terms.map((term) => (
+                <div key={term.id} className="term-card">
+                  <p className="term-submissions">{term.course.code}</p>
+
+                  <h3 className="term-name">{term.word}</h3>
+
+                  <p>
+                    Submissions: {term.submissions.length} / {term.maxSubmissions}
+                  </p>
+
+                  <span className={`term-difficulty difficulty-${term.difficulty.toLowerCase()}`}>
+                    {term.difficulty}
+                  </span>
+
+                  <div className="term-card-actions">
+                    <Link
+                      href={`/courses/${term.course.crn}/terms/${term.id}`}
+                      className="btn-view-term"
+                    >
+                      View Term →
+                    </Link>
+                  </div>
+                </div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
+    </main>
+  );
+}

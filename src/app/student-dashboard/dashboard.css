@@ -122,11 +122,13 @@
 
 .recent-submissions-card .terms-table {
   flex: 1;
+  min-height: 0;
 }
 
 .terms-table {
   border: 1px solid #E5E7EB;
   border-radius: 14px;
+  overflow-x: auto;
   overflow: hidden;
   background-color: #ffffff;
 }
@@ -137,6 +139,15 @@
   grid-template-columns: 1.5fr 0.9fr 0.9fr 1fr;
   column-gap: 14px;
   align-items: center;
+}
+
+.terms-table-head,
+.terms-row {
+  display: grid;
+  grid-template-columns: minmax(120px, 1.5fr) minmax(85px, 0.9fr) minmax(90px, 0.9fr) minmax(90px, 1fr);
+  column-gap: 14px;
+  align-items: center;
+  min-width: 520px;
 }
 
 .terms-table-head {
@@ -151,43 +162,50 @@
   padding: 16px;
   border-top: 1px solid #E5E7EB;
   font-size: 15px;
+  min-height: 72px;
 }
 
 .terms-footer {
   display: flex;
-  flex-direction: column;
-  gap: 12px;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
   padding: 18px 4px 0 4px;
   color: #6B7280;
   font-size: 15px;
-  margin-top: auto;
+  margin-top: 12px;
+  width: 100%;
+}
+
+.terms-footer > span {
+  flex: 1;
+  min-width: 0;
 }
 
 .progress-wrap {
   display: flex;
   align-items: center;
-  gap: 12px;
-  width: 100%;
+  gap: 8px;
+  flex-shrink: 0;
 }
 
 .progress-bar {
-  flex: 1;
-  height: 10px;
-  background-color: #E9EDF3;
+  width: clamp(100px, 12vw, 160px);
+  height: 8px;
+  background-color: #D9D9D9;
   border-radius: 999px;
   overflow: hidden;
 }
 
 .progress-fill {
   height: 100%;
-  background-color: #8AB4ED;
+  background-color: #024731;
   border-radius: 999px;
 }
 
 .progress-text {
-  font-size: 16px;
-  color: #6B7280;
   white-space: nowrap;
+  font-size: 14px;
 }
 
 .weekly-icon-circle { 
@@ -264,6 +282,8 @@
   font-size: 13px;
   font-weight: 500;
   white-space: nowrap;
+  cursor: pointer;
+  text-decoration: none;
 }
 
 .difficulty-badge,
@@ -309,15 +329,30 @@
   font-size: 14px;
 }
 
-.slot-dot {
-  display: inline-block;
-  width: 26px;
-  height: 8px;
-  border-radius: 999px;
+.slot-status {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #374151;
+  font-weight: 600;
+  font-size: 14px;
 }
 
-.slot-gray {
+.slot-bar {
+  width: 42px;
+  height: 8px;
   background-color: #D9DDE5;
+  border-radius: 999px;
+  overflow: hidden;
+  display: inline-block;
+  flex-shrink: 0;
+}
+
+.slot-fill {
+  display: block;
+  height: 100%;
+  background-color: #6DB089;
+  border-radius: 999px;
 }
 
 .submit-btn-wrapper {
@@ -474,7 +509,7 @@
 
 .extra-card .card-title {
   margin-bottom: 0;
-  font-size: 18px;
+  font-size: 22px;
 }
 
 .extra-icon {
@@ -643,7 +678,7 @@
 /* ---------- Scrollable Enrolled Courses ---------- */
 
 .course-content {
-  max-height: 210px; /* about 3 courses */
+  max-height: 150px; /* about 3 courses */
   overflow-y: auto;
   padding-right: 6px;
 }

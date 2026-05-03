@@ -1,6 +1,6 @@
 import { auth } from '@/lib/auth';
 import './dashboard.css';
-import { Book, Award, FolderPlus } from 'lucide-react';
+import { Book, Award } from 'lucide-react';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
 import Link from 'next/link';
@@ -87,13 +87,9 @@ const hasReachedWeeklyLimit = weeklySubmissionCount >= weeklyLimit;
 const weeklyCount = weeklySubmissionCount;
 const remaining = Math.max(weeklyLimit - weeklyCount, 0);
 const percent = Math.min((weeklyCount / weeklyLimit) * 100, 100);
-const enrolledCount = user?.enrolledCourses.length ?? 0;
-const totalSubmissions = submissions.length;
 const approvedSubmissions = submissions.filter(
   (s) => s.term?.bestSubmissionId === s.id
 );
-const approvedCount = approvedSubmissions.length;
-
 const notifications = [
   ...approvedSubmissions.map((submission) => ({
     type: 'success',
@@ -154,16 +150,19 @@ const totalPoints = approvedSubmissions.reduce(
                     </div>
 
                     {availableTerms
-                    .filter((term) => term.submissions.length < term.maxSubmissions)
+                .filter((term) => term.submissions.length < term.maxSubmissions)
                     .map((term) => { //  hide FULL terms
                         const submissionCount = term.submissions.length;
                         return (
                         <div className="submission-row" 
                             key={term.id}>
                             <span className="term-name">{term.word}</span>
-                            <span className="course-pill">
+                            <Link
+                            href={`/student-course/${term.course.crn}`}
+                            className="course-pill"
+                            >
                             {term.course.code}
-                            </span>
+                            </Link>
 
                             <span
                             className={`difficulty-badge ${
@@ -183,8 +182,18 @@ const totalPoints = approvedSubmissions.reduce(
                                 : '—'}
                             </span>
                             <span className="slot-status">
-                                <span className="slot-dot slot-gray"></span>
-                            {submissionCount} / {term.maxSubmissions}
+                            <span className="slot-bar">
+                                <span
+                                className="slot-fill"
+                                style={{
+                                    width: `${Math.min((submissionCount / term.maxSubmissions) * 100, 100)}%`,
+                                }}
+                                />
+                            </span>
+
+                            <span>
+                                {submissionCount} / {term.maxSubmissions}
+                            </span>
                             </span>
                             <div className="submit-btn-wrapper">
                             {!hasReachedWeeklyLimit ? (
@@ -241,9 +250,16 @@ const totalPoints = approvedSubmissions.reduce(
                         {submission.term?.word ?? 'Unknown Term'}
                         </span>
 
-                        <span className="course-pill">
-                        {submission.term?.course?.code ?? 'No Course'}
-                        </span>
+                        {submission.term?.course ? (
+                        <Link
+                            href={`/student-course/${submission.term.course.crn}`}
+                            className="course-pill"
+                        >
+                            {submission.term.course.code}
+                        </Link>
+                        ) : (
+                        <span className="course-pill">No Course</span>
+                        )}
 
                         <span
                         className={`difficulty-badge ${
@@ -360,7 +376,7 @@ const totalPoints = approvedSubmissions.reduce(
                 </div>
 
                 <div className="course-actions">
-                        <Link href="/courses/join" className="course-btn course-btn-add">+ Add Course</Link>
+                        <Link href="/courses/join" className="course-btn course-btn-add">+ Join Course</Link>
                 </div>
             </div>
             {/* Notifications */}
@@ -368,6 +384,9 @@ const totalPoints = approvedSubmissions.reduce(
                 <div className="section-header">
                     <h2 className="card-title">Notifications</h2>
                 </div>
+
+                <div className="course-divider"></div>
+
                 <div className="notif-list">
                 {notifications.length === 0 ? (
                     <p>No notifications yet.</p>
@@ -396,69 +415,67 @@ const totalPoints = approvedSubmissions.reduce(
 
         {/* Fourth Row - Quick Actions */}
         <section className="section">
-            <div className="card">
-                <h2 className="card-title">Quick Study Actions</h2>
+        <div className="card">
+            <h2 className="card-title mb-3">Quick Study Actions</h2>
+            <div className="quick-actions-grid">
 
-                <div className="quick-actions-grid">
-
-                
-                <a href="/student-dashboard" className="quick-action-item">
-                    <div className="quick-action-icon">
-                    <Book size={18} />
-                    </div>
-                    <div>
-                    <p className="quick-action-title">View Official Glossary</p>
-                    <p className="quick-action-sub">
-                        {enrolledCount} course{enrolledCount !== 1 ? 's' : ''} enrolled
-                    </p>
-                    </div>
-                </a>
-
-                
-                <a href="/flashcards" className="quick-action-item">
-                    <div className="quick-action-icon">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                        <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
-                    </svg>
-                    </div>
-                    <div>
-                    <p className="quick-action-title">Open Flashcards</p>
-                    <p className="quick-action-sub">
-                        Based on your submitted terms
-                    </p>
-                    </div>
-                </a>
-
-                
-                <a href="/bookmarks" className="quick-action-item">
-                    <div className="quick-action-icon">
-                    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                        <path d="M19 21l-7-5-7 5V5a2 2 0 0 1 2-2h10a2 2 0 0 1 2 2z"/>
-                    </svg>
-                    </div>
-                    <div>
-                    <p className="quick-action-title">View Bookmarks</p>
-                    <p className="quick-action-sub">
-                        {approvedCount} approved submission{approvedCount !== 1 ? 's' : ''}
-                    </p>
-                    </div>
-                </a>
-
-                
-                <a href="/study-set" className="quick-action-item">
-                    <div className="quick-action-icon">
-                    <FolderPlus size={18} />
-                    </div>
-                    <div>
-                    <p className="quick-action-title">Create Study Set</p>
-                    <p className="quick-action-sub">
-                        From {totalSubmissions} total submission{totalSubmissions !== 1 ? 's' : ''}
-                    </p>
-                    </div>
-                </a>
-
+            {/* Official Glossary */}
+            <Link href="/glossary-approved" className="quick-action-item">
+                <div className="quick-action-icon">
+                <Book size={18} />
                 </div>
+                <div>
+                <p className="quick-action-title">Official Glossary</p>
+                <p className="quick-action-sub">
+                    Study approved definitions
+                </p>
+                </div>
+            </Link>
+
+            {/* All Terms */}
+            <Link href="/glossary" className="quick-action-item">
+                <div className="quick-action-icon">
+                <Book size={18} />
+                </div>
+                <div>
+                <p className="quick-action-title">All Glossary Terms</p>
+                <p className="quick-action-sub">
+                    View all terms across courses
+                </p>
+                </div>
+            </Link>
+
+            {/* Study Guide / Flashcards */}
+            <Link href="/study-guide" className="quick-action-item">
+                <div className="quick-action-icon">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <rect x="3" y="4" width="18" height="14" rx="2"/>
+                    <line x1="3" y1="10" x2="21" y2="10"/>
+                </svg>
+                </div>
+                <div>
+                <p className="quick-action-title">Study Guide</p>
+                <p className="quick-action-sub">
+                    Practice with flashcards
+                </p>
+                </div>
+            </Link>
+
+            {/* My Progress */}
+            <Link href="/my-progress" className="quick-action-item">
+                <div className="quick-action-icon">
+                <Book size={18} />
+                </div>
+                <div>
+                <p className="quick-action-title">My Progress</p>
+                <p className="quick-action-sub">
+                    Track submissions & points
+                </p>
+                </div>
+            </Link>
+
             </div>
+        </div>
         </section>
     </main>
   );
