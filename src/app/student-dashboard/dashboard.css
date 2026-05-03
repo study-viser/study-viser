@@ -1,5 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Belanosima:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
 
+/* ---------- Page Layout ---------- */
+
 .dashboard-container {
   font-family: 'Inter', sans-serif;
   max-width: 1200px;
@@ -7,59 +9,14 @@
   padding: 32px 24px;
 }
 
-.page-title,
-.card-title,
-.weekly-title,
-.course-title {
-  font-family: 'Belanosima', sans-serif;
-}
-
-.course-link {
-  text-decoration: none;
-  color: #1F2937;
-  padding: 8px;
-  border-radius: 10px;
-}
-
-.course-link:hover {
-  background-color: #F5F7FA;
-  color: #024731;
-}
-
 .section {
   margin-bottom: 16px;
 }
 
-.grid-2 {
-  display: grid;
-  grid-template-columns: 1.4fr 1fr;
-  gap: 16px;
-}
-
-.grid-3 {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 16px;
-}
-
-.grid-2-equal {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 24px;
-}
-
-.card {
-  background-color: #ffffff;
-  border: 1px solid #E5E7EB;
-  border-radius: 16px;
-  padding: 16px;
-  box-shadow: 0 4px 12px rgba(171, 190, 209, 0.18);
-}
-
-.card-title {
-  font-size: 22px;
-  font-weight: 600;
-  margin-bottom: 16px;
+.page-title,
+.card-title,
+.course-title {
+  font-family: 'Belanosima', sans-serif;
 }
 
 .page-title {
@@ -74,29 +31,45 @@
   color: #555;
 }
 
-.list {
-  padding-left: 20px;
-  line-height: 1.9;
+/* ---------- Grid Layouts ---------- */
+
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  gap: 16px;
 }
 
-.button-primary {
-  background-color: #4CAF50;
-  color: #ffffff;
-  border: none;
-  border-radius: 8px;
-  padding: 12px 16px;
-  font-size: 16px;
+.grid-3 {
+  display: grid;
+  grid-template-columns: 1.2fr 0.7fr 1.8fr;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.grid-2-equal,
+.grid-2-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* ---------- Cards ---------- */
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid #E5E7EB;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(171, 190, 209, 0.18);
+  min-width: 0;
+}
+
+.card-title {
+  font-size: 22px;
   font-weight: 600;
-  cursor: pointer;
+  margin-bottom: 16px;
 }
 
-.points {
-  font-size: 36px;
-  font-weight: 700;
-  margin: 8px 0;
-}
-
-/* Available Terms to Submit */
 .section-header {
   display: flex;
   justify-content: space-between;
@@ -115,6 +88,28 @@
   text-decoration: underline;
 }
 
+/* ---------- Available Terms Full Width ---------- */
+
+.available-terms-full {
+  width: 100%;
+}
+
+.available-terms-full .submission-table {
+  width: 100%;
+}
+
+/* ---------- Recent Submissions ---------- */
+
+.recent-submissions-card {
+  display: flex;
+  flex-direction: column;
+  min-height: 360px;
+}
+
+.recent-submissions-card .terms-table {
+  flex: 1;
+}
+
 .terms-table {
   border: 1px solid #E5E7EB;
   border-radius: 14px;
@@ -122,24 +117,122 @@
   background-color: #ffffff;
 }
 
-.terms-table-head {
+.terms-table-head,
+.terms-row {
   display: grid;
-  grid-template-columns: 1.6fr 0.9fr 1fr 1fr;
-  padding: 10px 16px;
+  grid-template-columns: 1.5fr 0.9fr 0.9fr 1fr;
+  column-gap: 14px;
+  align-items: center;
+}
+
+.terms-table-head {
+  padding: 12px 16px;
   background-color: #F5F7FA;
   color: #6B7280;
-  font-weight: 500;
-  font-size: 15px;
+  font-weight: 600;
+  font-size: 14px;
 }
 
 .terms-row {
-  display: grid;
-  grid-template-columns: 1.6fr 0.9fr 1fr 1fr;
-  align-items: center;
-  padding: 12px 16px;
+  padding: 16px;
   border-top: 1px solid #E5E7EB;
-  font-size: 16px;
+  font-size: 15px;
 }
+
+.terms-footer {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 18px 4px 0 4px;
+  color: #6B7280;
+  font-size: 15px;
+  margin-top: auto;
+}
+
+.progress-wrap {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  width: 100%;
+}
+
+.progress-bar {
+  flex: 1;
+  height: 10px;
+  background-color: #E9EDF3;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-fill {
+  height: 100%;
+  background-color: #8AB4ED;
+  border-radius: 999px;
+}
+
+.progress-text {
+  font-size: 16px;
+  color: #6B7280;
+  white-space: nowrap;
+}
+
+.weekly-icon-circle { 
+  width: 32px; 
+  height: 32px; 
+  border-radius: 50%; 
+  background-color: #8AB4ED; 
+  color: #ffffff; 
+  display: flex; 
+  align-items: center; 
+  justify-content: center; 
+  box-shadow: 0 4px 10px rgba(138, 180, 237, 0.35); 
+  flex-shrink: 0; 
+}
+
+.title-with-icon {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+/* ---------- Available Terms Table ---------- */
+
+.submission-table {
+  border: 1px solid #E5E7EB;
+  border-radius: 14px;
+  overflow: auto;
+  background-color: #ffffff;
+}
+
+.submission-table-head,
+.submission-row {
+  display: grid;
+  grid-template-columns: 1.4fr 0.8fr 1fr 0.8fr 1.1fr;
+  column-gap: 12px;
+  align-items: center;
+}
+
+.submission-table-head {
+  padding: 12px 16px;
+  background-color: #F5F7FA;
+  color: #6B7280;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.submission-row {
+  padding: 14px 16px;
+  border-top: 1px solid #E5E7EB;
+  font-size: 15px;
+}
+
+.submission-table-head span,
+.submission-row > span,
+.submit-btn-wrapper {
+  min-width: 0;
+}
+
+/* ---------- Shared Table Items ---------- */
 
 .term-name {
   font-weight: 600;
@@ -156,6 +249,18 @@
   color: #6B7280;
   font-size: 13px;
   font-weight: 500;
+  white-space: nowrap;
+}
+
+.difficulty-badge,
+.slot-status {
+  width: fit-content;
+  white-space: nowrap;
+}
+
+.difficulty-badge,
+.status-pill {
+  justify-self: start;
 }
 
 .status-pill {
@@ -166,6 +271,7 @@
   font-size: 14px;
   font-weight: 600;
   color: #ffffff;
+  white-space: nowrap;
 }
 
 .status-approved {
@@ -178,83 +284,6 @@
 
 .status-rejected {
   background-color: #C65A5A;
-}
-
-.terms-footer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 16px 4px 0 4px;
-  color: #6B7280;
-  font-size: 15px;
-}
-
-.progress-wrap {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-}
-
-.progress-bar {
-  width: 180px;
-  height: 10px;
-  background-color: #E9EDF3;
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.progress-fill {
-  width: 50%;
-  height: 100%;
-  background-color: #8AB4ED;
-  border-radius: 999px;
-}
-
-.progress-text {
-  font-size: 16px;
-  color: #6B7280;
-}
-
-.submission-table {
-  border: 1px solid #E5E7EB;
-  border-radius: 14px;
-  overflow: auto;
-  background-color: #ffffff;
-}
-
-.submission-table-head {
-  display: grid;
-  grid-template-columns: 1.2fr 0.75fr 0.95fr 0.75fr 1.1fr;
-  column-gap: 10px;
-  align-items: center;
-  padding: 12px 16px;
-  background-color: #F5F7FA;
-  color: #6B7280;
-  font-weight: 500;
-  font-size: 14px;
-}
-
-.submission-row {
-  display: grid;
-  grid-template-columns: 1.2fr 0.75fr 0.95fr 0.75fr 1.1fr;
-  column-gap: 10px;
-  align-items: center;
-  padding: 12px 16px;
-  border-top: 1px solid #E5E7EB;
-  font-size: 15px;
-}
-
-.submission-table-head span,
-.submission-row > span,
-.submit-btn-wrapper {
-  min-width: 0;
-}
-
-.difficulty-badge,
-.course-pill,
-.slot-status {
-  width: fit-content;
-  white-space: nowrap;
 }
 
 .slot-status {
@@ -273,12 +302,13 @@
   border-radius: 999px;
 }
 
-.slot-green {
-  background-color: #6DB089;
-}
-
 .slot-gray {
   background-color: #D9DDE5;
+}
+
+.submit-btn-wrapper {
+  display: flex;
+  justify-content: flex-end;
 }
 
 .submit-button {
@@ -286,13 +316,12 @@
   color: #ffffff;
   border: none;
   border-radius: 10px;
-  padding: 6px 8px;
+  padding: 7px 10px;
   font-size: 12px;
   font-weight: 600;
   line-height: 1.2;
   cursor: pointer;
-  justify-self: start;
-  width: 100px;
+  width: 105px;
   text-decoration: none;
   text-align: center;
 }
@@ -305,10 +334,9 @@
 .submit-button:active {
   text-decoration: none;
 }
-.submit-btn-wrapper {
-  display: flex;
-  justify-content: flex-end;
-}
+
+/* ---------- Enrolled Courses ---------- */
+
 .course-card-header {
   display: flex;
   align-items: center;
@@ -325,12 +353,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
   box-shadow: 0 4px 10px rgba(109, 176, 137, 0.25);
-}
-
-.course-title {
-  margin-bottom: 0;
 }
 
 .course-divider {
@@ -346,6 +369,24 @@
   margin-bottom: 18px;
 }
 
+.course-item-wrapper {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.course-link {
+  text-decoration: none;
+  color: #1F2937;
+  padding: 8px;
+  border-radius: 10px;
+}
+
+.course-link:hover {
+  background-color: #F5F7FA;
+  color: #024731;
+}
+
 .course-item {
   display: flex;
   align-items: flex-start;
@@ -353,7 +394,6 @@
   margin: 0;
   font-size: 16px;
   line-height: 1.4;
-  color: #1F2937;
 }
 
 .course-bullet {
@@ -361,12 +401,6 @@
   font-size: 20px;
   line-height: 1;
   margin-top: 2px;
-}
-
-.course-item-wrapper {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
 }
 
 .course-exit-btn {
@@ -381,16 +415,41 @@
   text-decoration: underline;
 }
 
-/* Extra Credit Card */
+.course-actions {
+  display: flex;
+}
+
+.course-btn-add {
+  padding: 7px 14px;
+  border-radius: 10px;
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  background-color: #6DB089;
+  color: #ffffff;
+  cursor: pointer;
+}
+
+.course-btn-add:hover {
+  background-color: #5c9b76;
+}
+
+/* ---------- Extra Credit ---------- */
+
 .extra-card {
-    background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start; 
+  gap: 8px;
+  padding: 16px;
+  min-height: 180px;
 }
 
 .extra-header {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  margin-bottom: 12px;
+  gap: 12px;
+  margin-bottom: 8px;
 }
 
 .extra-title-wrap {
@@ -417,131 +476,19 @@
 }
 
 .extra-points {
-  font-size: 34px;
+  font-size: 30px;
   font-weight: 700;
-  margin: 6px 0;
+  margin: 4px 0 0 0; 
 }
 
 .extra-sub {
   color: #6B7280;
-  font-size: 15px;
-}
-
-/* Weekly Submission Progress Card */
-.weekly-card {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
-}
-
-.weekly-header {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-bottom: 4px;
-}
-
-.weekly-icon-circle {
-  width: 32px;
-  height: 32px;
-  border-radius: 50%;
-  background-color: #8AB4ED;
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 10px rgba(138, 180, 237, 0.35);
-  flex-shrink: 0;
-}
-
-.weekly-title {
-  margin-bottom: 0;
-  font-size: 18px;
-}
-
-.weekly-progress-bar-wrap {
-  width: 100%;
-}
-
-.weekly-progress-bar {
-  width: 100%;
-  height: 10px;
-  background-color: #E9EDF3;
-  border-radius: 999px;
-  overflow: hidden;
-}
-
-.weekly-progress-fill {
-  height: 100%;
-  background-color: #8AB4ED;
-  border-radius: 999px;
-  transition: width 0.4s ease;
-}
-
-.weekly-desc {
-  font-size: 15px;
-  color: #1F2937;
+  font-size: 14px;
   margin: 0;
 }
 
-.weekly-sub {
-  font-size: 14px;
-  color: #6B7280;
-  margin: 0;
-}
+/* ---------- Quick Actions ---------- */
 
-.weekly-footer {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 4px;
-}
-
-.weekly-submit-btn {
-  background-color: #6DB089;
-  color: #ffffff;
-  border: none;
-  border-radius: 10px;
-  padding: 8px 16px;
-  font-size: 14px;
-  font-weight: 600;
-  cursor: pointer;
-  text-decoration: none;
-  transition: background-color 0.2s ease;
-
-}
-
-.weekly-submit-btn:hover {
-  background-color: #5c9b76;
-}
-
-.course-actions {
-  display: flex;
-}
-
-.course-btn-add {
-  padding: 7px 14px;
-  border-radius: 10px;
-  font-size: 13px;
-  font-weight: 600;
-  text-decoration: none;
-  background-color: #6DB089;
-  color: #ffffff;
-  cursor: pointer;
-}
-
-.course-btn-add:hover {
-  background-color: #5c9b76;
-} 
-
-/* Bottom section layout 
-.grid-2-bottom {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 16px;
-}
-
-/* Quick Study Actions 
 .quick-actions-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -557,7 +504,6 @@
   border-radius: 12px;
   text-decoration: none;
   color: #1F2937;
-  transition: background-color 0.15s ease, border-color 0.15s ease;
 }
 
 .quick-action-item:hover {
@@ -591,7 +537,8 @@
   line-height: 1.4;
 }
 
-/* Notifications 
+/* ---------- Notifications ---------- */
+
 .notif-list {
   display: flex;
   flex-direction: column;
@@ -616,8 +563,8 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  flex-shrink: 0;
   color: #ffffff;
+  flex-shrink: 0;
 }
 
 .notif-success {
@@ -638,5 +585,25 @@
   font-size: 13px;
   color: #9CA3AF;
   white-space: nowrap;
-  flex-shrink: 0;
-} */
+}
+
+/* ---------- Responsive ---------- */
+
+@media (max-width: 900px) {
+  .grid-2,
+  .grid-3,
+  .grid-2-equal,
+  .grid-2-bottom {
+    grid-template-columns: 1fr;
+  }
+
+  .submission-table-head,
+  .submission-row {
+    grid-template-columns: 1.2fr 0.8fr 0.9fr 0.8fr 1fr;
+  }
+
+  .terms-table-head,
+  .terms-row {
+    grid-template-columns: 1.4fr 0.9fr 0.9fr 1fr;
+  }
+}
