@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { Container } from 'react-bootstrap';
 import '@/styles/student-course.css';
 
@@ -91,11 +90,6 @@ export default function ApprovedGlossaryView({ terms, mode }: Props) {
 
   return (
     <Container fluid className="course-page">
-      <div className="course-breadcrumb">
-        <Link href="/student-dashboard">Dashboard</Link>
-        <span> / </span>
-        <span>{mode === 'approved' ? 'Official Glossary' : 'All Glossary Terms'}</span>
-      </div>
 
       <div className="course-header">
         <h1 className="course-title">
