@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { useState, useCallback } from 'react';
+import { useState } from 'react';
 import '@/styles/study-guide.css';
 
 type Term = {
@@ -61,10 +61,10 @@ export default function StudyGuide({ course }: StudyGuideProps) {
   const knownCount = Object.values(knowledge).filter((v) => v === 'known').length;
   const learningCount = Object.values(knowledge).filter((v) => v === 'learning').length;
 
-  const goTo = useCallback((index: number) => {
+  const goTo = ((index: number) => {
     setCurrentIndex(index);
     setFlipped(false);
-  }, []);
+  });
 
   const prev = () =>
     goTo((currentIndex - 1 + displayTerms.length) % displayTerms.length);

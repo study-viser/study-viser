@@ -26,7 +26,7 @@ const JoinCourseForm = () => {
     const secret = formData.get('courseSecret') as string;
 
     if (!session?.user?.id) {
-      setError('You must be signed in to join a course.');
+      setError('You must be logged in before joining a course.');
       return;
     }
 
