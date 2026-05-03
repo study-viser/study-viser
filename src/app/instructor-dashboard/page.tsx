@@ -67,9 +67,7 @@ export default async function InstructorDashboardPage() {
   );
 
   // ── Stat card values ─────────────────────────────────────────────────────
-  // Terms that have had at least one submission selected as best
   const totalApproved = allTermsWithCourse.filter(t => t.bestSubmissionId !== null).length;
-  // Terms that have submissions waiting but no winner yet
   const totalUnapproved = allTermsWithCourse.filter(
     t => t.bestSubmissionId === null && t.submissions.length > 0
   ).length;
@@ -83,19 +81,14 @@ export default async function InstructorDashboardPage() {
   const startOfWeek = new Date();
   startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
   startOfWeek.setHours(0, 0, 0, 0);
-  // Count terms whose "covered on" date falls in the current week
   const termsThisWeek = allTermsWithCourse.filter(
     t => t.coveredOn != null && t.coveredOn >= startOfWeek
   ).length;
 
-  // ── Recent Activity ───────────────────────────────────────────────────────
-  // 4 most recent submissions across all the instructor's courses
+  // ── Recent Activity ──────────────────────────────────────────────────────
   const recentSubmissions = [...allSubmissionsWithContext]
     .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime())
     .slice(0, 4);
-
-  // ── Glossary Management quick-link ───────────────────────────────────────
-  const firstCourseCrn = courses[0]?.crn;
 
   return (
     <main className="dashboard-container">
@@ -199,38 +192,22 @@ export default async function InstructorDashboardPage() {
       {/* ── Bottom Row ─────────────────────────────────────────────────── */}
       <section className="grid-3 section">
 
-        {/* Glossary Management */}
+        {/* Browse Glossaries */}
         <div className="card">
-          <h2 className="card-title">Glossary Management</h2>
+          <h2 className="card-title">Browse Glossaries</h2>
           <div className="glossary-list">
-            {firstCourseCrn ? (
-              <Link
-                href={`/instructor-dashboard/courses/${firstCourseCrn}`}
-                className="glossary-item"
-              >
-                <BookOpen size={15} className="glossary-icon glossary-icon-green" />
-                <span>Manage Glossary</span>
-              </Link>
-            ) : (
-              <span className="glossary-item" style={{ cursor: 'default', color: '#9CA3AF' }}>
-                <BookOpen size={15} className="glossary-icon glossary-icon-green" />
-                <span>Manage Glossary</span>
-              </span>
-            )}
-            <a href="#" className="glossary-item">
-              <FileOutput size={15} className="glossary-icon glossary-icon-blue" />
-              <span>Export Resources</span>
-            </a>
-          </div>
-          {firstCourseCrn ? (
-            <Link href={`/instructor-dashboard/courses/${firstCourseCrn}`}>
-              <button className="manage-glossary-btn">Manage Full Glossary</button>
+            <Link href="/glossary-approved" className="glossary-item">
+              <BookOpen size={15} className="glossary-icon glossary-icon-green" />
+              <span>Official Glossary</span>
             </Link>
-          ) : (
-            <button className="manage-glossary-btn" disabled style={{ opacity: 0.5 }}>
-              Manage Full Glossary
-            </button>
-          )}
+            <Link href="/glossary" className="glossary-item">
+              <FileOutput size={15} className="glossary-icon glossary-icon-blue" />
+              <span>All Glossary Terms</span>
+            </Link>
+          </div>
+          <Link href="/glossary-approved">
+            <button className="manage-glossary-btn">View Full Glossary</button>
+          </Link>
         </div>
 
         {/* Recent Activity */}
