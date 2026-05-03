@@ -1,4 +1,4 @@
-import { test, expect } from '@playwright/test';
+import { test } from '@playwright/test';
 
 test('user can register as student', async ({ page }) => {
   await page.goto('http://localhost:3000/');

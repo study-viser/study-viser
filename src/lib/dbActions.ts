@@ -489,10 +489,16 @@ export async function deleteTerm(id: string) {
 export async function createSubmission(data: {
   creatorId: string;
   termId: string;
-  definition: string; // written text, URL, or file reference
+  definition: string;
   points?: number;
 }) {
   try {
+    const weeklyLimit = 2;
+
+    const startOfWeek = new Date();
+    startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
+    startOfWeek.setHours(0, 0, 0, 0);
+
     const term = await prisma.term.findUnique({
       where: { id: data.termId },
       include: { submissions: true },
@@ -502,10 +508,38 @@ export async function createSubmission(data: {
       throw new Error('Term not found.');
     }
 
+    // 1. Stop term if it is already full
     if (term.submissions.length >= term.maxSubmissions) {
       throw new Error('This term has reached the maximum number of submissions.');
     }
 
+    // 2. Stop student from submitting to the same term more than once
+    const alreadySubmitted = await prisma.submission.findFirst({
+      where: {
+        creatorId: data.creatorId,
+        termId: data.termId,
+      },
+    });
+
+    if (alreadySubmitted) {
+      throw new Error('You already submitted a definition for this term.');
+    }
+
+    // 3. Stop student from submitting more than 2 times this week
+    const weeklySubmissionCount = await prisma.submission.count({
+      where: {
+        creatorId: data.creatorId,
+        createdAt: {
+          gte: startOfWeek,
+        },
+      },
+    });
+
+    if (weeklySubmissionCount >= weeklyLimit) {
+      throw new Error('You have reached your weekly submission limit.');
+    }
+
+    // 4. Create submission only if all checks pass
     return await prisma.submission.create({
       data: {
         creatorId: data.creatorId,
