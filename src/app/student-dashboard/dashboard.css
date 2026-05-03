@@ -9,6 +9,20 @@
   padding: 32px 24px;
 }
 
+.dashboard-main-grid {
+  display: grid;
+  grid-template-columns: 1.7fr 0.8fr;
+  gap: 16px;
+  align-items: stretch;
+}
+
+.dashboard-secondary-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+  align-items: stretch;
+}
+
 .section {
   margin-bottom: 16px;
 }
@@ -67,7 +81,7 @@
 .card-title {
   font-size: 22px;
   font-weight: 600;
-  margin-bottom: 16px;
+  margin-bottom: 0px;
 }
 
 .section-header {
@@ -103,7 +117,7 @@
 .recent-submissions-card {
   display: flex;
   flex-direction: column;
-  min-height: 360px;
+  min-height: 330px;
 }
 
 .recent-submissions-card .terms-table {
@@ -442,7 +456,7 @@
   justify-content: flex-start; 
   gap: 8px;
   padding: 16px;
-  min-height: 180px;
+  min-height: 220px;
 }
 
 .extra-header {
@@ -567,6 +581,10 @@
   flex-shrink: 0;
 }
 
+.notifications-card {
+  min-height: 220px;
+}
+
 .notif-success {
   background-color: #6DB089;
 }
@@ -591,13 +609,16 @@
   background-color: #E0B548;
 }
 
+
 /* ---------- Responsive ---------- */
 
 @media (max-width: 900px) {
   .grid-2,
   .grid-3,
   .grid-2-equal,
-  .grid-2-bottom {
+  .grid-2-bottom 
+  .dashboard-main-grid,
+  .dashboard-secondary-grid {
     grid-template-columns: 1fr;
   }
 
@@ -610,4 +631,36 @@
   .terms-row {
     grid-template-columns: 1.4fr 0.9fr 0.9fr 1fr;
   }
+}
+
+/* ---------- Scrollable Available Terms ---------- */
+
+.available-terms-card .submission-table {
+  max-height:250px;
+  overflow-y: auto;
+}
+
+/* ---------- Scrollable Enrolled Courses ---------- */
+
+.course-content {
+  max-height: 210px; /* about 3 courses */
+  overflow-y: auto;
+  padding-right: 6px;
+}
+
+/* nice scrollbar */
+.available-terms-card .submission-table::-webkit-scrollbar,
+.course-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.available-terms-card .submission-table::-webkit-scrollbar-thumb,
+.course-content::-webkit-scrollbar-thumb {
+  background-color: #C7D2E0;
+  border-radius: 999px;
+}
+
+.available-terms-card .submission-table::-webkit-scrollbar-track,
+.course-content::-webkit-scrollbar-track {
+  background-color: #F5F7FA;
 }
