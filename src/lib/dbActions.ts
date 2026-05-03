@@ -27,6 +27,7 @@ import { Prisma } from '@/generated/prisma/client';
 //   deleteCourse(crn)                — delete course by CRN
 //   enrollStudent(secret, userId)    — enroll a student using the course secret
 //   unenrollStudent(crn, userId)     — remove a student from a course by CRN
+//   teachCourse(crn, instructorId)   — assign an instructor to a course by CRN
 //
 // Listing
 //   createListing(data)              — create a new course listing
@@ -308,6 +309,18 @@ export async function unenrollStudent(crn: number, studentId: string) {
     return await prisma.course.update({
       where: { crn },
       data: { students: { disconnect: { id: studentId } } },
+    });
+  } catch (error) {
+    handlePrismaError(error);
+  }
+}
+
+/** Assign an instructor to a course */
+export async function teachCourse(crn: number, instructorId: string) {
+  try {
+    return await prisma.course.update({
+      where: { crn },
+      data: { instructor: { connect: { id: instructorId } } },
     });
   } catch (error) {
     handlePrismaError(error);
