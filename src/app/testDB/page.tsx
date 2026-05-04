@@ -1,12 +1,5 @@
 import { prisma } from '@/lib/prisma';
 import TestDBTabs from '@/components/TestDBTabs';
-import {
-  createUser, updateUser, deleteUser,
-  createCourse, updateCourse, deleteCourse, enrollStudent, unenrollStudent, getSecretCode, teachCourse,
-  createTerm, updateTerm, deleteTerm, setBestSubmission,
-  createSubmission, updateSubmission, deleteSubmission, reviewSubmission,
-  approveSubmission, clearTermApproval, getExtraCreditByUser, getExtraCreditByCourse,
-} from '@/lib/dbActions';
 
 export const dynamic = 'force-dynamic';
 
@@ -35,13 +28,6 @@ const TestPage = async () => {
         courses={courses}
         terms={terms}
         submissions={submissions}
-        actions={{
-          createUser, updateUser, deleteUser,
-          createCourse, updateCourse, deleteCourse, enrollStudent, unenrollStudent, getSecretCode, teachCourse,
-          createTerm, updateTerm, deleteTerm, setBestSubmission,
-          createSubmission, updateSubmission, deleteSubmission, reviewSubmission,
-          approveSubmission, clearTermApproval, getExtraCreditByUser, getExtraCreditByCourse,
-        }}
       />
     </main>
   );
