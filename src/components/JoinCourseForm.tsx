@@ -7,6 +7,7 @@ import { useSession } from 'next-auth/react';
 import BackButton from '@/components/BackButton';
 
 import '@/styles/forms.css';
+import '@/styles/course-forms.css';
 
 const JoinCourseForm = () => {
   const { data: session } = useSession();
@@ -41,16 +42,16 @@ const JoinCourseForm = () => {
   };
 
   return (
-    <Container className="course-page">
+    <Container className="course-form-page">
       <div className="form-heading-wrap">
         <BackButton />
       </div>
-      <Card className="course-card">
+      <Card className="course-form-card">
         <Card.Body>
         <Image src="/courseaddicon.png" className="two-user-icon" alt="Join Course" />
-          <h1 className="course-title">Join a Course</h1>
+          <h1 className="course-form-title">Join a Course</h1>
 
-          <p className="course-subtitle">
+          <p className="course-form-subtitle">
             Enter the course enrollment code provided by your instructor to enroll in a course.
           </p>
 
@@ -61,7 +62,7 @@ const JoinCourseForm = () => {
 
           <Form onSubmit={handleSubmit}>
             <Form.Group as={Row} className="mb-4" controlId="courseSecret">
-              <Form.Label column sm={12} className="course-label">
+              <Form.Label column sm={12} className="course-form-label">
                 Course Enrollment Code
               </Form.Label>
 

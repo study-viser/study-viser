@@ -9,25 +9,28 @@ export default async function CoursesPage() {
   });
 
   return (
-    <main style={{ display: 'flex', gap: '2rem', padding: '2rem', height: '100vh' }}>
+    <main className="courses-page" style={{ display: 'flex', gap: '2rem' }}>
+      
       {/* LEFT SIDE: LIST */}
-      <div style={{ flex: '1', overflowY: 'auto', paddingRight: '1rem' }}>
-        <h1>Courses</h1>
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1rem' }}>
+      <div className="courses-container" style={{ flex: 1, overflowY: 'auto' }}>
+        <h1 className="courses-title">Courses</h1>
+
+        <div className="courses-grid">
           {courses.map((course) => (
-            <div key={course.crn} style={{ padding: '1.5rem', border: '1px solid #e5e7eb', borderRadius: '12px' }}>
-              <h2>{course.code}</h2>
-              <p>{course.title}</p>
-              <p>📍 {course.location || 'TBD'}</p>
+            <div key={course.crn} className="courses-card">
+              <h2 className="courses-code">{course.code}</h2>
+              <p className="courses-course-title">{course.title}</p>
+              <p className="courses-meta">📍 {course.location || 'TBD'}</p>
             </div>
           ))}
         </div>
       </div>
 
       {/* RIGHT SIDE: MAP */}
-      <div style={{ flex: '1', position: 'sticky', top: '2rem', height: 'calc(100vh - 4rem)' }}>
+      <div className="courses-map">
         <MapWrapper courses={courses} />
       </div>
+
     </main>
   );
 }

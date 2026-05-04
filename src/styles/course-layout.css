@@ -1,0 +1,172 @@
+/* --- Page layout --- */
+.course-page {
+  padding: 2rem 1.5rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  font-family: var(--font-body);
+}
+
+/* --- Breadcrumb --- */
+.course-breadcrumb {
+  font-size: 14px;
+  color: #666;
+  margin-bottom: 0.75rem;
+}
+
+.course-breadcrumb a {
+  color: #2d7a4f;
+  text-decoration: none;
+}
+
+.course-breadcrumb a:hover {
+  text-decoration: underline;
+}
+
+/* --- Header --- */
+.course-header {
+  margin-bottom: 1.5rem;
+  border-bottom: 2px solid #2d7a4f;
+  padding-bottom: 1rem;
+}
+
+.course-title {
+  font-size: 40px;
+  font-weight: 700;
+  font-family: var(--font-title);
+  color: #2E7D32;
+  margin-bottom: 0.25rem;
+}
+
+.course-instructor {
+  font-size: 18px;
+  color: #555;
+  margin: 0;
+}
+
+/* --- Two-column layout: sidebar + main --- */
+.course-body {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+}
+
+
+/* --- Sidebar --- */
+.course-sidebar {
+  width: 200px;
+  flex-shrink: 0;
+  background: #f8faf9;
+  border: 1px solid #d9ede3;
+  border-radius: 10px;
+  padding: 1.25rem 1rem;
+}
+
+.sidebar-section {
+  margin-bottom: 1.5rem;
+}
+
+.sidebar-section:last-child {
+  margin-bottom: 0;
+}
+
+.sidebar-label {
+  font-size: 15px;
+  font-weight: 600;
+  font-family: var(--font-title);
+  color: #1a4731;
+  margin-bottom: 0.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+
+.sidebar-icon {
+  font-size: 15px;
+}
+
+.sidebar-checkbox {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 15px;
+  color: #444;
+  cursor: pointer;
+  margin-bottom: 0.3rem;
+}
+
+.sidebar-checkbox input[type='checkbox'] {
+  accent-color: #2d7a4f;
+  cursor: pointer;
+}
+
+/* --- Main content area --- */
+.course-main {
+  flex: 1;
+  min-width: 0;
+}
+
+.course-main-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  gap: 1rem;
+}
+
+@media (max-width: 900px) {
+  .student-course-body {
+    flex-direction: column;
+  }
+  .student-course-sidebar {
+    width: 100%;
+  }
+  .term-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.glossary-title-group {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  flex-wrap: wrap;
+}
+
+.glossary-title {
+  font-size: 22px;
+  font-weight: 600;
+  font-family: var(--font-title);
+  color: #1a4731;
+  margin: 0;
+}
+
+.btn-view-all-terms {
+  font-size: 13px;
+  font-weight: 600;
+  color: #2d7a4f;
+  text-decoration: none;
+  border: 1.5px solid #2d7a4f;
+  border-radius: 6px;
+  padding: 4px 12px;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.btn-view-all-terms:hover {
+  background: #2d7a4f;
+  color: #fff;
+}
+
+.glossary-search {
+  border: 1px solid #b8d9c8;
+  border-radius: 6px;
+  padding: 0.4rem 0.75rem;
+  font-size: 15px;
+  width: 220px;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.glossary-search:focus {
+  border-color: #2d7a4f;
+}

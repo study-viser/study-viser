@@ -1,19 +1,20 @@
         @import url('https://fonts.googleapis.com/css2?family=Belanosima:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
  
         :root {
-          --green-dark: #024731;;
+          --green-dark: #024731;
           --green-mid: #2d6a44;
           --green-light: #4a9b65;
           --green-pale: #a8d5b5;
           --green-muted: #E8F5E9;
+          --green-bg: #f0faf4;
           --white: #ffffff;
           --gray-text: #D9D9D9;
+          --font-title: 'Belanosima', sans-serif;
+          --font-body: 'Inter', sans-serif;
         }
- 
         * { box-sizing: border-box; margin: 0; padding: 0; }
  
         body {
-          font-family: 'DM Sans', sans-serif;
           min-height: 100vh;
         }
 
@@ -50,7 +51,7 @@
         }
  
         .logo-text {
-          font-family: 'DM Sans', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-weight: 700;
           font-size: 1.5rem;
           color: var(--green-dark);
@@ -146,7 +147,7 @@
         }
  
         .login-btn {
-          font-family: 'DM Sans', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-weight: 600;
           font-size: 0.95rem;
           color: var(--green-dark);
@@ -161,7 +162,7 @@
         .login-btn:hover { color: var(--green-mid); }
  
         .register-btn {
-          font-family: 'DM Sans', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-weight: 600;
           font-size: 0.95rem;
           color: white;
@@ -201,7 +202,7 @@
           padding: 16px 20px 16px 52px;
           border: 1.5px solid #c8e6d0;
           border-radius: 50px;
-          font-family: 'DM Sans', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 1rem;
           color: var(--green-dark);
           outline: none;
@@ -305,7 +306,7 @@
         }
  
         .footer-subtitle {
-          font-family: 'DM Sans', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.95rem;
           opacity: 0.8;
           font-weight: 400;
