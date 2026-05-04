@@ -8,13 +8,6 @@ import CourseItem from '@/components/CourseItem';
 import TermItem from '@/components/TermItem';
 import SubmissionItem from '@/components/SubmissionItem';
 import { Prisma } from '@/generated/prisma/client';
-import {
-  createUser, updateUser, deleteUser,
-  createCourse, updateCourse, deleteCourse, enrollStudent, unenrollStudent, getSecretCode, teachCourse,
-  createTerm, updateTerm, deleteTerm, setBestSubmission,
-  createSubmission, updateSubmission, deleteSubmission, reviewSubmission,
-  approveSubmission, clearTermApproval, getExtraCreditByUser, getExtraCreditByCourse,
-} from '@/lib/dbActions';
 
 // ---------------------------------------------------------------------------
 // Types
@@ -33,6 +26,30 @@ type Props = {
   submissions: Prisma.SubmissionGetPayload<{
     include: { creator: true; term: true };
   }>[];
+  actions: {
+    createUser: (data: { name: string; email: string; password: string; role: 'STUDENT' | 'TA' | 'INSTRUCTOR' | 'ADMIN' }) => Promise<unknown>;
+    updateUser: (id: string, data: Partial<{ name: string; email: string; password: string; role: 'STUDENT' | 'TA' | 'INSTRUCTOR' | 'ADMIN' }>) => Promise<unknown>;
+    deleteUser: (id: string) => Promise<unknown>;
+    createCourse: (data: { crn: number; code: string; title: string; description?: string; location?: string; instructorId?: string; listingId?: string }) => Promise<unknown>;
+    updateCourse: (crn: number, data: Partial<{ code: string; title: string; description: string; location: string; instructorId: string; listingId: string; externalURLs: string[] }>) => Promise<unknown>;
+    deleteCourse: (crn: number) => Promise<unknown>;
+    enrollStudent: (secret: string, studentId: string) => Promise<unknown>;
+    unenrollStudent: (crn: number, studentId: string) => Promise<unknown>;
+    getSecretCode: (crn: number) => Promise<string | null | undefined>;
+    teachCourse: (crn: number, instructorId: string) => Promise<unknown>;
+    createTerm: (data: { courseCRN: number; word: string; maxSubmissions: number; referenceDefinition?: string; week?: number; coveredOn?: Date; difficulty?: 'Basic' | 'Moderate' | 'Advanced'; imageRequired?: boolean }) => Promise<unknown>;
+    updateTerm: (id: string, data: Partial<{ word: string; maxSubmissions: number; referenceDefinition: string; week: number; coveredOn: Date; difficulty: 'Basic' | 'Moderate' | 'Advanced'; imageRequired: boolean }>) => Promise<unknown>;
+    deleteTerm: (id: string) => Promise<unknown>;
+    setBestSubmission: (termId: string, submissionId: string) => Promise<unknown>;
+    createSubmission: (data: { creatorId: string; termId: string; definition: string; points?: number }) => Promise<unknown>;
+    updateSubmission: (id: string, data: Partial<{ definition: string; points: number; wasReviewed: boolean; termId: string }>) => Promise<unknown>;
+    deleteSubmission: (id: string) => Promise<unknown>;
+    reviewSubmission: (id: string, points?: number) => Promise<unknown>;
+    approveSubmission: (termId: string, submissionId: string) => Promise<unknown>;
+    clearTermApproval: (termId: string, submissionId: string) => Promise<unknown>;
+    getExtraCreditByUser: (userId: string) => Promise<{ total: number; breakdown: { points: number }[] } | undefined>;
+    getExtraCreditByCourse: (crn: number) => Promise<{ student: { name: string }; total: number }[] | null | undefined>;
+  };
 };
 
 type ModelTab = 'users' | 'courses' | 'terms' | 'submissions';
@@ -133,8 +150,8 @@ function TextAreaField({ name, label, placeholder, required, rows = 3 }: {
 // User Action Form
 // ---------------------------------------------------------------------------
 
-function UserActionForm({ op, users, onSuccess }: {
-  op: UserOp; users: Props['users']; onSuccess: () => void;
+function UserActionForm({ op, users, actions, onSuccess }: {
+  op: UserOp; users: Props['users']; actions: Props['actions']; onSuccess: () => void;
 }) {
   const [feedback, setFeedback] = useState<Feedback>(null);
 
@@ -146,7 +163,7 @@ function UserActionForm({ op, users, onSuccess }: {
     try {
       switch (op) {
         case 'createUser':
-          await createUser({
+          await actions.createUser({
             name:     f.get('name') as string,
             email:    f.get('email') as string,
             password: f.get('password') as string,
@@ -155,7 +172,7 @@ function UserActionForm({ op, users, onSuccess }: {
           break;
 
         case 'updateUser':
-          await updateUser(f.get('id') as string, {
+          await actions.updateUser(f.get('id') as string, {
             name:     f.get('name') as string || undefined,
             email:    f.get('email') as string || undefined,
             password: f.get('password') as string || undefined,
@@ -164,7 +181,7 @@ function UserActionForm({ op, users, onSuccess }: {
           break;
 
         case 'deleteUser':
-          await deleteUser(f.get('id') as string);
+          await actions.deleteUser(f.get('id') as string);
           break;
       }
 
@@ -219,8 +236,8 @@ function UserActionForm({ op, users, onSuccess }: {
 // Course Action Form
 // ---------------------------------------------------------------------------
 
-function CourseActionForm({ op, courses, users, onSuccess }: {
-  op: CourseOp; courses: Props['courses']; users: Props['users']; onSuccess: () => void;
+function CourseActionForm({ op, courses, users, actions, onSuccess }: {
+  op: CourseOp; courses: Props['courses']; users: Props['users']; actions: Props['actions']; onSuccess: () => void;
 }) {
   const [feedback, setFeedback] = useState<Feedback>(null);
 
@@ -232,7 +249,7 @@ function CourseActionForm({ op, courses, users, onSuccess }: {
     try {
       switch (op) {
         case 'createCourse':
-          await createCourse({
+          await actions.createCourse({
             crn:         parseInt(f.get('crn') as string, 10),
             code:        f.get('code') as string,
             title:       f.get('title') as string,
@@ -244,7 +261,7 @@ function CourseActionForm({ op, courses, users, onSuccess }: {
           break;
 
         case 'updateCourse':
-          await updateCourse(parseInt(f.get('crn') as string, 10), {
+          await actions.updateCourse(parseInt(f.get('crn') as string, 10), {
             code:         f.get('code') as string || undefined,
             title:        f.get('title') as string || undefined,
             description:  f.get('description') as string || undefined,
@@ -258,28 +275,28 @@ function CourseActionForm({ op, courses, users, onSuccess }: {
           break;
 
         case 'deleteCourse':
-          await deleteCourse(parseInt(f.get('crn') as string, 10));
+          await actions.deleteCourse(parseInt(f.get('crn') as string, 10));
           break;
 
         case 'enrollStudent':
-          await enrollStudent(f.get('secret') as string, f.get('studentId') as string);
+          await actions.enrollStudent(f.get('secret') as string, f.get('studentId') as string);
           break;
 
         case 'unenrollStudent':
-          await unenrollStudent(
+          await actions.unenrollStudent(
             parseInt(f.get('crn') as string, 10),
             f.get('studentId') as string,
           );
           break;
 
         case 'getSecretCode': {
-          const secret = await getSecretCode(parseInt(f.get('crn') as string, 10));
+          const secret = await actions.getSecretCode(parseInt(f.get('crn') as string, 10));
           setFeedback({ type: 'success', message: `Secret for CRN ${f.get('crn')}: ${secret ?? 'Not found'}` });
           return;
         }
 
         case 'teachCourse':
-          await teachCourse(
+          await actions.teachCourse(
             parseInt(f.get('crn') as string, 10),
             f.get('instructorId') as string,
           );
@@ -355,11 +372,12 @@ function CourseActionForm({ op, courses, users, onSuccess }: {
 // Term Action Form
 // ---------------------------------------------------------------------------
 
-function TermActionForm({ op, courses, terms, submissions, onSuccess }: {
+function TermActionForm({ op, courses, terms, submissions, actions, onSuccess }: {
   op: TermOp;
   courses: Props['courses'];
   terms: Props['terms'];
   submissions: Props['submissions'];
+  actions: Props['actions'];
   onSuccess: () => void;
 }) {
   const [feedback, setFeedback] = useState<Feedback>(null);
@@ -372,7 +390,7 @@ function TermActionForm({ op, courses, terms, submissions, onSuccess }: {
     try {
       switch (op) {
         case 'createTerm':
-          await createTerm({
+          await actions.createTerm({
             courseCRN:           parseInt(f.get('courseCRN') as string, 10),
             word:                f.get('word') as string,
             maxSubmissions:      parseInt(f.get('maxSubmissions') as string, 10),
@@ -385,7 +403,7 @@ function TermActionForm({ op, courses, terms, submissions, onSuccess }: {
           break;
 
         case 'updateTerm':
-          await updateTerm(f.get('id') as string, {
+          await actions.updateTerm(f.get('id') as string, {
             word:                f.get('word') as string || undefined,
             maxSubmissions:      f.get('maxSubmissions') ? parseInt(f.get('maxSubmissions') as string, 10) : undefined,
             week:                f.get('week') ? parseInt(f.get('week') as string, 10) : undefined,
@@ -397,11 +415,11 @@ function TermActionForm({ op, courses, terms, submissions, onSuccess }: {
           break;
 
         case 'deleteTerm':
-          await deleteTerm(f.get('id') as string);
+          await actions.deleteTerm(f.get('id') as string);
           break;
 
         case 'setBestSubmission':
-          await setBestSubmission(f.get('termId') as string, f.get('submissionId') as string);
+          await actions.setBestSubmission(f.get('termId') as string, f.get('submissionId') as string);
           break;
       }
 
@@ -473,12 +491,13 @@ function TermActionForm({ op, courses, terms, submissions, onSuccess }: {
 // Submission Action Form
 // ---------------------------------------------------------------------------
 
-function SubmissionActionForm({ op, users, terms, submissions, courses, onSuccess }: {
+function SubmissionActionForm({ op, users, terms, submissions, courses, actions, onSuccess }: {
   op: SubmissionOp;
   users: Props['users'];
   terms: Props['terms'];
   submissions: Props['submissions'];
   courses: Props['courses'];
+  actions: Props['actions'];
   onSuccess: () => void;
 }) {
   const [feedback, setFeedback] = useState<Feedback>(null);
@@ -491,7 +510,7 @@ function SubmissionActionForm({ op, users, terms, submissions, courses, onSucces
     try {
       switch (op) {
         case 'createSubmission':
-          await createSubmission({
+          await actions.createSubmission({
             creatorId:  f.get('creatorId') as string,
             termId:     f.get('termId') as string,
             definition: f.get('definition') as string,
@@ -500,7 +519,7 @@ function SubmissionActionForm({ op, users, terms, submissions, courses, onSucces
           break;
 
         case 'updateSubmission':
-          await updateSubmission(f.get('id') as string, {
+          await actions.updateSubmission(f.get('id') as string, {
             definition:  f.get('definition') as string || undefined,
             points:      f.get('points') ? parseFloat(f.get('points') as string) : undefined,
             wasReviewed: f.get('wasReviewed') ? f.get('wasReviewed') === 'true' : undefined,
@@ -509,34 +528,32 @@ function SubmissionActionForm({ op, users, terms, submissions, courses, onSucces
           break;
 
         case 'deleteSubmission':
-          await deleteSubmission(f.get('id') as string);
+          await actions.deleteSubmission(f.get('id') as string);
           break;
 
         case 'reviewSubmission':
-          await reviewSubmission(
+          await actions.reviewSubmission(
             f.get('id') as string,
             f.get('points') ? parseFloat(f.get('points') as string) : undefined,
           );
           break;
 
         case 'approveSubmission':
-          // Sets winning submission and grants 4 bonus points
-          await approveSubmission(f.get('termId') as string, f.get('id') as string);
+          await actions.approveSubmission(f.get('termId') as string, f.get('id') as string);
           break;
 
         case 'clearTermApproval':
-          // Removes winning submission and drops points back to 1
-          await clearTermApproval(f.get('termId') as string, f.get('id') as string);
+          await actions.clearTermApproval(f.get('termId') as string, f.get('id') as string);
           break;
 
         case 'getExtraCreditByUser': {
-          const result = await getExtraCreditByUser(f.get('creatorId') as string);
+          const result = await actions.getExtraCreditByUser(f.get('creatorId') as string);
           setFeedback({ type: 'success', message: `Total extra credit: ${result?.total ?? 0} pts across ${result?.breakdown.length ?? 0} submissions.` });
           return;
         }
 
         case 'getExtraCreditByCourse': {
-          const rows = await getExtraCreditByCourse(parseInt(f.get('crn') as string, 10));
+          const rows = await actions.getExtraCreditByCourse(parseInt(f.get('crn') as string, 10));
           if (!rows) { setFeedback({ type: 'danger', message: 'Course not found.' }); return; }
           const summary = rows.map((r: { student: { name: string }; total: number }) => `${r.student.name}: ${r.total} pts`).join(' | ');
           setFeedback({ type: 'success', message: summary || 'No reviewed submissions yet.' });
@@ -639,7 +656,7 @@ function SubmissionActionForm({ op, users, terms, submissions, courses, onSucces
 // Main Component
 // ---------------------------------------------------------------------------
 
-const TestDBTabs = ({ users, courses, terms, submissions }: Props) => {
+const TestDBTabs = ({ users, courses, terms, submissions, actions }: Props) => {
   const router = useRouter();
   const [activeModel, setActiveModel] = useState<ModelTab>('users');
   const [activeSubTab, setActiveSubTab] = useState<SubTab>('view');
@@ -710,7 +727,7 @@ const TestDBTabs = ({ users, courses, terms, submissions }: Props) => {
                   {USER_OPS.map(op => <option key={op} value={op}>{op}</option>)}
                 </Form.Select>
               </Form.Group>
-              <UserActionForm op={userOp} users={users} onSuccess={handleSuccess} />
+              <UserActionForm op={userOp} users={users} actions={actions} onSuccess={handleSuccess} />
             </>
           )}
 
@@ -734,7 +751,7 @@ const TestDBTabs = ({ users, courses, terms, submissions }: Props) => {
                   {COURSE_OPS.map(op => <option key={op} value={op}>{op}</option>)}
                 </Form.Select>
               </Form.Group>
-              <CourseActionForm op={courseOp} courses={courses} users={users} onSuccess={handleSuccess} />
+              <CourseActionForm op={courseOp} courses={courses} users={users} actions={actions} onSuccess={handleSuccess} />
             </>
           )}
 
@@ -758,7 +775,7 @@ const TestDBTabs = ({ users, courses, terms, submissions }: Props) => {
                   {TERM_OPS.map(op => <option key={op} value={op}>{op}</option>)}
                 </Form.Select>
               </Form.Group>
-              <TermActionForm op={termOp} courses={courses} terms={terms} submissions={submissions} onSuccess={handleSuccess} />
+              <TermActionForm op={termOp} courses={courses} terms={terms} submissions={submissions} actions={actions} onSuccess={handleSuccess} />
             </>
           )}
 
@@ -782,7 +799,7 @@ const TestDBTabs = ({ users, courses, terms, submissions }: Props) => {
                   {SUBMISSION_OPS.map(op => <option key={op} value={op}>{op}</option>)}
                 </Form.Select>
               </Form.Group>
-              <SubmissionActionForm op={submissionOp} users={users} terms={terms} submissions={submissions} courses={courses} onSuccess={handleSuccess} />
+              <SubmissionActionForm op={submissionOp} users={users} terms={terms} submissions={submissions} courses={courses} actions={actions} onSuccess={handleSuccess} />
             </>
           )}
 
