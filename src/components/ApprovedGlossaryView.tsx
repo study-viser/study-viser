@@ -3,6 +3,7 @@
 import { useState } from 'react';
 import { Container } from 'react-bootstrap';
 import '@/styles/student-course.css';
+import Link from 'next/link';
 
 type Difficulty = 'Basic' | 'Moderate' | 'Advanced';
 
@@ -166,11 +167,13 @@ export default function ApprovedGlossaryView({ terms, mode }: Props) {
               {grouped.map(({ course, terms }) => (
                 <div key={course.crn} className="official-course-box">
                   <div className="official-course-header">
-                    <div>
+                    <Link
+                      href={`/student-course/${course.crn}`}
+                      className="official-course-link"
+                    >
                       <h3>{course.code}</h3>
                       <p>{course.title}</p>
-                    </div>
-
+                    </Link>
                     <span className="term-status-badge approved">
                       {terms.length} {mode === 'approved' ? 'approved' : 'term'}
                     </span>

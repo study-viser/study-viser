@@ -563,3 +563,12 @@
     gap: 10px;
   }
 }
+
+.official-course-link {
+  color: inherit;
+  text-decoration: none;
+}
+
+.official-course-link:hover h3 {
+  text-decoration: underline;
+}

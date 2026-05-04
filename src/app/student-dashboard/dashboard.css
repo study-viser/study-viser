@@ -114,15 +114,22 @@
 
 /* ---------- Recent Submissions ---------- */
 
-.recent-submissions-card {
-  display: flex;
-  flex-direction: column;
-  min-height: 330px;
+.recent-submissions-card .terms-table {
+  max-height: 260px;
+  overflow-y: auto;
 }
 
-.recent-submissions-card .terms-table {
-  flex: 1;
-  min-height: 0;
+.recent-submissions-card .terms-table::-webkit-scrollbar {
+  width: 8px;
+}
+
+.recent-submissions-card .terms-table::-webkit-scrollbar-thumb {
+  background-color: #C7D2E0;
+  border-radius: 999px;
+}
+
+.recent-submissions-card .terms-table::-webkit-scrollbar-track {
+  background-color: #F5F7FA;
 }
 
 .terms-table {

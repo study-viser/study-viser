@@ -65,7 +65,7 @@ const availableTerms = await prisma.term.findMany({
   },
 });
 
-const recentSubmissions = submissions.slice(0, 2);
+const recentSubmissions = submissions;
 
 const weeklyLimit = 2;
 
@@ -73,15 +73,36 @@ const startOfWeek = new Date();
 startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
 startOfWeek.setHours(0, 0, 0, 0);
 
-const weeklySubmissionCount = submissions.filter(
-  (submission) => submission.createdAt >= startOfWeek
-).length;
+const weeklyCountsByCourse = submissions.reduce((acc, submission) => {
+  const courseCRN = submission.term?.course?.crn;
 
-const hasReachedWeeklyLimit = weeklySubmissionCount >= weeklyLimit;
-const weeklyCount = weeklySubmissionCount;
-const remaining = Math.max(weeklyLimit - weeklyCount, 0);
-const percent = Math.min((weeklyCount / weeklyLimit) * 100, 100);
+  if (!courseCRN) return acc;
+  if (submission.createdAt < startOfWeek) return acc;
 
+  acc[courseCRN] = (acc[courseCRN] ?? 0) + 1;
+
+  return acc;
+}, {} as Record<number, number>);
+
+const totalWeeklySubmissionCount = Object.values(weeklyCountsByCourse).reduce(
+  (sum, count) => sum + Math.min(count, weeklyLimit),
+  0
+);
+
+const maxWeeklySubmissions = user.enrolledCourses.length * weeklyLimit;
+
+const hasReachedWeeklyLimit =
+  maxWeeklySubmissions > 0 &&
+  totalWeeklySubmissionCount >= maxWeeklySubmissions;
+
+const weeklyCount = totalWeeklySubmissionCount;
+const remaining = Math.max(maxWeeklySubmissions - weeklyCount, 0);
+
+const percent =
+  maxWeeklySubmissions > 0
+    ? Math.min((totalWeeklySubmissionCount / maxWeeklySubmissions) * 100, 100)
+    : 0;
+    
 const approvedSubmissions = submissions.filter(
   (s) => s.wasReviewed && s.points > 0
 );
@@ -150,6 +171,9 @@ const totalPoints = approvedSubmissions.reduce(
                     .filter((term) => term.submissions.length < term.maxSubmissions)
                         .map((term) => { //  hide FULL terms
                             const submissionCount = term.submissions.length;
+                             const courseWeeklyCount = weeklyCountsByCourse[term.course.crn] ?? 0;
+                            const hasReachedCourseWeeklyLimit = courseWeeklyCount >= weeklyLimit;
+
                             return (
                             <div className="submission-row" 
                                 key={term.id}>
@@ -193,13 +217,13 @@ const totalPoints = approvedSubmissions.reduce(
                                 </span>
                                 </span>
                                 <div className="submit-btn-wrapper">
-                                {!hasReachedWeeklyLimit ? (
+                                {!hasReachedCourseWeeklyLimit ? (
                                 <a href={`/add-definition?termId=${term.id}`} className="submit-button">
                                     Submit Definition
                                 </a>
                                 ) : (
                                 <span className="term-status-badge full">
-                                    Weekly limit reached
+                                    Course weekly limit reached
                                 </span>
                                 )}
                                 </div>
@@ -313,7 +337,7 @@ const totalPoints = approvedSubmissions.reduce(
                     </div>
 
                     <span className="progress-text">
-                    {Math.min(weeklyCount, weeklyLimit)} / {weeklyLimit}
+                    {weeklyCount} / {maxWeeklySubmissions}
                     </span>
                 </div>
                 </div>
