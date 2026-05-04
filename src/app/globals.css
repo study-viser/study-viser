@@ -7,13 +7,24 @@
           --green-pale: #a8d5b5;
           --green-muted: #E8F5E9;
           --white: #ffffff;
-          --gray-text: D9D9D9;
+          --gray-text: #D9D9D9;
         }
  
         * { box-sizing: border-box; margin: 0; padding: 0; }
  
         body {
           font-family: 'DM Sans', sans-serif;
+          min-height: 100vh;
+        }
+
+        html, body {
+          min-height: 100%;
+          margin: 0;
+
+        }
+        /* Main content grows */
+        .main-content {
+          flex: 1 0 auto;
         }
 
         .nav {
@@ -75,6 +86,11 @@
  
         .nav-links a:hover { color: var(--green-mid); }
  
+        .app-wrapper {
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+        }
         .courses-wrapper {
           position: relative;
           display: flex;
@@ -164,7 +180,7 @@
  
         .hero {
           position: relative;
-          min-height: calc(100vh - 84px);
+          min-height: 650px;
           overflow: hidden;
           display: flex;
           flex-direction: column;
@@ -270,10 +286,14 @@
  
         /* Footer bar */
         .footer-bar {
-          background: var(--green-dark);
+          background: #024731;
           color: white;
           text-align: center;
           padding: 28px 20px 24px;
+          margin-top: auto;
+          flex-shrink: 0;
+          border-top: 1px solid;
+          border-image: linear-gradient(to right, transparent, #E8F5E9, transparent) 1;
         }
  
         .footer-university {

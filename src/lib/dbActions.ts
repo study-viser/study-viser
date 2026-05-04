@@ -541,12 +541,24 @@ export async function createSubmission(data: {
       throw new Error('You already submitted a definition for this term.');
     }
 
-    // 3. Stop student from submitting more than 2 times this week
+    // 3. Stop student from submitting more than 2 times this week per course
+    const termCourse = await prisma.term.findUnique({
+      where: { id: data.termId },
+      select: { courseCRN: true },
+    });
+
+    if (!termCourse) {
+      throw new Error('Term not found.');
+    }
+
     const weeklySubmissionCount = await prisma.submission.count({
       where: {
         creatorId: data.creatorId,
         createdAt: {
           gte: startOfWeek,
+        },
+        term: {
+          courseCRN: termCourse.courseCRN,
         },
       },
     });

@@ -1,9 +1,9 @@
 'use client';
 
 import { useState } from 'react';
-import Link from 'next/link';
 import { Container } from 'react-bootstrap';
 import '@/styles/student-course.css';
+import Link from 'next/link';
 
 type Difficulty = 'Basic' | 'Moderate' | 'Advanced';
 
@@ -105,11 +105,6 @@ export default function ApprovedGlossaryView({ terms, mode }: Props) {
 
     return (
     <Container fluid className="course-page">
-      <div className="course-breadcrumb">
-        <Link href="/student-dashboard">Dashboard</Link>
-        <span> / </span>
-        <span>{mode === 'approved' ? 'Official Glossary' : 'All Glossary Terms'}</span>
-      </div>
 
       <div className="course-header">
         <h1 className="course-title">
@@ -186,11 +181,13 @@ export default function ApprovedGlossaryView({ terms, mode }: Props) {
               {grouped.map(({ course, terms: courseTerms, weeks }) => (
                 <div key={course.crn} className="official-course-box">
                   <div className="official-course-header">
-                    <div>
+                    <Link
+                      href={`/student-course/${course.crn}`}
+                      className="official-course-link"
+                    >
                       <h3>{course.code}</h3>
                       <p>{course.title}</p>
-                    </div>
-
+                    </Link>
                     <span className="term-status-badge approved">
                       {courseTerms.length} {mode === 'approved' ? 'approved' : 'term'}
                     </span>

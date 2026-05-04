@@ -114,15 +114,22 @@
 
 /* ---------- Recent Submissions ---------- */
 
-.recent-submissions-card {
-  display: flex;
-  flex-direction: column;
-  min-height: 330px;
+.recent-submissions-card .terms-table {
+  max-height: 260px;
+  overflow-y: auto;
 }
 
-.recent-submissions-card .terms-table {
-  flex: 1;
-  min-height: 0;
+.recent-submissions-card .terms-table::-webkit-scrollbar {
+  width: 8px;
+}
+
+.recent-submissions-card .terms-table::-webkit-scrollbar-thumb {
+  background-color: #C7D2E0;
+  border-radius: 999px;
+}
+
+.recent-submissions-card .terms-table::-webkit-scrollbar-track {
+  background-color: #F5F7FA;
 }
 
 .terms-table {
@@ -232,7 +239,7 @@
 .submission-table {
   border: 1px solid #E5E7EB;
   border-radius: 14px;
-  overflow: auto;
+  overflow: hidden;
   background-color: #ffffff;
 }
 
@@ -262,6 +269,20 @@
 .submission-row > span,
 .submit-btn-wrapper {
   min-width: 0;
+}
+
+.submission-table-body {
+  max-height: 280px;
+  overflow-y: auto;
+}
+
+.submission-table-body::-webkit-scrollbar {
+  width: 6px;
+}
+
+.submission-table-body::-webkit-scrollbar-thumb {
+  background: #D1D5DB;
+  border-radius: 999px;
 }
 
 /* ---------- Shared Table Items ---------- */
@@ -597,9 +618,12 @@
 /* ---------- Notifications ---------- */
 
 .notif-list {
+  max-height: 220px; 
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
   gap: 12px;
+  padding-right: 6px;
 }
 
 .notif-item {
@@ -675,14 +699,6 @@
     grid-template-columns: 1.4fr 0.9fr 0.9fr 1fr;
   }
 }
-
-/* ---------- Scrollable Available Terms ---------- */
-
-.available-terms-card .submission-table {
-  max-height:250px;
-  overflow-y: auto;
-}
-
 /* ---------- Scrollable Enrolled Courses ---------- */
 
 .course-content {

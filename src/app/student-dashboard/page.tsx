@@ -30,7 +30,7 @@ export default async function StudentDashboardPage() {
 if (!user?.id) {
   return <p>User not found</p>;
 }
-  const submissions = await prisma.submission.findMany({
+const submissions = await prisma.submission.findMany({
   where: {
     creatorId: user.id,
   },
@@ -40,6 +40,9 @@ if (!user?.id) {
         course: true,
       },
     },
+  },
+  orderBy: {
+    createdAt: 'desc',
   },
 });
 
@@ -61,37 +64,49 @@ const availableTerms = await prisma.term.findMany({
     coveredOn: 'desc',
   },
 });
-const uniqueSubmissions = Object.values(
-  submissions.reduce((acc, submission) => {
-    const key = `${submission.term?.course?.code}-${submission.term?.word}`;
 
-    if (!submission.term?.word) return acc;
+const recentSubmissions = submissions;
 
-    if (!acc[key] || acc[key].createdAt < submission.createdAt) {
-      acc[key] = submission;
-    }
-
-    return acc;
-  }, {} as Record<string, typeof submissions[number]>)
-);
 const weeklyLimit = 2;
 
 const startOfWeek = new Date();
 startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay());
 startOfWeek.setHours(0, 0, 0, 0);
 
-const weeklySubmissionCount = uniqueSubmissions.filter(
-  (submission) => submission.createdAt >= startOfWeek
-).length;
+const weeklyCountsByCourse = submissions.reduce((acc, submission) => {
+  const courseCRN = submission.term?.course?.crn;
 
-const hasReachedWeeklyLimit = weeklySubmissionCount >= weeklyLimit;
-const weeklyCount = weeklySubmissionCount;
-const remaining = Math.max(weeklyLimit - weeklyCount, 0);
-const percent = Math.min((weeklyCount / weeklyLimit) * 100, 100);
+  if (!courseCRN) return acc;
+  if (submission.createdAt < startOfWeek) return acc;
 
-const approvedSubmissions = submissions.filter(
-  (s) => s.term?.bestSubmissionId === s.id
+  acc[courseCRN] = (acc[courseCRN] ?? 0) + 1;
+
+  return acc;
+}, {} as Record<number, number>);
+
+const totalWeeklySubmissionCount = Object.values(weeklyCountsByCourse).reduce(
+  (sum, count) => sum + Math.min(count, weeklyLimit),
+  0
 );
+
+const maxWeeklySubmissions = user.enrolledCourses.length * weeklyLimit;
+
+const hasReachedWeeklyLimit =
+  maxWeeklySubmissions > 0 &&
+  totalWeeklySubmissionCount >= maxWeeklySubmissions;
+
+const weeklyCount = totalWeeklySubmissionCount;
+const remaining = Math.max(maxWeeklySubmissions - weeklyCount, 0);
+
+const percent =
+  maxWeeklySubmissions > 0
+    ? Math.min((totalWeeklySubmissionCount / maxWeeklySubmissions) * 100, 100)
+    : 0;
+    
+const approvedSubmissions = submissions.filter(
+  (s) => s.wasReviewed && s.points > 0
+);
+
 const notifications = [
   ...approvedSubmissions.map((submission) => ({
     type: 'success',
@@ -150,67 +165,72 @@ const totalPoints = approvedSubmissions.reduce(
                     <span>Status</span>
                     <span></span>
                     </div>
-
+                
+                <div className="submission-table-body">
                     {availableTerms
-                .filter((term) => term.submissions.length < term.maxSubmissions)
-                    .map((term) => { //  hide FULL terms
-                        const submissionCount = term.submissions.length;
-                        return (
-                        <div className="submission-row" 
-                            key={term.id}>
-                            <span className="term-name">{term.word}</span>
-                            <Link
-                            href={`/student-course/${term.course.crn}`}
-                            className="course-pill"
-                            >
-                            {term.course.code}
-                            </Link>
+                    .filter((term) => term.submissions.length < term.maxSubmissions)
+                        .map((term) => { //  hide FULL terms
+                            const submissionCount = term.submissions.length;
+                             const courseWeeklyCount = weeklyCountsByCourse[term.course.crn] ?? 0;
+                            const hasReachedCourseWeeklyLimit = courseWeeklyCount >= weeklyLimit;
 
-                            <span
-                            className={`difficulty-badge ${
-                                term.difficulty === Difficulty.Basic
-                                ? 'difficulty-basic'
-                                : term.difficulty === Difficulty.Moderate
-                                    ? 'difficulty-moderate'
-                                    : term.difficulty === Difficulty.Advanced
-                                    ? 'difficulty-advanced'
-                                    : ''
-                            }`}
-                            >
-                                
-                            {term.difficulty
-                                ? term.difficulty.charAt(0) +
-                                term.difficulty.slice(1).toLowerCase()
-                                : '—'}
-                            </span>
-                            <span className="slot-status">
-                            <span className="slot-bar">
+                            return (
+                            <div className="submission-row" 
+                                key={term.id}>
+                                <span className="term-name">{term.word}</span>
+                                <Link
+                                href={`/student-course/${term.course.crn}`}
+                                className="course-pill"
+                                >
+                                {term.course.code}
+                                </Link>
+
                                 <span
-                                className="slot-fill"
-                                style={{
-                                    width: `${Math.min((submissionCount / term.maxSubmissions) * 100, 100)}%`,
-                                }}
-                                />
-                            </span>
+                                className={`difficulty-badge ${
+                                    term.difficulty === Difficulty.Basic
+                                    ? 'difficulty-basic'
+                                    : term.difficulty === Difficulty.Moderate
+                                        ? 'difficulty-moderate'
+                                        : term.difficulty === Difficulty.Advanced
+                                        ? 'difficulty-advanced'
+                                        : ''
+                                }`}
+                                >
+                                    
+                                {term.difficulty
+                                    ? term.difficulty.charAt(0) +
+                                    term.difficulty.slice(1).toLowerCase()
+                                    : '—'}
+                                </span>
+                                <span className="slot-status">
+                                <span className="slot-bar">
+                                    <span
+                                    className="slot-fill"
+                                    style={{
+                                        width: `${Math.min((submissionCount / term.maxSubmissions) * 100, 100)}%`,
+                                    }}
+                                    />
+                                </span>
 
-                            <span>
-                                {submissionCount} / {term.maxSubmissions}
-                            </span>
-                            </span>
-                            <div className="submit-btn-wrapper">
-                            {!hasReachedWeeklyLimit ? (
-                            <a href={`/add-definition?termId=${term.id}`} className="submit-button">
-                                Submit Definition
-                            </a>
-                            ) : (
-                            <span className="term-status-badge full">
-                                Weekly limit reached
-                            </span>
-                            )}
+                                <span>
+                                    {submissionCount} / {term.maxSubmissions}
+                                </span>
+                                </span>
+                                <div className="submit-btn-wrapper">
+                                {!hasReachedCourseWeeklyLimit ? (
+                                <a href={`/add-definition?termId=${term.id}`} className="submit-button">
+                                    Submit Definition
+                                </a>
+                                ) : (
+                                <span className="term-status-badge full">
+                                    Course weekly limit reached
+                                </span>
+                                )}
+                                </div>
                             </div>
-                        </div>
-                        );
-                    })}
+                            );
+                        })}
+                    </div>
                 </div>
             </div>
         </section>
@@ -240,10 +260,10 @@ const totalPoints = approvedSubmissions.reduce(
                         <span>Status</span>
                     </div>
 
-                {uniqueSubmissions.length === 0 ? (
+                {recentSubmissions.length === 0 ? (
                 <p>No submissions yet</p>
                 ) : (
-                    uniqueSubmissions.map((submission) => {
+                    recentSubmissions.map((submission) => {
                     const isWinner = submission.term?.bestSubmissionId === submission.id;
 
                     return (
@@ -317,7 +337,7 @@ const totalPoints = approvedSubmissions.reduce(
                     </div>
 
                     <span className="progress-text">
-                    {Math.min(weeklyCount, weeklyLimit)} / {weeklyLimit}
+                    {weeklyCount} / {maxWeeklySubmissions}
                     </span>
                 </div>
                 </div>
@@ -334,11 +354,14 @@ const totalPoints = approvedSubmissions.reduce(
                 </div>
             </div>
 
-            <p className="extra-points">{totalPoints} point{totalPoints !== 1 ? 's' : ''}</p>
+                <p className="extra-points">
+                {totalPoints} point{totalPoints !== 1 ? 's' : ''}
+                </p>
 
-            <p className="extra-sub">
-                {approvedSubmissions.length} approved submission{approvedSubmissions.length !== 1 ? 's' : ''}
-            </p>
+                <p className="extra-sub">
+                {approvedSubmissions.length} approved submission
+                {approvedSubmissions.length !== 1 ? 's' : ''}
+                </p>
             </div>
         </section>
       
@@ -415,70 +438,6 @@ const totalPoints = approvedSubmissions.reduce(
             </div>
         </section>
 
-        {/* Fourth Row - Quick Actions */}
-        <section className="section">
-        <div className="card">
-            <h2 className="card-title mb-3">Quick Study Actions</h2>
-            <div className="quick-actions-grid">
-
-            {/* Official Glossary */}
-            <Link href="/glossary-approved" className="quick-action-item">
-                <div className="quick-action-icon">
-                <Book size={18} />
-                </div>
-                <div>
-                <p className="quick-action-title">Official Glossary</p>
-                <p className="quick-action-sub">
-                    Study approved definitions
-                </p>
-                </div>
-            </Link>
-
-            {/* All Terms */}
-            <Link href="/glossary" className="quick-action-item">
-                <div className="quick-action-icon">
-                <Book size={18} />
-                </div>
-                <div>
-                <p className="quick-action-title">All Glossary Terms</p>
-                <p className="quick-action-sub">
-                    View all terms across courses
-                </p>
-                </div>
-            </Link>
-
-            {/* Study Guide / Flashcards */}
-            <Link href="/study-guide" className="quick-action-item">
-                <div className="quick-action-icon">
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <rect x="3" y="4" width="18" height="14" rx="2"/>
-                    <line x1="3" y1="10" x2="21" y2="10"/>
-                </svg>
-                </div>
-                <div>
-                <p className="quick-action-title">Study Guide</p>
-                <p className="quick-action-sub">
-                    Practice with flashcards
-                </p>
-                </div>
-            </Link>
-
-            {/* My Progress */}
-            <Link href="/my-progress" className="quick-action-item">
-                <div className="quick-action-icon">
-                <Book size={18} />
-                </div>
-                <div>
-                <p className="quick-action-title">My Progress</p>
-                <p className="quick-action-sub">
-                    Track submissions & points
-                </p>
-                </div>
-            </Link>
-
-            </div>
-        </div>
-        </section>
     </main>
   );
 }

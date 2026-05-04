@@ -2,7 +2,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 
 /** The Footer appears at the bottom of every page. */
 const Footer = () => (
-  <footer className="mt-auto py-3 footer-bar">
+  <footer className="footer-bar">
     <Container>
       <Row className="justify-content-center text-center">
         <Col>

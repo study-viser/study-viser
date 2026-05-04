@@ -17,12 +17,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-scroll-behavior="smooth">
-      <body className="d-flex flex-column min-vh-100" suppressHydrationWarning>
-        <Providers>
-          <Navbar />
-          <main className="flex-grow-1">{children}</main>
-          <Footer />
-        </Providers>
+      <body suppressHydrationWarning>
+          <Providers>        
+              <div className="app-wrapper">
+                <Navbar />
+
+                <main className="main-content">
+                  {children}
+                  </main>
+
+                <Footer />
+              </div>
+          </Providers>
       </body>
     </html>
   );
