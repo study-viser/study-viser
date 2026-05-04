@@ -1,8 +1,7 @@
 'use client';
 
 import { Button, Card, Col, Container, Form, Image, Row } from 'react-bootstrap';
-import { useState, type FormEvent } from 'react';
-import { changePassword } from '@/lib/dbActions';
+import { useState } from 'react';
 import '@/styles/auth.css';
 
 const ChangePasswordPage = () => {
@@ -10,7 +9,7 @@ const ChangePasswordPage = () => {
   const [success, setSuccess] = useState('');
   const [submitting, setSubmitting] = useState(false);
 
-  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     const form = e.currentTarget;
@@ -31,7 +30,19 @@ const ChangePasswordPage = () => {
     setSubmitting(true);
 
     try {
-      await changePassword({ currentPassword, newPassword });
+      const res = await fetch('/api/change-password', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ currentPassword, newPassword }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error);
+      }
       setSuccess('Password changed successfully.');
       form.reset();
     } catch (err) {
