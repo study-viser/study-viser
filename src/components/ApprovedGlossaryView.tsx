@@ -83,13 +83,27 @@ export default function ApprovedGlossaryView({ terms, mode }: Props) {
   });
 
   const grouped = courses
-    .map((course) => ({
-      course,
-      terms: filteredTerms.filter((term) => term.course.code === course.code),
-    }))
+    .map((course) => {
+      const courseTerms = filteredTerms.filter((term) => term.course.code === course.code);
+
+      // Sub-group by week (0 = unassigned/null)
+      const byWeek = new Map<number, typeof courseTerms>();
+      for (const term of courseTerms) {
+        const key = term.week ?? 0;
+        if (!byWeek.has(key)) byWeek.set(key, []);
+        byWeek.get(key)!.push(term);
+      }
+      const weekKeys = Array.from(byWeek.keys()).sort((a, b) => a - b);
+
+      return {
+        course,
+        terms: courseTerms,
+        weeks: weekKeys.map((week) => ({ week, terms: byWeek.get(week)! })),
+      };
+    })
     .filter((group) => group.terms.length > 0);
 
-  return (
+    return (
     <Container fluid className="course-page">
 
       <div className="course-header">
@@ -164,7 +178,7 @@ export default function ApprovedGlossaryView({ terms, mode }: Props) {
             <p className="no-terms">No terms match your filters.</p>
           ) : (
             <div className="official-course-list">
-              {grouped.map(({ course, terms }) => (
+              {grouped.map(({ course, terms: courseTerms, weeks }) => (
                 <div key={course.crn} className="official-course-box">
                   <div className="official-course-header">
                     <Link
@@ -175,38 +189,56 @@ export default function ApprovedGlossaryView({ terms, mode }: Props) {
                       <p>{course.title}</p>
                     </Link>
                     <span className="term-status-badge approved">
-                      {terms.length} {mode === 'approved' ? 'approved' : 'term'}
+                      {courseTerms.length} {mode === 'approved' ? 'approved' : 'term'}
                     </span>
                   </div>
 
-                  <div className="term-grid">
-                    {terms.map((term) => {
-                      const approved = term.submissions.find(
-                        (submission) =>
-                          submission.wasReviewed && submission.points > 0
-                      );
+                {weeks.map(({ week, terms: weekTerms }) => (
+                  <div key={week} style={{ marginTop: '1.25rem' }}>
+                    <h4 style={{
+                      fontFamily: "'Belanosima', sans-serif",
+                      fontSize: '17px',
+                      fontWeight: 600,
+                      color: '#1a4731',
+                      margin: '0 0 0.6rem 0',
+                      paddingBottom: '0.3rem',
+                      borderBottom: '1px solid #d9ede3',
+                    }}>
+                      {week === 0 ? 'Unassigned' : `Week ${week}`}
+                      <span style={{ fontSize: '13px', fontWeight: 500, color: '#6B7280', marginLeft: '0.5rem' }}>
+                        ({weekTerms.length} {weekTerms.length === 1 ? 'term' : 'terms'})
+                      </span>
+                    </h4>
+                    <div className="term-grid">
+                      {weekTerms.map((term) => {
+                        const approved = term.submissions.find(
+                          (submission) =>
+                            submission.wasReviewed && submission.points > 0
+                        );
 
-                      return (
-                        <div key={term.id} className="term-card">
-                          <h3 className="term-name">{term.word}</h3>
+                        return (
+                          <div key={term.id} className="term-card">
+                            <h3 className="term-name">{term.word}</h3>
 
-                          {mode === 'approved' ? (
-                            <p className="official-definition">
-                              {approved?.definition}
-                            </p>
-                          ) : approved ? (
-                            <p className="official-definition">
-                              {approved.definition}
-                            </p>
-                          ) : (
-                            <p className="term-submissions">
-                              Submissions: {term.submissions.length}
-                            </p>
-                          )}
-                        </div>
-                      );
-                    })}
+                            {mode === 'approved' ? (
+                              <p className="official-definition">
+                                {approved?.definition}
+                              </p>
+                            ) : approved ? (
+                              <p className="official-definition">
+                                {approved.definition}
+                              </p>
+                            ) : (
+                              <p className="term-submissions">
+                                Submissions: {term.submissions.length}
+                              </p>
+                            )}
+                          </div>
+                        );
+                      })}
+                    </div>
                   </div>
+                ))}
                 </div>
               ))}
             </div>

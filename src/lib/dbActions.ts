@@ -27,6 +27,7 @@ import { Prisma } from '@/generated/prisma/client';
 //   deleteCourse(crn)                — delete course by CRN
 //   enrollStudent(secret, userId)    — enroll a student using the course secret
 //   unenrollStudent(crn, userId)     — remove a student from a course by CRN
+//   teachCourse(crn, instructorId)   — assign an instructor to a course by CRN
 //
 // Listing
 //   createListing(data)              — create a new course listing
@@ -314,6 +315,18 @@ export async function unenrollStudent(crn: number, studentId: string) {
   }
 }
 
+/** Assign an instructor to a course */
+export async function teachCourse(crn: number, instructorId: string) {
+  try {
+    return await prisma.course.update({
+      where: { crn },
+      data: { instructor: { connect: { id: instructorId } } },
+    });
+  } catch (error) {
+    handlePrismaError(error);
+  }
+}
+
 // ---------------------------------------------------------------------------
 // Listing
 // ---------------------------------------------------------------------------
@@ -415,7 +428,9 @@ export async function createTerm(data: {
   }
 }
 
-export async function getTermById(id: string) {
+export async function getTermById(id: string): Promise<Prisma.TermGetPayload<{
+  include: { course: true; submissions: true; bestSubmission: true };
+}> | null> {
   try {
     return await prisma.term.findUnique({
       where: { id },
@@ -424,9 +439,10 @@ export async function getTermById(id: string) {
         submissions: true,
         bestSubmission: true,
       },
-    });
+    }) ?? null;
   } catch (error) {
     handlePrismaError(error);
+    return null;
   }
 }
 
