@@ -6,7 +6,6 @@ import { useForm } from 'react-hook-form';
 import { yupResolver } from '@hookform/resolvers/yup';
 import * as Yup from 'yup';
 import { Button, Card, Col, Container, Form, Image, Row } from 'react-bootstrap';
-import { createUser } from '@/lib/dbActions';
 import '@/styles/auth.css';
 import { useRouter } from 'next/navigation';
 
@@ -48,18 +47,32 @@ const onSubmit = async (data: SignUpForm) => {
     return;
   }
 
-  await createUser({
-    ...data,
-    role: role as 'STUDENT' | 'TA' | 'INSTRUCTOR',
-  });
+  try {
 
-  const result = await signIn('credentials', {
+    const res = await fetch('/api/users/create', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        name: data.name,
+        email: data.email,
+        password: data.password,
+        role, 
+      }),
+    });
+
+    const result = await res.json();
+
+    if (!res.ok) {
+      throw new Error(result.error);
+    }
+
+    const signInResult = await signIn('credentials', {
       redirect: false,
       email: data.email,
       password: data.password,
     });
 
-    if (result?.error) {
+    if (signInResult?.error) {
       router.push('/auth/signin');
       return;
     }
@@ -67,6 +80,10 @@ const onSubmit = async (data: SignUpForm) => {
     if (role === 'INSTRUCTOR') router.push('/instructor-dashboard');
     else if (role === 'TA') router.push('/ta-dashboard');
     else router.push('/student-dashboard');
+
+  } catch (err) {
+    alert(err instanceof Error ? err.message : 'Signup failed');
+  }
 };
 
   return (
