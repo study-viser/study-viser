@@ -1,7 +1,6 @@
 'use client';
 
 import { useState } from 'react';
-import { reviewSubmission, approveSubmission, clearTermApproval } from '@/lib/dbActions';
 import { CheckCircle2, Award, RotateCcw } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 
@@ -23,25 +22,44 @@ export default function SubmissionReviewCard({ submission, termId, isWinner }: P
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
-  const handleReview = async () => {
+  const postAction = async (url: string, body: object) => {
     setLoading(true);
-    await reviewSubmission(submission.id);
-    router.refresh();
-    setLoading(false);
+
+    try {
+      const res = await fetch(url, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      if (!res.ok) {
+        throw new Error('Action failed.');
+      }
+
+      router.refresh();
+    } finally {
+      setLoading(false);
+    }
   };
 
-  const handleApprove = async () => {
-    setLoading(true);
-    await approveSubmission(termId, submission.id);
-    router.refresh();
-    setLoading(false);
+  const handleReview = () => {
+    postAction('/api/submissions/review', {
+      submissionId: submission.id,
+    });
   };
 
-  const handleClear = async () => {
-    setLoading(true);
-    await clearTermApproval(termId, submission.id);
-    router.refresh();
-    setLoading(false);
+  const handleApprove = () => {
+    postAction('/api/submissions/approve', {
+      termId,
+      submissionId: submission.id,
+    });
+  };
+
+  const handleClear = () => {
+    postAction('/api/submissions/clear-approval', {
+      termId,
+      submissionId: submission.id,
+    });
   };
 
   return (
@@ -54,28 +72,29 @@ export default function SubmissionReviewCard({ submission, termId, isWinner }: P
     }}>
       {isWinner && (
         <div style={{
-          position: 'absolute', top: '12px', right: '12px',
-          display: 'flex', alignItems: 'center', gap: '5px',
-          background: '#DCFCE7', color: '#15803D',
-          fontSize: '12px', fontWeight: 600,
-          padding: '4px 10px', borderRadius: '999px',
+          position: 'absolute',
+          top: '12px',
+          right: '12px',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '5px',
+          background: '#DCFCE7',
+          color: '#15803D',
+          fontSize: '12px',
+          fontWeight: 600,
+          padding: '4px 10px',
+          borderRadius: '999px',
         }}>
           <Award size={12} /> Winner
         </div>
       )}
 
-      {/* <div style={{ marginBottom: '8px' }}>
-        <span style={{ fontWeight: 700, fontSize: '15px', color: '#1F2937' }}>
-          {submission.creator.name}
-        </span>
-        <span style={{ color: '#9CA3AF', fontSize: '13px', marginLeft: '8px' }}>
-          {submission.creator.email}
-        </span>
-      </div> */}
-
       <p style={{
-        fontSize: '15px', color: '#374151', lineHeight: '1.6',
-        marginBottom: '16px', whiteSpace: 'pre-wrap'
+        fontSize: '15px',
+        color: '#374151',
+        lineHeight: '1.6',
+        marginBottom: '16px',
+        whiteSpace: 'pre-wrap',
       }}>
         {submission.definition}
       </p>
@@ -84,8 +103,12 @@ export default function SubmissionReviewCard({ submission, termId, isWinner }: P
         <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
           {submission.wasReviewed ? (
             <span style={{
-              display: 'flex', alignItems: 'center', gap: '5px',
-              color: '#15803D', fontSize: '13px', fontWeight: 600
+              display: 'flex',
+              alignItems: 'center',
+              gap: '5px',
+              color: '#15803D',
+              fontSize: '13px',
+              fontWeight: 600,
             }}>
               <CheckCircle2 size={14} /> Reviewed — {submission.points} pts
             </span>
@@ -96,47 +119,19 @@ export default function SubmissionReviewCard({ submission, termId, isWinner }: P
 
         <div style={{ display: 'flex', gap: '8px' }}>
           {!submission.wasReviewed && (
-            <button
-              onClick={handleReview}
-              disabled={loading}
-              style={{
-                background: '#F1F5F9', color: '#374151',
-                border: '1px solid #E5E7EB', borderRadius: '8px',
-                padding: '7px 14px', fontSize: '13px', fontWeight: 600,
-                cursor: loading ? 'not-allowed' : 'pointer',
-              }}
-            >
+            <button onClick={handleReview} disabled={loading}>
               Mark Reviewed
             </button>
           )}
 
           {submission.wasReviewed && !isWinner && (
-            <button
-              onClick={handleApprove}
-              disabled={loading}
-              style={{
-                background: '#6DB089', color: '#ffffff',
-                border: 'none', borderRadius: '8px',
-                padding: '7px 14px', fontSize: '13px', fontWeight: 600,
-                cursor: loading ? 'not-allowed' : 'pointer',
-              }}
-            >
+            <button onClick={handleApprove} disabled={loading}>
               Set as Winner
             </button>
           )}
 
           {isWinner && (
-            <button
-              onClick={handleClear}
-              disabled={loading}
-              style={{
-                display: 'flex', alignItems: 'center', gap: '5px',
-                background: 'none', color: '#C65A5A',
-                border: '1px solid #C65A5A', borderRadius: '8px',
-                padding: '7px 14px', fontSize: '13px', fontWeight: 600,
-                cursor: loading ? 'not-allowed' : 'pointer',
-              }}
-            >
+            <button onClick={handleClear} disabled={loading}>
               <RotateCcw size={13} /> Undo
             </button>
           )}

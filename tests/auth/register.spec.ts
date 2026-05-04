@@ -2,7 +2,7 @@ import { test } from '@playwright/test';
 
 test('user can register as student', async ({ page }) => {
   await page.goto('http://localhost:3000/');
-  await page.getByRole('link', { name: 'Register' }).click();
+  await page.getByTestId('nav-register').click();
   await page.locator('div').filter({ hasText: /^Student$/ }).nth(1).click();
   await page.getByRole('button', { name: 'Continue' }).click();
   await page.getByRole('textbox', { name: 'Name' }).click();
@@ -19,7 +19,7 @@ test('user can register as student', async ({ page }) => {
 
 test('user can register as instructor', async ({ page }) => {
   await page.goto('http://localhost:3000/');
-  await page.getByRole('link', { name: 'Register' }).click();
+  await page.getByTestId('nav-register').click();
   await page.locator('div').filter({ hasText: /^Instructor$/ }).nth(1).click();
   await page.getByRole('button', { name: 'Continue' }).click();
   await page.getByRole('textbox', { name: 'Name' }).click();

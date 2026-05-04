@@ -2,7 +2,7 @@ import { test, expect } from '@playwright/test';
 
 test('user can log in and view dashboard', async ({ page }) => {
   await page.goto('http://localhost:3000/');
-  await page.getByRole('link', { name: 'Login' }).click();
+  await page.getByTestId('nav-login').click();
   await page.getByRole('textbox', { name: 'Email' }).click();
   await page.getByRole('textbox', { name: 'Email' }).fill('spongebob@foo.com');
   await page.getByRole('textbox', { name: 'Password' }).click();
@@ -14,7 +14,7 @@ test('user can log in and view dashboard', async ({ page }) => {
 
 test('user can sign out', async ({ page }) => {
   await page.goto('http://localhost:3000/');
-  await page.getByRole('link', { name: 'Login' }).click();
+  await page.getByTestId('nav-login').click();
   await page.getByRole('textbox', { name: 'Email' }).click();
   await page.getByRole('textbox', { name: 'Email' }).fill('spongebob@foo.com');
   await page.getByRole('textbox', { name: 'Password' }).click();
@@ -27,7 +27,7 @@ test('user can sign out', async ({ page }) => {
 
 test('invalid users cannot log in', async ({ page }) => {
   await page.goto('http://localhost:3000/');
-  await page.getByRole('link', { name: 'Login' }).click();
+  await page.getByTestId('nav-login').click();
   await page.getByRole('textbox', { name: 'Email' }).click();
   await page.getByRole('textbox', { name: 'Email' }).fill('baduser@gmail.com');
   await page.getByRole('textbox', { name: 'Password' }).click();

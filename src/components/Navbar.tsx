@@ -211,6 +211,7 @@ const NavBar: React.FC = () => {
                   as={Link}
                   href="/auth/signin"
                   className="fw-semibold"
+                  data-testid="nav-login"
                   style={{
                     color: '#024731',
                     textDecoration: 'underline',
@@ -224,6 +225,7 @@ const NavBar: React.FC = () => {
                   as={Link}
                   href="/auth/signup"
                   className="fw-semibold"
+                  data-testid="nav-register"
                   style={{
                     color: 'white',
                     backgroundColor: '#024731',

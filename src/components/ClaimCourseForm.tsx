@@ -4,7 +4,6 @@ import { Form, Button, Col, Container, Card, Row, Image } from 'react-bootstrap'
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { teachCourse } from '@/lib/dbActions';
 import BackButton from '@/components/BackButton';
 
 import '@/styles/forms.css';
@@ -43,7 +42,17 @@ const ClaimCourseForm = () => {
     }
 
     try {
-      await teachCourse(crn, session.user.id);
+    const res = await fetch('/api/courses/claim', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ crn, instructorId: session.user.id }),
+    });
+
+    const data = await res.json();
+
+    if (!res.ok) {
+      throw new Error(data.error);
+    }
       router.push('/instructor-dashboard');
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Failed to claim course.');
