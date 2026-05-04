@@ -1,5 +1,5 @@
 import { NextResponse } from 'next/server';
-import { changePassword } from '@/lib/dbActions';
+import { changePassword } from '@/lib/changePassword';
 
 export async function POST(req: Request) {
   try {
