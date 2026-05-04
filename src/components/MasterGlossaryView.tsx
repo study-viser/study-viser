@@ -18,25 +18,19 @@ type GlossaryTerm = {
     code: string;
     title: string;
   };
-  submissions: {
+  bestSubmission: {
     id: string;
     definition: string;
-    wasReviewed: boolean;
-    points: number;
-    creator: {
-      name: string;
-    };
-  }[];
+  } | null;
 };
 
 type Props = {
   terms: GlossaryTerm[];
-  mode: 'all' | 'approved';
 };
 
 const DIFFICULTIES: Difficulty[] = ['Basic', 'Moderate', 'Advanced'];
 
-export default function ApprovedGlossaryView({ terms, mode }: Props) {
+export default function MasterGlossaryView({ terms }: Props) {
   const [search, setSearch] = useState('');
   const [selectedDifficulties, setSelectedDifficulties] = useState<Difficulty[]>([]);
   const [selectedCourses, setSelectedCourses] = useState<string[]>([]);
@@ -52,70 +46,46 @@ export default function ApprovedGlossaryView({ terms, mode }: Props) {
   );
 
   const filteredTerms = terms.filter((term) => {
-    const approved = term.submissions.find(
-      (submission) => submission.wasReviewed && submission.points > 0
-    );
+    if (!term.bestSubmission) return false;
 
-    if (mode === 'approved' && !approved) return false;
-
-    if (
-      search &&
-      !term.word.toLowerCase().includes(search.toLowerCase())
-    ) {
+    if (search && !term.word.toLowerCase().includes(search.toLowerCase())) {
       return false;
     }
 
-    if (
-      selectedDifficulties.length > 0 &&
-      !selectedDifficulties.includes(term.difficulty)
-    ) {
+    if (selectedDifficulties.length > 0 && !selectedDifficulties.includes(term.difficulty)) {
       return false;
     }
 
-    if (
-      selectedCourses.length > 0 &&
-      !selectedCourses.includes(term.course.code)
-    ) {
+    if (selectedCourses.length > 0 && !selectedCourses.includes(term.course.code)) {
       return false;
     }
 
     return true;
   });
 
-
   return (
     <Container fluid className="course-page">
       <div className="course-breadcrumb">
         <Link href="/student-dashboard">Dashboard</Link>
         <span> / </span>
-        <span>{mode === 'approved' ? 'Official Glossary' : 'All Glossary Terms'}</span>
+        <span>Official Glossary</span>
       </div>
 
       <div className="course-header">
-        <h1 className="course-title">
-          {mode === 'approved' ? 'Official Glossary' : 'All Glossary Terms'}
-        </h1>
-
-        <p className="course-subtitle">
-          {mode === 'approved'
-            ? 'Study approved definitions from all courses.'
-            : 'View all glossary terms from your enrolled courses.'}
-        </p>
+        <h1 className="course-title">Official Glossary</h1>
+        <p className="course-subtitle">Study approved definitions from all courses.</p>
       </div>
 
       <div className="course-body">
         <aside className="course-sidebar">
           <div className="sidebar-section">
             <h3 className="sidebar-label">📚 Course</h3>
-
             {courses.map((course) => (
               <label key={course.crn} className="sidebar-checkbox">
                 <input
                   type="checkbox"
                   checked={selectedCourses.includes(course.code)}
-                  onChange={() =>
-                    setSelectedCourses(toggleItem(selectedCourses, course.code))
-                  }
+                  onChange={() => setSelectedCourses(toggleItem(selectedCourses, course.code))}
                 />
                 {course.code}
               </label>
@@ -124,20 +94,12 @@ export default function ApprovedGlossaryView({ terms, mode }: Props) {
 
           <div className="sidebar-section">
             <h3 className="sidebar-label">📊 Difficulty</h3>
-
             {DIFFICULTIES.map((difficulty) => (
-              <label
-                key={difficulty}
-                className={`sidebar-checkbox difficulty-${difficulty.toLowerCase()}`}
-              >
+              <label key={difficulty} className={`sidebar-checkbox difficulty-${difficulty.toLowerCase()}`}>
                 <input
                   type="checkbox"
                   checked={selectedDifficulties.includes(difficulty)}
-                  onChange={() =>
-                    setSelectedDifficulties(
-                      toggleItem(selectedDifficulties, difficulty)
-                    )
-                  }
+                  onChange={() => setSelectedDifficulties(toggleItem(selectedDifficulties, difficulty))}
                 />
                 {difficulty}
               </label>
@@ -147,10 +109,7 @@ export default function ApprovedGlossaryView({ terms, mode }: Props) {
 
         <main className="course-main">
           <div className="course-main-header">
-            <h2 className="glossary-title">
-              {mode === 'approved' ? 'Approved Terms' : 'All Terms'}
-            </h2>
-
+            <h2 className="glossary-title">Terms</h2>
             <input
               className="glossary-search"
               placeholder="Search terms"
@@ -160,33 +119,28 @@ export default function ApprovedGlossaryView({ terms, mode }: Props) {
           </div>
 
           {filteredTerms.length === 0 ? (
-            <p className="no-terms">No terms match your filters.</p>
+            <p className="no-terms">No approved terms found.</p>
           ) : (
-            <div className="term-grid">
-              {filteredTerms.map((term) => {
-                const approved = term.submissions.find(
-                  (submission) => submission.wasReviewed && submission.points > 0
-                );
-
-                return (
-                  <div key={term.id} className="term-card">
-                    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }}>
+            /* Changed class to term-stack */
+            <div className="term-stack">
+              {filteredTerms.map((term) => (
+                <div key={term.id} className="term-list-card">
+                  <div className="term-list-header">
+                    <div className="term-list-title-area">
                       <h3 className="term-name">{term.word}</h3>
-                      <span className="term-status-badge approved" style={{ fontSize: '11px', whiteSpace: 'nowrap' }}>
-                        {term.course.code}
+                      <span className={`term-difficulty difficulty-${term.difficulty.toLowerCase()}`}>
+                        {term.difficulty}
                       </span>
                     </div>
-
-                    {mode === 'approved' ? (
-                      <p className="official-definition">{approved?.definition}</p>
-                    ) : approved ? (
-                      <p className="official-definition">{approved.definition}</p>
-                    ) : (
-                      <p className="term-submissions">Submissions: {term.submissions.length}</p>
-                    )}
+                    <span className="term-status-badge approved">
+                      {term.course.code}
+                    </span>
                   </div>
-                );
-              })}
+                  <p className="official-definition">
+                    {term.bestSubmission?.definition}
+                  </p>
+                </div>
+              ))}
             </div>
           )}
         </main>
