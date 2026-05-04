@@ -572,3 +572,15 @@
 .official-course-link:hover h3 {
   text-decoration: underline;
 }
+
+/* --- Study Guide Page --- */
+.study-course-card {
+  text-decoration: none;
+  color: inherit;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.study-course-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+}
