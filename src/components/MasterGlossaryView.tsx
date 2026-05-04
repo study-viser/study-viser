@@ -65,11 +65,6 @@ export default function MasterGlossaryView({ terms }: Props) {
 
   return (
     <Container fluid className="course-page">
-      <div className="course-breadcrumb">
-        <Link href="/student-dashboard">Dashboard</Link>
-        <span> / </span>
-        <span>Official Glossary</span>
-      </div>
 
       <div className="course-header">
         <h1 className="course-title">Official Glossary</h1>
