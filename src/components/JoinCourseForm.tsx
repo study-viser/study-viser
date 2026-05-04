@@ -2,7 +2,6 @@
 
 import { Form, Button, Col, Container, Card, Row, Image } from 'react-bootstrap';
 import { useState } from 'react';
-import { enrollStudent } from '@/lib/dbActions';
 import { useSession } from 'next-auth/react';
 import BackButton from '@/components/BackButton';
 
@@ -33,7 +32,17 @@ const JoinCourseForm = () => {
 
     try {
       // enrollStudent looks up course by secret, then connects the student
-      await enrollStudent(secret, session.user.id);
+      const res = await fetch('/api/courses/join', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ secret, userId: session.user.id }),
+      });
+
+      const data = await res.json();
+
+      if (!res.ok) {
+        throw new Error(data.error);
+      }
       setSuccess(true);
       window.location.href = '/student-dashboard';
     } catch (err) {
