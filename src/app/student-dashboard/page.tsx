@@ -140,7 +140,7 @@ const totalPoints = approvedSubmissions.reduce(
 
   return (
     <main className="dashboard-container">
-      <section className="section">
+      <section className="dashboard-section">
         <h1 className="page-title">
           Student Dashboard
         </h1>
@@ -150,11 +150,11 @@ const totalPoints = approvedSubmissions.reduce(
       </section>
     
         {/* First Row - Available Terms to Submit */}
-        <section className="section">
+        <section className="dashboard-section">
             {/* Available Terms to Submit */}
-            <div className="card available-terms-card available-terms-full ">
-                <div className="section-header">
-                    <h2 className="card-title">Available Terms to Submit</h2>
+            <div className="dashboard-card available-terms-card available-terms-full ">
+                <div className="dashboard-section-header">
+                    <h2 className="dashboard-card-title">Available Terms to Submit</h2>
                 </div>
 
                 <div className="submission-table">
@@ -177,7 +177,7 @@ const totalPoints = approvedSubmissions.reduce(
                             return (
                             <div className="submission-row" 
                                 key={term.id}>
-                                <span className="term-name">{term.word}</span>
+                                <span className="dashboard-term-name">{term.word}</span>
                                 <Link
                                 href={`/student-course/${term.course.crn}`}
                                 className="course-pill"
@@ -236,10 +236,10 @@ const totalPoints = approvedSubmissions.reduce(
         </section>
 
         {/* Second Row - */}
-        <section className="dashboard-main-grid section">
+        <section className="dashboard-main-grid dashboard-section">
             {/* Recent Submissions */}
-            <div className="card recent-submissions-card">
-                <div className="section-header">
+            <div className="dashboard-card recent-submissions-card">
+                <div className="dashboard-section-header">
                 <div className="title-with-icon">
                     <div className="weekly-icon-circle">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
@@ -248,7 +248,7 @@ const totalPoints = approvedSubmissions.reduce(
                         <line x1="12" y1="12" x2="16" y2="14"/>
                     </svg>
                     </div>
-                    <h2 className="card-title">My Recent Submissions</h2>
+                    <h2 className="dashboard-card-title">My Recent Submissions</h2>
                 </div>
                 </div>
 
@@ -268,7 +268,7 @@ const totalPoints = approvedSubmissions.reduce(
 
                     return (
                     <div className="terms-row" key={submission.id}>
-                        <span className="term-name">
+                        <span className="dashboard-term-name">
                         {submission.term?.word ?? 'Unknown Term'}
                         </span>
 
@@ -344,13 +344,13 @@ const totalPoints = approvedSubmissions.reduce(
             </div>
 
             {/* Extra Credit Card */}  
-            <div className="card extra-card">
+            <div className="dashboard-card extra-card">
             <div className="extra-header">
                 <div className="extra-title-wrap">
                 <div className="extra-icon">
                     <Award size={18} />
                 </div>
-                <h2 className="card-title">Extra Credit Earned</h2>
+                <h2 className="dashboard-card-title">Extra Credit Earned</h2>
                 </div>
             </div>
 
@@ -366,14 +366,14 @@ const totalPoints = approvedSubmissions.reduce(
         </section>
       
         {/* Third Row - Enrolled Courses + Notifications */}
-        <section className="dashboard-secondary-grid section">
+        <section className="dashboard-secondary-grid dashboard-section">
             {/* Enrolled courses */}
-            <div className="card available-terms-card">
+            <div className="dashboard-card available-terms-card">
                 <div className="course-card-header">
                     <div className="course-icon-circle">
                         <Book size={18} />
                     </div>
-                    <h2 className="card-title">Enrolled Courses</h2>
+                    <h2 className="dashboard-card-title">Enrolled Courses</h2>
                 </div>
 
                 <div className="course-divider"></div>
@@ -405,9 +405,9 @@ const totalPoints = approvedSubmissions.reduce(
                 </div>
             </div>
             {/* Notifications */}
-            <div className="card notifications-card">
-                <div className="section-header">
-                    <h2 className="card-title">Notifications</h2>
+            <div className="dashboard-card notifications-card">
+                <div className="dashboard-section-header">
+                    <h2 className="dashboard-card-title">Notifications</h2>
                 </div>
 
                 <div className="course-divider"></div>

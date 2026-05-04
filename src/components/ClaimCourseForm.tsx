@@ -4,10 +4,11 @@ import { Form, Button, Col, Container, Card, Row, Image } from 'react-bootstrap'
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { useSession } from 'next-auth/react';
-import { getCoursesByCode, teachCourse } from '@/lib/dbActions';
+import { teachCourse } from '@/lib/dbActions';
 import BackButton from '@/components/BackButton';
 
 import '@/styles/forms.css';
+import '@/styles/course-forms.css';
 
 const ClaimCourseForm = () => {
   const { data: session } = useSession();
@@ -51,16 +52,16 @@ const ClaimCourseForm = () => {
   };
 
   return (
-    <Container className="course-page">
+    <Container className="course-form-page">
       <div className="form-heading-wrap">
         <BackButton />
       </div>
-      <Card className="course-card">
+      <Card className="course-form-card">
         <Card.Body>
           <Image src="/claim-icon.png" className="two-user-icon" alt="Claim Course" />
-          <h1 className="course-title">Claim a Course</h1>
+          <h1 className="course-form-title">Claim a Course</h1>
 
-          <p className="course-subtitle">
+          <p className="course-form-subtitle">
             Enter the CRN of the course you want to claim as instructor.
           </p>
 
@@ -70,7 +71,7 @@ const ClaimCourseForm = () => {
 
           <Form onSubmit={handleSubmit}>
             <Form.Group as={Row} className="mb-4 align-items-center" controlId="crn">
-              <Form.Label column sm={4} className="course-label">
+              <Form.Label column sm={4} className="course-form-label">
                 Course CRN:
               </Form.Label>
 

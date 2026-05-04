@@ -1,0 +1,93 @@
+/* --- Term grid --- */
+.term-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+
+/* --- Term card --- */
+.term-card {
+  background: #fff;
+  border: 1px solid #d9ede3;
+  border-radius: 10px;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  transition: box-shadow 0.2s;
+}
+
+.term-card:hover {
+  box-shadow: 0 4px 12px rgba(45, 122, 79, 0.12);
+}
+
+.term-card--full {
+  background-color: #f9fafb;
+  border-color: #d1d5db;
+  opacity: 1;
+}
+.term-card--full .btn-submit-term {
+  display: none;
+}
+
+.term-name {
+  font-size: 16px;
+  font-weight: 700;
+  font-family: var(--font-title);
+  color: #1a4731;
+  margin: 0;
+}
+
+.term-submissions {
+  font-size: 14px;
+  color: #666;
+  margin: 0;
+}
+
+.term-visual-badge {
+  font-size: 13px;
+  color: #555;
+  margin: 0;
+}
+
+
+/* --- Card action buttons --- */
+.term-card-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: auto;
+  padding-top: 0.5rem;
+}
+
+.btn-submit-term {
+  display: block;
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  padding: 8px 0;
+  border-radius: 6px;
+  border: 1.5px solid #2d7a4f;
+  color: #2d7a4f;
+  text-decoration: none;
+  transition: all 0.2s;
+}
+
+.btn-submit-term:hover {
+  background: #2d7a4f;
+  color: #fff;
+}
+
+/* --- Empty state --- */
+.no-terms {
+  color: #888;
+  font-size: 15px;
+  margin-top: 2rem;
+  text-align: center;
+}
+
+@media (max-width: 580px) {
+  .term-grid {
+    grid-template-columns: 1fr;
+  }
+}

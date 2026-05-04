@@ -2,15 +2,6 @@
    term-view.css
    ===================== */
 
-/* --- Google Fonts --- */
-@import url('https://fonts.googleapis.com/css2?family=Belanosima:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
-
-/* --- Font variables --- */
-:root {
-  --font-title: 'Belanosima', sans-serif;
-  --font-body: 'Inter', sans-serif;
-}
-
 /* --- Page layout --- */
 .term-view-page {
   font-family: var(--font-body);
@@ -59,21 +50,6 @@
   font-weight: 600;
   padding: 4px 10px;
   border-radius: 999px;
-}
-
-.difficulty-basic {
-  background: #d4edda;
-  color: #155724;
-}
-
-.difficulty-intermediate {
-  background: #fff3cd;
-  color: #856404;
-}
-
-.difficulty-advanced {
-  background: #f8d7da;
-  color: #721c24;
 }
 
 .term-view-visual {
@@ -237,76 +213,4 @@
   background: #DCFCE7;
   padding: 3px 10px;
   border-radius: 999px;
-}
-
-/* --- Glossary Layout --- */
-.glossary-page {
-  max-width: 1100px;
-  margin: 0 auto;
-  padding: 32px 24px;
-}
-
-.glossary-layout {
-  display: grid;
-  grid-template-columns: 240px 1fr;
-  gap: 24px;
-}
-
-.glossary-filters {
-  background: #fff;
-  border: 1px solid #E5E7EB;
-  border-radius: 14px;
-  padding: 18px;
-  height: fit-content;
-  box-shadow: 0 4px 12px rgba(171, 190, 209, 0.12);
-}
-
-.glossary-search {
-  width: 100%;
-  padding: 10px 12px;
-  border: 1px solid #D1D5DB;
-  border-radius: 10px;
-  margin-bottom: 18px;
-}
-
-.filter-section {
-  margin-top: 18px;
-}
-
-.filter-section h4 {
-  font-size: 14px;
-  color: #374151;
-  margin-bottom: 8px;
-}
-
-.filter-section label {
-  display: block;
-  font-size: 14px;
-  color: #6B7280;
-  margin-bottom: 8px;
-}
-
-.glossary-results {
-  min-width: 0;
-}
-
-.btn-view-term {
-  display: inline-block;
-  background: #2E7D32;
-  color: #fff;
-  font-size: 14px;
-  font-weight: 600;
-  padding: 8px 14px;
-  border-radius: 10px;
-  text-decoration: none;
-}
-
-.btn-view-term:hover {
-  background: #1a4731;
-}
-
-@media (max-width: 800px) {
-  .glossary-layout {
-    grid-template-columns: 1fr;
-  }
 }

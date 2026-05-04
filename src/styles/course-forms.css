@@ -1,0 +1,121 @@
+.course-form-page {
+  padding: 60px 0;
+}
+
+.back-link {
+  max-width: 800px;
+  margin: 0 auto 20px;
+  font-family: "Inter", sans-serif;
+  color: #024731;
+  font-weight: 600;
+}
+
+.course-form-card {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 20px;
+  border: 1px solid #2f7d63;
+  border-radius: 16px;
+}
+
+.course-form-title {
+  text-align: center;
+  font-family: "Belanosima", sans-serif;
+  color: #2E7D32;
+  font-size: 3rem;
+  font-weight: 800;
+}
+
+.course-form-subtitle {
+  text-align: center;
+  color: #5f6975;
+  margin-bottom: 24px;
+}
+
+.course-form-label {
+  font-family: "Inter", sans-serif;
+  font-size: 1.2rem;
+  font-weight: 400;
+  white-space: nowrap;
+  margin-bottom: 0;
+}
+
+.course-form-card .form-control {
+  border: 1px solid #6d7f76;
+  border-radius: 12px;
+  font-size: 1.1rem;
+  padding: 10px 14px;
+}
+
+.course-info-text {
+  display: block;
+  background-color: #eef8f1;
+  border: 1px solid #cfe5d6;
+  border-radius: 10px;
+  padding: 14px 18px;
+  color: #064d2c;
+}
+
+.course-button {
+  font-family: "Inter", sans-serif;
+  font-weight: 600;
+  border-radius: 10px;
+  padding: 10px 24px;
+}
+
+.course-button-outline {
+  background: #e8f5e9;
+  color: #024731;
+  border: 2px solid #024731;
+  width: 40%;
+}
+
+.course-button-outline:hover {
+  background-color: #024731;
+  color: #e8f5e9;
+  border: 2px solid #024731;
+}
+
+.course-button-full {
+  width: 100%;
+  background-color: #024731;
+  color: white;
+  border: none;
+  padding: 12px;
+}
+
+.course-button-full:hover {
+  background-color: #013824;
+}
+
+.or-divider {
+  align-items: center;
+  margin: 30px 0;
+  text-align: center;
+}
+
+.browse-link {
+  color: #024731;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.help-card {
+  max-width: 800px;
+  margin: 20px auto 0;
+  padding: 20px;
+  border-radius: 16px;
+}
+
+.two-user-icon {
+  display: block;
+  margin: 0 auto 20px;
+  width: 100px;
+  height: 100px;
+}
+
+.course-code-icon {
+  width: 30px;
+  height: 30px;
+  padding: 4px;
+}

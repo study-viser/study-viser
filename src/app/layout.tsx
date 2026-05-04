@@ -4,6 +4,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import Providers from "./providers";
+import './globals.css';
+import '@/styles/forms.css';
+import '@/styles/course-forms.css';
+import './globals.css';
+import '@/styles/forms.css';
+import '@/styles/course-forms.css';
+import '@/styles/course-layout.css';
+import '@/styles/terms.css';
+import '@/styles/badges.css';
+import '@/styles/progress.css';
 
 export const metadata: Metadata = {
   title: "Study Viser",
