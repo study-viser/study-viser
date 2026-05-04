@@ -261,7 +261,7 @@ const totalPoints = approvedSubmissions.reduce(
                     </div>
 
                 {recentSubmissions.length === 0 ? (
-                <p>No submissions yet</p>
+                <p className="text-muted px-3 pt-3">No submissions yet.</p>
                 ) : (
                     recentSubmissions.map((submission) => {
                     const isWinner = submission.term?.bestSubmissionId === submission.id;
@@ -322,11 +322,13 @@ const totalPoints = approvedSubmissions.reduce(
                 </div>
 
                 <div className="terms-footer">
-                <span>
-                    {remaining > 0
-                    ? `You can submit ${remaining} more definition${remaining > 1 ? 's' : ''} this week.`
-                    : `You’ve reached your weekly limit.`}
-                </span>
+                  <span>
+                    {recentSubmissions.length === 0
+                      ? ''
+                      : remaining > 0
+                      ? `You can submit ${remaining} more definition${remaining > 1 ? 's' : ''} this week.`
+                      : `You’ve reached your weekly limit.`}
+                  </span>
 
                 <div className="progress-wrap">
                     <div className="progress-bar">
@@ -380,7 +382,7 @@ const totalPoints = approvedSubmissions.reduce(
 
                 <div className="course-content">
                 {user?.enrolledCourses.length === 0 ? (
-                    <p>No courses yet</p>
+                    <p className="text-muted">No courses yet.</p>
                 ) : (
                     user?.enrolledCourses.map((course) => (
                     <div className="course-item-wrapper" key={course.crn}>
@@ -401,7 +403,7 @@ const totalPoints = approvedSubmissions.reduce(
                 </div>
 
                 <div className="course-actions">
-                        <Link href="/courses/join" className="course-btn course-btn-add">+ Join Course</Link>
+                        <Link href="/courses/join" className="course-btn course-btn-add">Join Course</Link>
                 </div>
             </div>
             {/* Notifications */}
@@ -414,7 +416,7 @@ const totalPoints = approvedSubmissions.reduce(
 
                 <div className="notif-list">
                 {notifications.length === 0 ? (
-                    <p>No notifications yet.</p>
+                    <p className="text-muted">No notifications yet.</p>
                 ) : (
                     notifications.map((notification, index) => (
                     <div className="notif-item" key={index}>
