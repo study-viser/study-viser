@@ -4,7 +4,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 import { usePathname } from 'next/navigation';
-import { Container, Nav, Navbar, Badge } from 'react-bootstrap';
+import { Container, Nav, Navbar, Badge, NavDropdown } from 'react-bootstrap';
 import { PersonFill } from 'react-bootstrap-icons';
 
 const NavBar: React.FC = () => {
@@ -41,48 +41,54 @@ const NavBar: React.FC = () => {
         <Navbar.Toggle aria-controls="main-navbar-nav" />
 
         <Navbar.Collapse id="main-navbar-nav">
-          <Nav className="mx-auto d-flex align-items-lg-center gap-lg-4">
-            <Nav.Link
-              as={Link}
-              href="/"
-              active={pathName === '/'}
-              className="fw-medium"
-              style={{ color: '#024731' }}
-            >
-              Home
-            </Nav.Link>
 
-            <Nav.Link
-              as={Link}
-              href="/about"
-              active={pathName === '/about'}
-              className="fw-medium"
-              style={{ color: '#024731' }}
-            >
-              About
-            </Nav.Link>
+        <Nav className="mx-auto d-flex align-items-lg-center gap-lg-4">
+          <Nav.Link
+            as={Link}
+            href="/"
+            active={pathName === '/'}
+            className="fw-medium"
+            style={{ color: '#024731' }}
+          >
+            Home
+          </Nav.Link>
 
-            <Nav.Link
-              as={Link}
-              href="/courses"
-              active={pathName === '/courses'}
-              className="fw-medium"
-              style={{ color: '#024731' }}
-            >
-              Courses
-            </Nav.Link>
+          {!currentUser && (
+            <>
+              <Nav.Link
+                as={Link}
+                href="/about"
+                active={pathName === '/about'}
+                className="fw-medium"
+                style={{ color: '#024731' }}
+              >
+                About
+              </Nav.Link>
 
-            <Nav.Link
-              as={Link}
-              href="/contact"
-              active={pathName === '/contact'}
-              className="fw-medium"
-              style={{ color: '#024731' }}
-            >
-              Contact
-            </Nav.Link>
+              <Nav.Link
+                as={Link}
+                href="/courses"
+                active={pathName === '/courses'}
+                className="fw-medium"
+                style={{ color: '#024731' }}
+              >
+                Courses
+              </Nav.Link>
 
-            {currentUser && role === 'STUDENT' && (
+              <Nav.Link
+                as={Link}
+                href="/contact"
+                active={pathName === '/contact'}
+                className="fw-medium"
+                style={{ color: '#024731' }}
+              >
+                Contact
+              </Nav.Link>
+            </>
+          )}
+
+          {currentUser && role === 'STUDENT' && (
+            <>
               <Nav.Link
                 as={Link}
                 href="/student-dashboard"
@@ -92,42 +98,67 @@ const NavBar: React.FC = () => {
               >
                 Dashboard
               </Nav.Link>
-            )}
-            {currentUser && role === 'INSTRUCTOR' && (
-              <Nav.Link
-                as={Link}
-                href="/instructor-dashboard"
-                active={pathName.startsWith('/instructor-dashboard')}
-                className="fw-medium"
-                style={{ color: '#024731' }}
-              >
-                Dashboard
-              </Nav.Link>
-            )}
-            {currentUser && role === 'TA' && (
-              <Nav.Link
-                as={Link}
-                href="/ta-dashboard"
-                active={pathName.startsWith('/ta-dashboard')}
-                className="fw-medium"
-                style={{ color: '#024731' }}
-              >
-                Dashboard
-              </Nav.Link>
-            )}
 
-            {currentUser && role === 'ADMIN' && (
-              <Nav.Link
-                as={Link}
-                href="/admin"
-                active={pathName === '/admin'}
+              <NavDropdown
+                title="Study"
+                id="student-study-dropdown"
                 className="fw-medium"
-                style={{ color: '#024731' }}
               >
-                Admin
-              </Nav.Link>
-            )}
-          </Nav>
+                <NavDropdown.Item as={Link} href="/glossary-approved">
+                  Official Glossary
+                </NavDropdown.Item>
+
+                <NavDropdown.Item as={Link} href="/glossary">
+                  All Glossary Terms
+                </NavDropdown.Item>
+
+                <NavDropdown.Item as={Link} href="/study-guide">
+                  Study Guide
+                </NavDropdown.Item>
+
+                <NavDropdown.Item as={Link} href="/my-progress">
+                  My Progress
+                </NavDropdown.Item>
+              </NavDropdown>
+            </>
+          )}
+
+          {currentUser && role === 'INSTRUCTOR' && (
+            <Nav.Link
+              as={Link}
+              href="/instructor-dashboard"
+              active={pathName.startsWith('/instructor-dashboard')}
+              className="fw-medium"
+              style={{ color: '#024731' }}
+            >
+              Dashboard
+            </Nav.Link>
+          )}
+
+          {currentUser && role === 'TA' && (
+            <Nav.Link
+              as={Link}
+              href="/ta-dashboard"
+              active={pathName.startsWith('/ta-dashboard')}
+              className="fw-medium"
+              style={{ color: '#024731' }}
+            >
+              Dashboard
+            </Nav.Link>
+          )}
+
+          {currentUser && role === 'ADMIN' && (
+            <Nav.Link
+              as={Link}
+              href="/admin"
+              active={pathName === '/admin'}
+              className="fw-medium"
+              style={{ color: '#024731' }}
+            >
+              Admin
+            </Nav.Link>
+          )}
+        </Nav>
 
           <Nav className="d-flex align-items-lg-center gap-2 ms-lg-auto">
             {session ? (
@@ -180,6 +211,7 @@ const NavBar: React.FC = () => {
                   as={Link}
                   href="/auth/signin"
                   className="fw-semibold"
+                  data-testid="nav-login"
                   style={{
                     color: '#024731',
                     textDecoration: 'underline',
@@ -193,6 +225,7 @@ const NavBar: React.FC = () => {
                   as={Link}
                   href="/auth/signup"
                   className="fw-semibold"
+                  data-testid="nav-register"
                   style={{
                     color: 'white',
                     backgroundColor: '#024731',

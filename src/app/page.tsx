@@ -44,7 +44,7 @@ export default function HomePage() {
             {/* Mid triangle */}
             <polygon points="0,320 1440,200 1440,480 0,480" fill="#4a9b65" opacity="0.7"/>
             {/* Front triangle - darkest */}
-            <polygon points="0,370 1440,250 1440,480 0,480" fill="#1a4a2e"/>
+            <polygon points="0,370 1440,250 1440,480 0,480" fill="#024731"/>
           </svg>
         </div>
  

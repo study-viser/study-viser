@@ -4,6 +4,16 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
 import Providers from "./providers";
+import './globals.css';
+import '@/styles/forms.css';
+import '@/styles/course-forms.css';
+import './globals.css';
+import '@/styles/forms.css';
+import '@/styles/course-forms.css';
+import '@/styles/course-layout.css';
+import '@/styles/terms.css';
+import '@/styles/badges.css';
+import '@/styles/progress.css';
 
 export const metadata: Metadata = {
   title: "Study Viser",
@@ -17,12 +27,18 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" data-scroll-behavior="smooth">
-      <body className="d-flex flex-column min-vh-100" suppressHydrationWarning>
-        <Providers>
-          <Navbar />
-          <main className="flex-grow-1">{children}</main>
-          <Footer />
-        </Providers>
+      <body suppressHydrationWarning>
+          <Providers>        
+              <div className="app-wrapper">
+                <Navbar />
+
+                <main className="main-content">
+                  {children}
+                  </main>
+
+                <Footer />
+              </div>
+          </Providers>
       </body>
     </html>
   );

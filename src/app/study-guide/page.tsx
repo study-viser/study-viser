@@ -1,85 +1,51 @@
+import Link from 'next/link';
 import { prisma } from '@/lib/prisma';
 import { auth } from '@/lib/auth';
 import BackButton from '@/components/BackButton';
-import Flashcard from '@/components/Flashcard';
+import '@/styles/student-course.css';
 
 export default async function StudyGuidePage() {
   const session = await auth();
-  const userId = session?.user?.id;
 
-  const terms = await prisma.term.findMany({
+  const user = await prisma.user.findUnique({
     where: {
-      course: {
-        students: {
-          some: {
-            id: userId,
-          },
-        },
-      },
-      submissions: {
-        some: {
-          wasReviewed: true,
-          points: {
-            gt: 0,
-          },
-        },
-      },
+      email: session?.user?.email ?? '',
     },
     include: {
-      course: true,
-      submissions: {
-        where: {
-          wasReviewed: true,
-          points: {
-            gt: 0,
-          },
-        },
-      },
+      enrolledCourses: true,
     },
-    orderBy: [
-      {
-        course: {
-          code: 'asc',
-        },
-      },
-      {
-        word: 'asc',
-      },
-    ],
   });
 
+  const courses = user?.enrolledCourses ?? [];
+
   return (
-    <main className="page-container">
+    <main className="progress-page">
       <BackButton />
 
-      <section className="section">
-        <div className="card">
-          <h1 className="card-title">Study Guide</h1>
-          <p>Practice approved glossary terms as flashcards.</p>
-        </div>
+      <section className="progress-header">
+        <p className="progress-eyebrow">Study Mode</p>
+        <h1>Study Guide</h1>
+        <p>Select a course to open its study guide.</p>
       </section>
 
-      <section className="section">
-        <div className="card">
-          {terms.length === 0 ? (
-            <p>No approved flashcards yet.</p>
-          ) : (
-            <div className="term-grid">
-              {terms.map((term) => {
-                const approvedSubmission = term.submissions[0];
+      <section className="progress-section">
+        {courses.length === 0 ? (
+          <p>No enrolled courses yet.</p>
+        ) : (
+          <div className="term-grid">
+            {courses.map((course) => (
+              <Link
+                key={course.crn}
+                href={`/student-course/${course.crn}/study-guide`}
+                className="term-card study-course-card"
+              >
 
-                return (
-                  <Flashcard
-                    key={term.id}
-                    term={term.word}
-                    definition={approvedSubmission.definition}
-                    courseCode={term.course.code}
-                  />
-                );
-              })}
-            </div>
-          )}
-        </div>
+                <h3 className="term-name">{course.code}</h3>
+                <p className="official-definition">{course.title}</p>
+              </Link>
+            ))}
+          </div>
+        )}
       </section>
     </main>
   );

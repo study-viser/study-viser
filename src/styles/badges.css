@@ -1,0 +1,50 @@
+
+/* --- Difficulty badge --- */
+.term-difficulty {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  width: fit-content;
+}
+
+.difficulty-basic {
+  background: #d4edda;
+  color: #155724;
+}
+
+.difficulty-moderate {
+  background: #fff3cd;
+  color: #856404;
+}
+
+.difficulty-advanced {
+  background: #f8d7da;
+  color: #721c24;
+}
+
+/* --- Status badge --- */
+.term-status-badge {
+  display: inline-block;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  width: fit-content;
+}
+
+.term-status-badge.approved {
+  background: #2d7a4f;
+  color: #fff;
+}
+
+.term-status-badge.submitted {
+  background: #cce5ff;
+  color: #004085;
+}
+
+.term-status-badge.full {
+  background: #e2e3e5;
+  color: #383d41;
+}

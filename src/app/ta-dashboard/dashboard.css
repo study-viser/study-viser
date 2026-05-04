@@ -1,0 +1,466 @@
+@import url('https://fonts.googleapis.com/css2?family=Belanosima:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
+
+.dashboard-container {
+  font-family: 'Inter', sans-serif;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 32px 24px;
+}
+
+.page-title,
+.card-title {
+  font-family: 'Belanosima', sans-serif;
+}
+
+.section {
+  margin-bottom: 16px;
+}
+
+.page-title {
+  font-size: 40px;
+  font-weight: 700;
+  margin-bottom: 12px;
+  color: #2E7D32;
+}
+
+.page-subtitle {
+  font-size: 18px;
+  color: #555;
+}
+
+.card {
+  background-color: #ffffff;
+  border: 1px solid #E5E7EB;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(171, 190, 209, 0.18);
+}
+
+.full-width-card {
+  width: 100%;
+}
+
+.card-title {
+  font-size: 22px;
+  font-weight: 600;
+  margin-bottom: 16px;
+}
+
+.full-width-card .card-title {
+  margin-bottom: 0px;
+}
+
+/* Stats Grid */
+.stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+}
+
+.stat-card {
+  background-color: #ffffff;
+  border: 1px solid #E5E7EB;
+  border-radius: 16px;
+  padding: 16px;
+  box-shadow: 0 4px 12px rgba(171, 190, 209, 0.18);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.stat-icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.stat-icon-green  { background-color: #6DB089; box-shadow: 0 4px 10px rgba(109,176,137,0.25); }
+.stat-icon-yellow { background-color: #E0B548; box-shadow: 0 4px 10px rgba(224,181,72,0.3); }
+.stat-icon-blue   { background-color: #8AB4ED; box-shadow: 0 4px 10px rgba(138,180,237,0.35); }
+.stat-icon-purple { background-color: #A78BFA; box-shadow: 0 4px 10px rgba(167,139,250,0.3); }
+
+.stat-body {
+  flex: 1;
+}
+
+.stat-label {
+  font-size: 15px;
+  color: #6B7280;
+  margin: 0 0 2px 0;
+}
+
+.stat-value {
+  font-size: 26px;
+  font-weight: 700;
+  color: #1F2937;
+  margin: 0;
+  line-height: 1.1;
+}
+
+.stat-hint {
+  font-size: 13px;
+  color: #9CA3AF;
+  margin: 2px 0 0 0;
+}
+
+/* Grid layouts */
+.grid-3 {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+
+/* Section Header */
+.section-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.view-all {
+  font-size: 14px;
+  font-weight: 600;
+  color: #2f5da8;
+  text-decoration: none;
+}
+
+.view-all:hover {
+  text-decoration: underline;
+}
+
+/* Term Status Table */
+.course-block {
+  margin-bottom: 20px;
+}
+
+.course-block:last-child {
+  margin-bottom: 0;
+}
+
+.course-label {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.course-code {
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  font-weight: 700;
+  color: #1F2937;
+}
+
+.course-fullname {
+  font-size: 13px;
+  color: #9CA3AF;
+}
+
+.term-table {
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.term-table-header {
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr 1.2fr;
+  padding: 8px 14px;
+  background-color: #F9FAFB;
+  border-bottom: 1px solid #E5E7EB;
+  font-size: 15px;
+  font-weight: 600;
+  color: #9CA3AF;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.term-row {
+  display: grid;
+  grid-template-columns: 2fr 1fr 2fr 1.2fr;
+  padding: 10px 14px;
+  align-items: center;
+  border-bottom: 1px solid #F3F4F6;
+  font-size: 16px;
+}
+
+.term-row:last-child {
+  border-bottom: none;
+}
+
+.term-row:hover {
+  background-color: #FAFAFA;
+}
+
+.term-name {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-weight: 600;
+  color: #1F2937;
+}
+
+.term-icon {
+  color: #6DB089;
+  flex-shrink: 0;
+}
+
+.term-week {
+  font-size: 14px;
+  color: #9CA3AF;
+}
+
+.term-submissions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.submission-bar-wrap {
+  flex: 1;
+  height: 6px;
+  background-color: #E5E7EB;
+  border-radius: 999px;
+  overflow: hidden;
+  max-width: 80px;
+}
+
+.submission-bar-fill {
+  height: 100%;
+  background-color: #6DB089;
+  border-radius: 999px;
+  transition: width 0.3s ease;
+}
+
+.submission-count {
+  font-size: 12px;
+  color: #6B7280;
+  white-space: nowrap;
+}
+
+.term-status {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.term-status-approved {
+  background-color: #DCFCE7;
+  color: #15803D;
+}
+
+.term-status-cap-reached {
+  background-color: #FEF9C3;
+  color: #A16207;
+}
+
+.term-status-pending {
+  background-color: #F1F5F9;
+  color: #64748B;
+}
+
+/* Glossary Management */
+.glossary-list {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+
+.glossary-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 9px 12px;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  text-decoration: none;
+  color: #1F2937;
+  font-size: 16px;
+  transition: background-color 0.15s ease;
+}
+
+.glossary-item:hover {
+  background-color: #F5F7FA;
+}
+
+.glossary-icon { flex-shrink: 0; }
+.glossary-icon-green { color: #6DB089; }
+.glossary-icon-blue  { color: #8AB4ED; }
+
+.manage-glossary-btn {
+  width: 100%;
+  background-color: #2E7D32;
+  color: #ffffff;
+  border: none;
+  border-radius: 10px;
+  padding: 10px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  margin-top: 4px;
+}
+
+.manage-glossary-btn:hover {
+  background-color: #256127;
+}
+
+.add-course-btn {
+  background-color: #6DB089;
+  color: #ffffff;
+  border: none;
+  border-radius: 8px;
+  padding: 7px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.add-course-btn:hover {
+  background-color: #5c9b76;
+}
+
+/* Recent Activity */
+.activity-list {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.activity-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+}
+
+.activity-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffffff;
+  flex-shrink: 0;
+}
+
+.activity-icon-green  { background-color: #6DB089; }
+.activity-icon-blue   { background-color: #8AB4ED; }
+.activity-icon-yellow { background-color: #E0B548; }
+
+.activity-text {
+  font-size: 13px;
+  color: #1F2937;
+  margin: 0 0 2px 0;
+  line-height: 1.4;
+}
+
+.activity-time {
+  font-size: 13px;
+  color: #9CA3AF;
+  margin: 0;
+}
+
+/* Course Analytics */
+.analytics-course-list {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.analytics-course-block {
+  border: 1px solid #E5E7EB;
+  border-radius: 12px;
+  padding: 12px;
+}
+
+.analytics-course-header {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  margin-bottom: 10px;
+}
+
+.analytics-course-name {
+  font-family: 'Belanosima', sans-serif;
+  font-size: 15px;
+  font-weight: 700;
+  color: #1F2937;
+}
+
+.analytics-course-full {
+  font-size: 12px;
+  color: #9CA3AF;
+}
+
+.analytics-row-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 5px 0;
+  border-top: 1px solid #F3F4F6;
+}
+
+.analytics-row-icon {
+  color: #6DB089;
+  flex-shrink: 0;
+}
+
+.analytics-row-label {
+  flex: 1;
+  font-size: 14px;
+  color: #6B7280;
+}
+
+.analytics-row-value {
+  font-size: 16px;
+  font-weight: 700;
+  color: #1F2937;
+}
+
+/* Two-column bottom row */
+.grid-2 {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 16px;
+}
+
+/* Course rows in "Courses You're Assisting" */
+.assisting-course-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px;
+  border: 1px solid #E5E7EB;
+  border-radius: 10px;
+  margin-bottom: 8px;
+  text-decoration: none;
+  color: #1F2937;
+  cursor: pointer;
+}
+
+.assisting-course-row:hover {
+  background-color: #FAFAFA;
+}
+
+.assisting-course-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Empty state copy */
+.empty-text {
+  color: #6B7280;
+  font-size: 15px;
+}

@@ -1,18 +1,7 @@
 /* =====================
    study-guide.css
    ===================== */
-
-@import url('https://fonts.googleapis.com/css2?family=Belanosima:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
-
-:root {
-  --font-title: 'Belanosima', sans-serif;
-  --font-body: 'Inter', sans-serif;
-  --green-dark: #1a4731;
-  --green-mid: #2d7a4f;
-  --green-light: #6DB089;
-  --green-bg: #f0faf4;
-}
-
+   
 /* ── Page ── */
 .sg-page {
   font-family: var(--font-body);
@@ -258,11 +247,6 @@
   padding: 3px 10px;
   border-radius: 999px;
 }
-
-/* reuse existing difficulty palette */
-.difficulty-basic    { background: #d4edda; color: #155724; }
-.difficulty-moderate { background: #fff3cd; color: #856404; }
-.difficulty-advanced { background: #f8d7da; color: #721c24; }
 
 .sg-badge-approved {
   font-size: 11px;

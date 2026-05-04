@@ -4,7 +4,6 @@ import { useState } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { Form, Button, Col, Container, Card, Row, Alert } from 'react-bootstrap';
 import BackButton from '@/components/BackButton';
-import { createTerm } from '@/lib/dbActions';
 import '@/styles/forms.css';
 
 const AddTermForm = () => {
@@ -17,24 +16,22 @@ const AddTermForm = () => {
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.SyntheticEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setError(null);
 
     if (!crn || Number.isNaN(crn)) {
-      setError('Missing course CRN. Open this form from a course page.');
+      setError('Missing course CRN.');
       return;
     }
 
     const formData = new FormData(e.currentTarget);
-    const word = (formData.get('termName') as string)?.trim();
-    const referenceDefinition = (formData.get('referenceDefinition') as string)?.trim();
-    const difficulty = formData.get('difficultyLevel') as 'Basic' | 'Moderate' | 'Advanced';
-    const week = parseInt(formData.get('week') as string, 10);
-    const maxSubmissions = parseInt(formData.get('maxSubmissions') as string, 10);
+
+    const word = formData.get('termName') as string;
+    const maxSubmissions = Number(formData.get('maxSubmissions'));
 
     if (!word) {
-      setError('Term name is required.');
+      setError('Term name required.');
       return;
     }
 
@@ -45,24 +42,36 @@ const AddTermForm = () => {
 
     setSubmitting(true);
 
+    const referenceDefinition = formData.get('referenceDefinition') as string;
+    const week = Number(formData.get('week'));
+    const difficulty = formData.get('difficultyLevel') as 'Basic' | 'Moderate' | 'Advanced';
+
     try {
-      await createTerm({
-        courseCRN: crn,
-        word,
-        referenceDefinition: referenceDefinition || undefined,
-        maxSubmissions,
-        week,
-        difficulty,
-        imageRequired: requiresImage,
+      const res = await fetch('/api/terms/create', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          courseCRN: crn,
+          word,
+          maxSubmissions,
+          referenceDefinition,
+          week,
+          difficulty,
+          imageRequired: requiresImage,
+        }),
       });
+
+      const data = await res.json();
+
+      if (!res.ok) throw new Error(data.error);
 
       router.push(`/instructor-dashboard/courses/${crn}`);
     } catch (err) {
-      setError(err instanceof Error ? err.message : 'Failed to create term.');
+      setError(err instanceof Error ? err.message : 'Failed.');
       setSubmitting(false);
     }
   };
-
+  
   return (
     <Container className="add-term-page">
         <div className="form-heading-wrap">

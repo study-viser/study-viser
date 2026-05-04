@@ -91,16 +91,16 @@ export default async function InstructorDashboardPage() {
     .slice(0, 4);
 
   return (
-    <main className="dashboard-container">
-      <section className="section">
-        <h1 className="page-title">Instructor Dashboard</h1>
-        <p className="page-subtitle">
+    <main className="instructor-dashboard-container">
+      <section className="instructor-section">
+        <h1 className="instructor-page-title">Instructor Dashboard</h1>
+        <p className="instructor-page-subtitle">
           Manage your courses, track submissions, and review glossaries.
         </p>
       </section>
 
       {/* ── Summary Stat Cards ─────────────────────────────────────────── */}
-      <section className="stats-grid section">
+      <section className="stats-grid instructor-section">
         <div className="stat-card">
           <div className="stat-icon-wrap stat-icon-yellow">
             <AlertCircle size={18} />
@@ -147,10 +147,10 @@ export default async function InstructorDashboardPage() {
       </section>
 
       {/* ── My Courses ─────────────────────────────────────────────────── */}
-      <section className="section">
-        <div className="card full-width-card">
-          <div className="section-header">
-            <h2 className="card-title">My Courses</h2>
+      <section className="instructor-section">
+        <div className="instructor-card full-width-card">
+          <div className="instructor-section-header">
+            <h2 className="instructor-card-title">My Courses</h2>
           </div>
 
           {courses.length === 0 && (
@@ -193,11 +193,11 @@ export default async function InstructorDashboardPage() {
       </section>
 
       {/* ── Bottom Row ─────────────────────────────────────────────────── */}
-      <section className="grid-3 section">
+      <section className="instructor-grid-3 instructor-section">
 
         {/* Browse Glossaries */}
-        <div className="card">
-          <h2 className="card-title">Browse Glossaries</h2>
+        <div className="instructor-card">
+          <h2 className="instructor-card-title">Browse Glossaries</h2>
           <div className="glossary-list">
             <Link href="/glossary-approved" className="glossary-item">
               <BookOpen size={15} className="glossary-icon glossary-icon-green" />
@@ -214,9 +214,9 @@ export default async function InstructorDashboardPage() {
         </div>
 
         {/* Recent Activity */}
-        <div className="card">
-          <div className="section-header">
-            <h2 className="card-title">Recent Activity</h2>
+        <div className="instructor-card">
+          <div className="instructor-section-header">
+            <h2 className="instructor-card-title">Recent Activity</h2>
           </div>
           <div className="activity-list">
             {recentSubmissions.length === 0 ? (
@@ -256,8 +256,8 @@ export default async function InstructorDashboardPage() {
         </div>
 
         {/* Course Analytics */}
-        <div className="card">
-          <h2 className="card-title">Course Analytics</h2>
+        <div className="instructor-card">
+          <h2 className="instructor-card-title">Course Analytics</h2>
           <div className="analytics-course-list">
             {courses.length === 0 && (
               <p style={{ color: '#9CA3AF', fontSize: '14px' }}>No courses yet.</p>

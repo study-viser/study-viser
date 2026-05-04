@@ -1,19 +1,31 @@
         @import url('https://fonts.googleapis.com/css2?family=Belanosima:wght@400;600;700&family=Inter:wght@400;500;600&display=swap');
  
         :root {
-          --green-dark: #024731;;
+          --green-dark: #024731;
           --green-mid: #2d6a44;
           --green-light: #4a9b65;
           --green-pale: #a8d5b5;
           --green-muted: #E8F5E9;
+          --green-bg: #f0faf4;
           --white: #ffffff;
-          --gray-text: D9D9D9;
+          --gray-text: #D9D9D9;
+          --font-title: 'Belanosima', sans-serif;
+          --font-body: 'Inter', sans-serif;
         }
- 
         * { box-sizing: border-box; margin: 0; padding: 0; }
  
         body {
-          font-family: 'DM Sans', sans-serif;
+          min-height: 100vh;
+        }
+
+        html, body {
+          min-height: 100%;
+          margin: 0;
+
+        }
+        /* Main content grows */
+        .main-content {
+          flex: 1 0 auto;
         }
 
         .nav {
@@ -39,7 +51,7 @@
         }
  
         .logo-text {
-          font-family: 'DM Sans', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-weight: 700;
           font-size: 1.5rem;
           color: var(--green-dark);
@@ -75,6 +87,11 @@
  
         .nav-links a:hover { color: var(--green-mid); }
  
+        .app-wrapper {
+          min-height: 100vh;
+          display: flex;
+          flex-direction: column;
+        }
         .courses-wrapper {
           position: relative;
           display: flex;
@@ -130,7 +147,7 @@
         }
  
         .login-btn {
-          font-family: 'DM Sans', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-weight: 600;
           font-size: 0.95rem;
           color: var(--green-dark);
@@ -145,7 +162,7 @@
         .login-btn:hover { color: var(--green-mid); }
  
         .register-btn {
-          font-family: 'DM Sans', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-weight: 600;
           font-size: 0.95rem;
           color: white;
@@ -164,7 +181,7 @@
  
         .hero {
           position: relative;
-          min-height: calc(100vh - 84px);
+          min-height: 650px;
           overflow: hidden;
           display: flex;
           flex-direction: column;
@@ -185,7 +202,7 @@
           padding: 16px 20px 16px 52px;
           border: 1.5px solid #c8e6d0;
           border-radius: 50px;
-          font-family: 'DM Sans', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 1rem;
           color: var(--green-dark);
           outline: none;
@@ -270,10 +287,14 @@
  
         /* Footer bar */
         .footer-bar {
-          background: var(--green-dark);
+          background: #024731;
           color: white;
           text-align: center;
           padding: 28px 20px 24px;
+          margin-top: auto;
+          flex-shrink: 0;
+          border-top: 1px solid;
+          border-image: linear-gradient(to right, transparent, #E8F5E9, transparent) 1;
         }
  
         .footer-university {
@@ -285,7 +306,7 @@
         }
  
         .footer-subtitle {
-          font-family: 'DM Sans', sans-serif;
+          font-family: 'Inter', sans-serif;
           font-size: 0.95rem;
           opacity: 0.8;
           font-weight: 400;
