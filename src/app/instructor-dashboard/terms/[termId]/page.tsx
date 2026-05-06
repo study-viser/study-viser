@@ -13,7 +13,11 @@ export default async function TermReviewPage({ params }: { params: Promise<{ ter
   if (!term) return <p>Term not found.</p>;
 
   const submissions = await getSubmissionsByTerm(termId) ?? [];
-  const status = term.bestSubmissionId ? 'approved' : submissions.length >= term.maxSubmissions ? 'cap-reached' : 'pending';
+  const status = term.bestSubmissionId
+    ? 'approved'
+    : submissions.length >= term.maxSubmissions
+    ? 'cap-reached'
+    : 'pending';
 
   return (
     <main style={{ maxWidth: '900px', margin: '0 auto', padding: '32px 24px', fontFamily: 'Inter, sans-serif' }}>
@@ -40,7 +44,7 @@ export default async function TermReviewPage({ params }: { params: Promise<{ ter
           fontSize: '12px', fontWeight: 600, padding: '4px 10px', borderRadius: '999px',
           ...(status === 'approved' ? { background: '#DCFCE7', color: '#15803D' } :
             status === 'cap-reached' ? { background: '#FEF9C3', color: '#A16207' } :
-            { background: '#F1F5F9', color: '#64748B' })
+            { background: '#F1F5F9', color: '#64748B' }),
         }}>
           {status === 'approved' && <><CheckCircle2 size={12} /> Approved</>}
           {status === 'cap-reached' && <><Lock size={12} /> Cap Reached</>}
@@ -48,21 +52,25 @@ export default async function TermReviewPage({ params }: { params: Promise<{ ter
         </span>
       </div>
 
-      <h2 style={{ fontFamily: 'Belanosima, sans-serif', fontSize: '20px', color: '#1F2937', marginBottom: '16px' }}>
+      <h2 style={{ fontFamily: 'Belanosima, sans-serif', fontSize: '20px', color: '#1F2937', marginBottom: '4px' }}>
         Submissions
       </h2>
+      <p style={{ color: '#9CA3AF', fontSize: '13px', marginBottom: '16px' }}>
+        Student identities are hidden to ensure unbiased review.
+      </p>
 
       {submissions.length === 0 && (
         <p style={{ color: '#6B7280' }}>No submissions yet for this term.</p>
       )}
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
-        {submissions.map(submission => (
+        {submissions.map((submission, i) => (
           <SubmissionReviewCard
             key={submission.id}
             submission={submission}
             termId={term.id}
             isWinner={submission.id === term.bestSubmissionId}
+            index={i + 1}
           />
         ))}
       </div>

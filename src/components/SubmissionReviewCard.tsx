@@ -1,30 +1,31 @@
 'use client';
 
 import { useState } from 'react';
-import { CheckCircle2, Award, RotateCcw } from 'lucide-react';
+import { CheckCircle2, Award, RotateCcw, UserCircle2 } from 'lucide-react';
 import { useRouter } from 'next/navigation';
+import '@/app/instructor-dashboard/dashboard.css';
 
 type Submission = {
   id: string;
   definition: string;
   wasReviewed: boolean;
   points: number;
-  creator: { name: string; email: string };
 };
 
 type Props = {
   submission: Submission;
   termId: string;
   isWinner: boolean;
+  /** 1-based display index shown in place of the student's name */
+  index: number;
 };
 
-export default function SubmissionReviewCard({ submission, termId, isWinner }: Props) {
+export default function SubmissionReviewCard({ submission, termId, isWinner, index }: Props) {
   const router = useRouter();
   const [loading, setLoading] = useState(false);
 
   const postAction = async (url: string, body: object) => {
     setLoading(true);
-
     try {
       const res = await fetch(url, {
         method: 'POST',
@@ -32,9 +33,7 @@ export default function SubmissionReviewCard({ submission, termId, isWinner }: P
         body: JSON.stringify(body),
       });
 
-      if (!res.ok) {
-        throw new Error('Action failed.');
-      }
+      if (!res.ok) throw new Error('Action failed.');
 
       router.refresh();
     } finally {
@@ -42,96 +41,81 @@ export default function SubmissionReviewCard({ submission, termId, isWinner }: P
     }
   };
 
-  const handleReview = () => {
-    postAction('/api/submissions/review', {
-      submissionId: submission.id,
-    });
-  };
+  const handleReview = () =>
+    postAction('/api/submissions/review', { submissionId: submission.id });
 
-  const handleApprove = () => {
-    postAction('/api/submissions/approve', {
-      termId,
-      submissionId: submission.id,
-    });
-  };
+  const handleApprove = () =>
+    postAction('/api/submissions/approve', { termId, submissionId: submission.id });
 
-  const handleClear = () => {
-    postAction('/api/submissions/clear-approval', {
-      termId,
-      submissionId: submission.id,
-    });
-  };
+  const handleClear = () =>
+    postAction('/api/submissions/clear-approval', { termId, submissionId: submission.id });
+
+  const cardVariant = isWinner
+    ? 'review-card-winner'
+    : submission.wasReviewed
+    ? 'review-card-reviewed'
+    : 'review-card-pending';
 
   return (
-    <div style={{
-      border: `2px solid ${isWinner ? '#6DB089' : submission.wasReviewed ? '#E5E7EB' : '#F3F4F6'}`,
-      borderRadius: '12px',
-      padding: '20px',
-      background: isWinner ? '#F0FFF4' : '#ffffff',
-      position: 'relative',
-    }}>
+    <div className={`review-card ${cardVariant}`}>
+
+      {/* Winner badge */}
       {isWinner && (
-        <div style={{
-          position: 'absolute',
-          top: '12px',
-          right: '12px',
-          display: 'flex',
-          alignItems: 'center',
-          gap: '5px',
-          background: '#DCFCE7',
-          color: '#15803D',
-          fontSize: '12px',
-          fontWeight: 600,
-          padding: '4px 10px',
-          borderRadius: '999px',
-        }}>
+        <div className="review-card-winner-badge">
           <Award size={12} /> Winner
         </div>
       )}
 
-      <p style={{
-        fontSize: '15px',
-        color: '#374151',
-        lineHeight: '1.6',
-        marginBottom: '16px',
-        whiteSpace: 'pre-wrap',
-      }}>
+      {/* Anonymous label */}
+      <div className="review-card-anon-label">
+        <UserCircle2 size={14} />
+        <span>Submission {index}</span>
+      </div>
+
+      {/* Definition */}
+      <p className="review-card-definition">
         {submission.definition}
       </p>
 
-      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+      {/* Footer */}
+      <div className="review-card-footer">
+        <div>
           {submission.wasReviewed ? (
-            <span style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '5px',
-              color: '#15803D',
-              fontSize: '13px',
-              fontWeight: 600,
-            }}>
+            <span className="review-card-status-reviewed">
               <CheckCircle2 size={14} /> Reviewed — {submission.points} pts
             </span>
           ) : (
-            <span style={{ color: '#9CA3AF', fontSize: '13px' }}>Not yet reviewed</span>
+            <span className="review-card-status-pending">Not yet reviewed</span>
           )}
         </div>
 
-        <div style={{ display: 'flex', gap: '8px' }}>
+        <div className="review-card-actions">
           {!submission.wasReviewed && (
-            <button onClick={handleReview} disabled={loading}>
+            <button
+              className="review-btn review-btn-mark"
+              onClick={handleReview}
+              disabled={loading}
+            >
               Mark Reviewed
             </button>
           )}
 
           {submission.wasReviewed && !isWinner && (
-            <button onClick={handleApprove} disabled={loading}>
+            <button
+              className="review-btn review-btn-approve"
+              onClick={handleApprove}
+              disabled={loading}
+            >
               Set as Winner
             </button>
           )}
 
           {isWinner && (
-            <button onClick={handleClear} disabled={loading}>
+            <button
+              className="review-btn review-btn-undo"
+              onClick={handleClear}
+              disabled={loading}
+            >
               <RotateCcw size={13} /> Undo
             </button>
           )}
