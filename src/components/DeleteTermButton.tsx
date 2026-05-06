@@ -24,7 +24,6 @@ export default function DeleteTermButton({ termId, termWord }: Props) {
       });
 
       if (!res.ok) throw new Error('Failed to delete term.');
-
       router.refresh();
     } catch (err) {
       console.error(err);
