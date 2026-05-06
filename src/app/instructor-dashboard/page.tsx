@@ -235,12 +235,11 @@ export default async function InstructorDashboardPage() {
                       <p className="activity-text">
                         {isApproved ? (
                           <>
-                            <strong>{sub.creator.name}</strong>&apos;s entry for{' '}
-                            <strong>{sub.termWord}</strong> was approved
+                            A submission for <strong>{sub.termWord}</strong> was approved
                           </>
                         ) : (
                           <>
-                            <strong>{sub.creator.name}</strong> submitted a definition for{' '}
+                            New definition submitted for{' '}
                             <strong>{sub.termWord}</strong>{' '}
                             <span style={{ color: '#9CA3AF', fontSize: '12px' }}>({sub.courseCode})</span>
                           </>
