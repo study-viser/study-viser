@@ -43,16 +43,12 @@
     }
   ],
 
-  "defaultTerms": [
-    {
-      "crn": 2824,
-      "word": "Variable",
-      "difficulty": "Basic",
-      "imageRequired": false,
-      "maxSubmissions": 3,
-      "week": 1
-    }
-  ],
+"defaultTerms": [
+  { "crn": 2824, "word": "Variable",  "difficulty": "Basic",    "imageRequired": false, "maxSubmissions": 3, "week": 1 },
+  { "crn": 2824, "word": "Recursion", "difficulty": "Moderate", "imageRequired": true,  "maxSubmissions": 3, "week": 2 },
+  { "crn": 2824, "word": "Data Type", "difficulty": "Basic",    "imageRequired": false, "maxSubmissions": 3, "week": 2 },
+  { "crn": 5506, "word": "Algorithms","difficulty": "Advanced", "imageRequired": false, "maxSubmissions": 3, "week": 1 }
+],
 
   "defaultSubmissions": [
     {
