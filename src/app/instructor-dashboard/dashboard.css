@@ -551,3 +551,158 @@
   color: #6B7280;
   border-color: #D1D5DB;
 }
+
+/* ---------- Extra Credit Page ---------- */
+
+.ec-page {
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 32px 24px;
+  font-family: Inter, sans-serif;
+}
+
+.ec-back-link {
+  color: #2f5da8;
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+}
+
+.ec-header {
+  margin: 16px 0 32px;
+}
+
+.ec-title-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.ec-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: #E0B548;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+  box-shadow: 0 4px 10px rgba(224, 181, 72, 0.3);
+  flex-shrink: 0;
+}
+
+.ec-title {
+  font-family: 'Belanosima', sans-serif;
+  font-size: 36px;
+  color: #2E7D32;
+  margin: 0;
+}
+
+.ec-subtitle {
+  color: #6B7280;
+  font-size: 16px;
+  margin: 4px 0 0 0;
+}
+
+.ec-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+  margin-bottom: 28px;
+}
+
+.ec-stat-card {
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: 16px;
+  padding: 18px;
+  box-shadow: 0 4px 12px rgba(171, 190, 209, 0.14);
+}
+
+.ec-stat-card p {
+  color: #6B7280;
+  font-size: 14px;
+  margin: 0 0 6px;
+}
+
+.ec-stat-card span {
+  color: #024731;
+  font-size: 32px;
+  font-weight: 700;
+}
+
+.ec-table {
+  background: #fff;
+  border: 1px solid #E5E7EB;
+  border-radius: 16px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(171, 190, 209, 0.14);
+}
+
+.ec-table-head {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 1fr;
+  padding: 10px 20px;
+  background: #F9FAFB;
+  border-bottom: 1px solid #E5E7EB;
+  font-size: 13px;
+  font-weight: 600;
+  color: #9CA3AF;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.ec-table-row {
+  display: grid;
+  grid-template-columns: 2fr 2fr 1fr 1fr;
+  padding: 14px 20px;
+  align-items: center;
+  border-bottom: 1px solid #F3F4F6;
+  font-size: 15px;
+}
+
+.ec-table-row:last-child {
+  border-bottom: none;
+}
+
+.ec-student-name {
+  font-weight: 600;
+  color: #1F2937;
+}
+
+.ec-student-email {
+  color: #6B7280;
+  font-size: 14px;
+}
+
+.ec-approved-count {
+  color: #6B7280;
+}
+
+.ec-points-badge {
+  background: #DCFCE7;
+  color: #15803D;
+  font-weight: 700;
+  font-size: 14px;
+  border-radius: 999px;
+  padding: 3px 12px;
+  width: fit-content;
+}
+
+.ec-points-empty {
+  color: #D1D5DB;
+  font-size: 14px;
+}
+
+.ec-empty {
+  padding: 36px;
+  text-align: center;
+  color: #6B7280;
+}
+
+.ec-footer-note {
+  color: #9CA3AF;
+  font-size: 13px;
+  margin-top: 16px;
+}

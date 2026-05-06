@@ -138,6 +138,18 @@ const totalPoints = approvedSubmissions.reduce(
   0
 );
 
+// Per-course extra credit breakdown
+const pointsByCourse = approvedSubmissions.reduce((acc, s) => {
+  const course = s.term?.course;
+  if (!course) return acc;
+  const key = course.crn;
+  if (!acc[key]) acc[key] = { code: course.code, name: course.name, points: 0 };
+  acc[key].points += s.points;
+  return acc;
+}, {} as Record<number, { code: string; name: string; points: number }>);
+
+const coursePointsList = Object.values(pointsByCourse);
+
   return (
     <main className="dashboard-container">
       <section className="dashboard-section">
@@ -345,25 +357,38 @@ const totalPoints = approvedSubmissions.reduce(
                 </div>
             </div>
 
-            {/* Extra Credit Card */}  
+            {/* Extra Credit Card */}
             <div className="dashboard-card extra-card">
-            <div className="extra-header">
+              <div className="extra-header">
                 <div className="extra-title-wrap">
-                <div className="extra-icon">
+                  <div className="extra-icon">
                     <Award size={18} />
+                  </div>
+                  <h2 className="dashboard-card-title">Extra Credit Earned</h2>
                 </div>
-                <h2 className="dashboard-card-title">Extra Credit Earned</h2>
-                </div>
-            </div>
+              </div>
 
-                <p className="extra-points">
+              <p className="extra-points">
                 {totalPoints} point{totalPoints !== 1 ? 's' : ''}
-                </p>
+              </p>
 
-                <p className="extra-sub">
+              <p className="extra-sub">
                 {approvedSubmissions.length} approved submission
                 {approvedSubmissions.length !== 1 ? 's' : ''}
-                </p>
+              </p>
+
+              {coursePointsList.length > 0 && (
+                <div className="extra-course-breakdown">
+                  {coursePointsList.map((c) => (
+                    <div key={c.code} className="extra-course-row">
+                      <span className="extra-course-code">{c.code}</span>
+                      <span className="extra-course-pts">
+                        {c.points} pt{c.points !== 1 ? 's' : ''}
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
         </section>
       

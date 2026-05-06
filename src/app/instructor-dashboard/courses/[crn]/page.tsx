@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { auth } from '@/lib/auth';
 import { getCourseByCrn, getSecretCode, getTermsByCourse } from '@/lib/dbActions';
-import { ChevronRight, BookOpen, CheckCircle2, Lock, Clock, PlusCircle } from 'lucide-react';
+import { ChevronRight, BookOpen, CheckCircle2, Lock, Clock, PlusCircle, Award } from 'lucide-react';
 import DeleteTermButton from '@/components/DeleteTermButton';
 import SecretCodeToggle from '@/components/SecretCodeReveal';
 
@@ -53,9 +53,20 @@ export default async function CoursePage({ params }: { params: Promise<{ crn: st
           <p style={{ color: '#6B7280', fontSize: '16px', margin: '0' }}>{course.title}</p>
         </div>
 
-        {/* Secret toggle + Add Term side by side */}
+        {/* Secret toggle + Add Term + Extra Credit side by side */}
         <div style={{ display: 'flex', alignItems: 'center', gap: '10px', marginTop: '16px' }}>
           <SecretCodeToggle secret={secretCode} />
+          <Link
+            href={`/instructor-dashboard/courses/${crn}/extra-credit`}
+            style={{
+              display: 'flex', alignItems: 'center', gap: '6px',
+              background: '#E0B548', color: '#ffffff',
+              borderRadius: '8px', fontSize: '13px', fontWeight: 600,
+              padding: '8px 16px', textDecoration: 'none',
+            }}
+          >
+            <Award size={13} /> Extra Credit
+          </Link>
           <Link
             href={`/add-term?crn=${crn}`}
             style={{

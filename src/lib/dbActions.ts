@@ -795,7 +795,7 @@ export async function getExtraCreditByCourse(courseCRN: number) {
         students: {
           include: {
             submissions: {
-              where: { wasReviewed: true, points: { gt: 0 } },
+              where: { wasReviewed: true, points: { gt: 0 }, term: { courseCRN: courseCRN, } },
               include: { term: true },
             },
           },
