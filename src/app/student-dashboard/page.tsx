@@ -143,7 +143,7 @@ const pointsByCourse = approvedSubmissions.reduce((acc, s) => {
   const course = s.term?.course;
   if (!course) return acc;
   const key = course.crn;
-  if (!acc[key]) acc[key] = { code: course.code, name: course.name, points: 0 };
+  if (!acc[key]) acc[key] = { code: course.code, name: course.title, points: 0 };
   acc[key].points += s.points;
   return acc;
 }, {} as Record<number, { code: string; name: string; points: number }>);

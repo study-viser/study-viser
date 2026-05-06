@@ -38,7 +38,7 @@ export default async function MyProgressPage() {
       const course = s.term!.course;
       const key = course.crn;
       if (!acc[key]) {
-        acc[key] = { code: course.code, name: course.name, points: 0, approved: 0 };
+        acc[key] = { code: course.code, name: course.title, points: 0, approved: 0 };
       }
       acc[key].points += s.points;
       acc[key].approved += 1;
