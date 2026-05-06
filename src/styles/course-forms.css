@@ -119,3 +119,57 @@
   height: 30px;
   padding: 4px;
 }
+
+.secret-toggle-outline {
+  background: #f1f5f1;
+  color: #4a6b52;
+  border: 2px solid #4a6b52;
+  border-radius: 5px;
+  padding: 5px;
+  font-size: 13px;
+}
+
+.secret-toggle-outline:hover {
+  background-color: #024731;
+  color: #e8f5e9;
+  border: 2px solid #024731;
+}
+
+.secret-toggle-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.secret-field {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: #F3F4F6;
+  border: 1px solid #E5E7EB;
+  border-radius: 8px;
+  padding: 8px 12px;
+}
+
+.secret-value {
+  font-family: monospace;
+  font-size: 14px;
+  color: #1F2937;
+  flex: 1;
+}
+
+.secret-copy-btn {
+  background: #e8f5e9;
+  color: #024731;
+  border: 2px solid #024731;
+  border-radius: 5px;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.secret-copy-btn:hover {
+  background-color: #024731;
+  color: #e8f5e9;
+}
