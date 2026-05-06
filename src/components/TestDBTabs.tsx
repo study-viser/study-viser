@@ -14,7 +14,7 @@ import {
   createTerm, updateTerm, deleteTerm, setBestSubmission,
   createSubmission, updateSubmission, deleteSubmission, reviewSubmission,
   approveSubmission, clearTermApproval, getExtraCreditByUser, getExtraCreditByCourse,
-} from '@/lib/dbActions';
+} from '@/lib/testDBActions';
 
 // ---------------------------------------------------------------------------
 // Types
