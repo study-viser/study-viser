@@ -1,7 +1,7 @@
 import { prisma } from '@/lib/prisma';
 import { auth } from '@/lib/auth';
 import BackButton from '@/components/BackButton';
-import '@/styles/student-course.css';
+import '@/styles/progress.css';
 
 export default async function MyProgressPage() {
   const session = await auth();
@@ -30,6 +30,22 @@ export default async function MyProgressPage() {
   const approvedSubmissions = submissions.filter((s) => s.wasReviewed && s.points > 0).length;
   const pendingSubmissions = submissions.filter((s) => !s.wasReviewed).length;
   const totalPoints = submissions.reduce((sum, s) => sum + s.points, 0);
+
+  // Per-course extra credit breakdown
+  const pointsByCourse = submissions
+    .filter((s) => s.wasReviewed && s.points > 0 && s.term?.course)
+    .reduce((acc, s) => {
+      const course = s.term!.course;
+      const key = course.crn;
+      if (!acc[key]) {
+        acc[key] = { code: course.code, name: course.title, points: 0, approved: 0 };
+      }
+      acc[key].points += s.points;
+      acc[key].approved += 1;
+      return acc;
+    }, {} as Record<number, { code: string; name: string; points: number; approved: number }>);
+
+  const coursePointsList = Object.values(pointsByCourse);
 
   return (
     <main className="progress-page">
@@ -60,9 +76,54 @@ export default async function MyProgressPage() {
         </div>
 
         <div className="progress-stat-card points">
-          <p>Extra Credit Points</p>
+          <p>Total Extra Credit</p>
           <h2>{totalPoints}</h2>
         </div>
+      </section>
+
+      <section className="progress-section" style={{ marginBottom: '24px' }}>
+        <div className="progress-section-header">
+          <div>
+            <h2>Extra Credit by Course</h2>
+            <p>Your extra credit points broken down per enrolled course.</p>
+          </div>
+        </div>
+
+        {coursePointsList.length === 0 ? (
+          <div className="progress-empty">
+            <h3>No extra credit yet</h3>
+            <p>Get a definition approved to start earning points.</p>
+          </div>
+        ) : (
+          <div className="ec-course-list">
+            {coursePointsList.map((course) => (
+              <div key={course.code} className="ec-course-row">
+                <div className="ec-course-info">
+                  <span className="ec-course-code">{course.code}</span>
+                  <span className="ec-course-name">{course.name}</span>
+                </div>
+                <div className="ec-course-right">
+                  <span className="ec-course-approved">
+                    {course.approved} approved submission{course.approved !== 1 ? 's' : ''}
+                  </span>
+                  <span className="ec-course-points">
+                    {course.points} pt{course.points !== 1 ? 's' : ''}
+                  </span>
+                </div>
+              </div>
+            ))}
+            <div className="ec-course-row ec-total-row">
+              <div className="ec-course-info">
+                <span className="ec-course-code">All Courses</span>
+              </div>
+              <div className="ec-course-right">
+                <span className="ec-course-points ec-total-points">
+                  {totalPoints} pt{totalPoints !== 1 ? 's' : ''} total
+                </span>
+              </div>
+            </div>
+          </div>
+        )}
       </section>
 
       <section className="progress-section">
