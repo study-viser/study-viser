@@ -16,12 +16,15 @@ export default function SecretCodeToggle({ secret }: { secret: string | null | u
 
   return (
     <div className="secret-toggle-wrapper">
-      <button onClick={() => setIsVisible(!isVisible)} className="secret-toggle-outline">
-        {isVisible ? 'Hide Code' : 'Show Enrollment Code'}
-      </button>
-
-      {isVisible && (
+      {!isVisible ? (
+        <button onClick={() => setIsVisible(true)} className="secret-toggle-outline">
+          Show Enrollment Code
+        </button>
+      ) : (
         <div className="secret-field">
+          <button onClick={() => setIsVisible(false)} className="secret-copy-btn">
+            Hide
+          </button>
           <span className="secret-value">{secret ?? 'No code found'}</span>
           <button onClick={handleCopy} className="secret-copy-btn">
             {copied ? 'Copied!' : 'Copy'}
