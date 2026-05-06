@@ -148,16 +148,23 @@ async function main() {
       continue;
     }
 
-    const created = await prisma.term.create({
-      data: {
-        courseCRN: course.crn,
-        word: term.word,
-        maxSubmissions: term.maxSubmissions,
-        week: term.week ?? null,
-        difficulty: (term.difficulty ?? 'Basic') as Difficulty,
-        imageRequired: term.imageRequired ?? false,
-      },
-    });
+const created = await prisma.term.upsert({
+  where: {
+    courseCRN_word: {  
+      courseCRN: course.crn,
+      word: term.word,
+    },
+  },
+  update: {},
+  create: {
+    courseCRN: course.crn,
+    word: term.word,
+    maxSubmissions: term.maxSubmissions,
+    week: term.week ?? null,
+    difficulty: (term.difficulty ?? 'Basic') as Difficulty,
+    imageRequired: term.imageRequired ?? false,
+  },
+});
 
     termMap.set(`${term.crn}:${term.word}`, created.id);
     console.log(`  Created term id: ${created.id}`);
@@ -182,15 +189,24 @@ async function main() {
       continue;
     }
 
-    await prisma.submission.create({
-      data: {
-        creatorId: creator.id,
+    const existingSubmission = await prisma.submission.findFirst({
+      where: {
         termId,
-        definition: sub.definition,
-        points: sub.points,
-        wasReviewed: sub.wasReviewed,
+        creatorId: creator.id,
       },
     });
+
+    if (!existingSubmission) {
+      await prisma.submission.create({
+        data: {
+          creatorId: creator.id,
+          termId,
+          definition: sub.definition,
+          points: sub.points,
+          wasReviewed: sub.wasReviewed,
+        },
+      });
+}
   }
 
   console.log('Seeding complete.');

@@ -11,48 +11,115 @@
   ],
 
   "defaultCourses": [
-    {
-      "crn": 2824,
-      "code": "ICS 111",
-      "title": "Introduction to Computer Science I",
-      "description": "Overview of computer science emphasizing problem solving, algorithm development, implementation, and debugging/testing using an object-oriented programming language."
-    },
-    {
-      "crn": 1409,
-      "code": "ICS 211",
-      "title": "Introduction to Computer Science II",
-      "description": "Reinforce and strengthen problem-solving skills using abstract data types and introduction to algorithms and their complexity."
-    },
-    {
-      "crn": 5506,
-      "code": "ICS 311",
-      "title": "Algorithms",
-      "description": "Design and efficiency of algorithms for sorting, searching, graph problems, and string matching. Analysis of worst-case and average-case complexity."
-    },
-    {
-      "crn": 5012,
-      "code": "ICS 314",
-      "title": "Software Engineering I",
-      "description": "Systematic definition, development, and maintenance of software systems. Software life-cycle, compilers, and project management tools."
-    },
-    {
-      "crn": 4657,
-      "code": "ICS 315",
-      "title": "Software Engineering II",
-      "description": "Continuation of ICS 314. Emphasis on software design, testing, and maintenance. Software design patterns, refactoring, and team-based software development."
-    }
+    { "crn": 2824, "code": "ICS 111", "title": "Introduction to Computer Science I", "description": "Overview of computer science emphasizing problem solving, algorithm development, implementation, and debugging/testing using an object-oriented programming language." },
+    { "crn": 1409, "code": "ICS 211", "title": "Introduction to Computer Science II", "description": "Reinforce and strengthen problem-solving skills using abstract data types and introduction to algorithms and their complexity." },
+    { "crn": 5506, "code": "ICS 311", "title": "Algorithms", "description": "Design and efficiency of algorithms for sorting, searching, graph problems, and string matching." },
+    { "crn": 5012, "code": "ICS 314", "title": "Software Engineering I", "description": "Systematic definition, development, and maintenance of software systems." },
+    { "crn": 3301, "code": "ICS 321", "title": "Database Systems I", "description": "File organization, database design, query languages, and database management systems." },
+    { "crn": 3302, "code": "ICS 332", "title": "Operating Systems", "description": "Operating system concepts including processes, memory management, file systems, and scheduling." },
+    { "crn": 80016, "code": "ANTH 152", "title": "Culture and Humanity", "description": "Introduction to cultural anthropology and human meaning systems." },
+    { "crn": 81142, "code": "ANTH 215", "title": "Introduction to Biological Anthropology", "description": "Biological, cultural, and archaeological perspectives in anthropology." },
+    { "crn": 89305, "code": "ANTH 310", "title": "Human Origins", "description": "Evolution, primates, and fossil evidence for human origins." },
+    { "crn": 84272, "code": "ANTH 216", "title": "Anthropology of Tourism", "description": "Anthropological perspectives on tourism and cultural identity." },
+    { "crn": 80625, "code": "PSY 100",  "title": "Survey of Psychology", "description": "Overview of cognition, personality, learning, and social psychology." },
+    { "crn": 24142, "code": "PSY 230",  "title": "Introduction to Psychobiology", "description": "Behavior from biological and evolutionary perspectives." },
+    { "crn": 65280, "code": "PSY 260",  "title": "Psychology of Personality", "description": "Scientific study of personality and behavior." },
+    { "crn": 86565, "code": "PSY 270",  "title": "Introduction to Clinical Psychology", "description": "Psychological disorders, assessment, and intervention." },
+    { "crn": 84611, "code": "HIST 151", "title": "World History to 1500", "description": "Global historical narratives before 1500." },
+    { "crn": 84575, "code": "HIST 152", "title": "World History since 1500", "description": "Global historical developments after 1500." },
+    { "crn": 63124, "code": "HIST 284", "title": "History of the Hawaiian Islands", "description": "History of Hawaiʻi from chiefdoms to statehood." },
+    { "crn": 83955, "code": "HWST 107", "title": "Hawaiʻi: Center of the Pacific", "description": "Hawaiian and Pacific cultural perspectives and history." },
+    { "crn": 85057, "code": "KRS 353",  "title": "Structural Kinesiology", "description": "Musculoskeletal anatomy and movement analysis." },
+    { "crn": 81356, "code": "MICR 351", "title": "Biology of Microorganisms", "description": "Study of microorganisms and environmental interactions." },
+    { "crn": 80093, "code": "BOT 101",  "title": "General Botany", "description": "Plant biology, evolution, and environment." },
+    { "crn": 85113, "code": "GEO 151",  "title": "Geography and Contemporary Society", "description": "Economic geography and global resource management." },
+    { "crn": 10299, "code": "GEO 102",  "title": "World Regional Geography", "description": "Survey of world regions and cultures." },
+    { "crn": 82747, "code": "POLS 110", "title": "Introduction to Political Science", "description": "Political systems, ideologies, and processes." },
+    { "crn": 81365, "code": "REL 150",  "title": "Introduction to the World's Major Religions", "description": "Survey of major world religions and traditions." }
   ],
 
-  "defaultTerms": [
-    {
-      "crn": 2824,
-      "word": "Variable",
-      "difficulty": "Basic",
-      "imageRequired": false,
-      "maxSubmissions": 3,
-      "week": 1
-    }
-  ],
+"defaultTerms": [
+  { "crn": 2824, "word": "Variable",  "difficulty": "Basic",    "imageRequired": false, "maxSubmissions": 3, "week": 1 },
+  { "crn": 2824, "word": "Recursion", "difficulty": "Moderate", "imageRequired": true,  "maxSubmissions": 3, "week": 2 },
+  { "crn": 2824, "word": "Data Type", "difficulty": "Basic",    "imageRequired": false, "maxSubmissions": 3, "week": 2 },
+  { "crn": 5506, "word": "Algorithms","difficulty": "Advanced", "imageRequired": false, "maxSubmissions": 3, "week": 1 },
+  
+  { "crn": 80016, "word": "Culture",             "difficulty": "Basic",    "imageRequired": false, "maxSubmissions": 3, "week": 1 },
+  { "crn": 80016, "word": "Ethnocentrism",       "difficulty": "Moderate", "imageRequired": false, "maxSubmissions": 3, "week": 2 },
+  { "crn": 80016, "word": "Cultural Relativity", "difficulty": "Advanced", "imageRequired": false, "maxSubmissions": 3, "week": 3 },
+
+  { "crn": 81142, "word": "Natural Selection",   "difficulty": "Basic",    "imageRequired": false, "maxSubmissions": 3, "week": 1 },
+  { "crn": 81142, "word": "Hominid",             "difficulty": "Moderate", "imageRequired": true,  "maxSubmissions": 3, "week": 2 },
+  { "crn": 81142, "word": "Bipedalism",          "difficulty": "Advanced", "imageRequired": true,  "maxSubmissions": 3, "week": 3 },
+
+  { "crn": 89305, "word": "Fossil Record",       "difficulty": "Basic",    "imageRequired": true,  "maxSubmissions": 3, "week": 1 },
+  { "crn": 89305, "word": "Primate",             "difficulty": "Basic",    "imageRequired": true,  "maxSubmissions": 3, "week": 2 },
+  { "crn": 89305, "word": "Taxonomy",            "difficulty": "Moderate", "imageRequired": false, "maxSubmissions": 3, "week": 3 },
+
+  { "crn": 84272, "word": "Cultural Commoditization", "difficulty": "Advanced", "imageRequired": false, "maxSubmissions": 3, "week": 1 },
+  { "crn": 84272, "word": "Cultural Performance",     "difficulty": "Moderate", "imageRequired": false, "maxSubmissions": 3, "week": 2 },
+  { "crn": 84272, "word": "Identity",                 "difficulty": "Basic",    "imageRequired": false, "maxSubmissions": 3, "week": 3 },
+
+  { "crn": 80625, "word": "Cognition",           "difficulty": "Basic",    "imageRequired": false, "maxSubmissions": 3, "week": 1 },
+  { "crn": 80625, "word": "Classical Conditioning", "difficulty": "Moderate", "imageRequired": false, "maxSubmissions": 3, "week": 2 },
+  { "crn": 80625, "word": "Perception",          "difficulty": "Basic",    "imageRequired": false, "maxSubmissions": 3, "week": 3 },
+
+  { "crn": 24142, "word": "Neurotransmitter",    "difficulty": "Moderate", "imageRequired": false, "maxSubmissions": 3, "week": 1 },
+  { "crn": 24142, "word": "Ethology",            "difficulty": "Advanced", "imageRequired": false, "maxSubmissions": 3, "week": 2 },
+  { "crn": 24142, "word": "Behavioral Genetics", "difficulty": "Advanced", "imageRequired": false, "maxSubmissions": 3, "week": 3 },
+
+  { "crn": 65280, "word": "Personality Trait",   "difficulty": "Basic",    "imageRequired": false, "maxSubmissions": 3, "week": 1 },
+  { "crn": 65280, "word": "Self-Concept",        "difficulty": "Moderate", "imageRequired": false, "maxSubmissions": 3, "week": 2 },
+  { "crn": 65280, "word": "Defense Mechanism",   "difficulty": "Advanced", "imageRequired": false, "maxSubmissions": 3, "week": 3 },
+
+  { "crn": 86565, "word": "Psychotherapy",       "difficulty": "Basic",    "imageRequired": false, "maxSubmissions": 3, "week": 1 },
+  { "crn": 86565, "word": "Diagnosis",           "difficulty": "Moderate", "imageRequired": false, "maxSubmissions": 3, "week": 2 },
+  { "crn": 86565, "word": "Mental Disorder",     "difficulty": "Moderate", "imageRequired": false, "maxSubmissions": 3, "week": 3 },
+
+  { "crn": 84611, "word": "Primary Source",      "difficulty": "Basic",    "imageRequired": false, "maxSubmissions": 3, "week": 1 },
+  { "crn": 84611, "word": "Cross-Cultural Exchange", "difficulty": "Moderate", "imageRequired": false, "maxSubmissions": 3, "week": 2 },
+  { "crn": 84611, "word": "Feudalism",           "difficulty": "Moderate", "imageRequired": false, "maxSubmissions": 3, "week": 3 },
+
+  { "crn": 84575, "word": "Colonialism",         "difficulty": "Moderate", "imageRequired": false, "maxSubmissions": 3, "week": 1 },
+  { "crn": 84575, "word": "Industrialization",   "difficulty": "Moderate", "imageRequired": false, "maxSubmissions": 3, "week": 2 },
+  { "crn": 84575, "word": "Globalization",       "difficulty": "Advanced", "imageRequired": false, "maxSubmissions": 3, "week": 3 },
+
+  { "crn": 63124, "word": "Ahupuaʻa",           "difficulty": "Moderate", "imageRequired": true,  "maxSubmissions": 3, "week": 1 },
+  { "crn": 63124, "word": "Chiefdom",            "difficulty": "Basic",    "imageRequired": false, "maxSubmissions": 3, "week": 2 },
+  { "crn": 63124, "word": "Annexation",          "difficulty": "Advanced", "imageRequired": false, "maxSubmissions": 3, "week": 3 },
+
+  { "crn": 83955, "word": "Mana",                "difficulty": "Basic",    "imageRequired": false, "maxSubmissions": 3, "week": 1 },
+  { "crn": 83955, "word": "Kapu",                "difficulty": "Moderate", "imageRequired": false, "maxSubmissions": 3, "week": 2 },
+  { "crn": 83955, "word": "Voyaging Canoe",      "difficulty": "Moderate", "imageRequired": true,  "maxSubmissions": 3, "week": 3 },
+
+  { "crn": 85057, "word": "Musculoskeletal System", "difficulty": "Basic",    "imageRequired": true,  "maxSubmissions": 3, "week": 1 },
+  { "crn": 85057, "word": "Kinesiology",         "difficulty": "Moderate", "imageRequired": false, "maxSubmissions": 3, "week": 2 },
+  { "crn": 85057, "word": "Motor Activity",      "difficulty": "Advanced", "imageRequired": false, "maxSubmissions": 3, "week": 3 },
+
+  { "crn": 81356, "word": "Prokaryote",          "difficulty": "Basic",    "imageRequired": true,  "maxSubmissions": 3, "week": 1 },
+  { "crn": 81356, "word": "Pathogen",            "difficulty": "Basic",    "imageRequired": false, "maxSubmissions": 3, "week": 2 },
+  { "crn": 81356, "word": "Antibiotic Resistance", "difficulty": "Advanced", "imageRequired": false, "maxSubmissions": 3, "week": 3 },
+
+  { "crn": 80093, "word": "Photosynthesis",      "difficulty": "Basic",    "imageRequired": true,  "maxSubmissions": 3, "week": 1 },
+  { "crn": 80093, "word": "Pollination",         "difficulty": "Basic",    "imageRequired": true,  "maxSubmissions": 3, "week": 2 },
+  { "crn": 80093, "word": "Plant Cell Wall",     "difficulty": "Moderate", "imageRequired": true,  "maxSubmissions": 3, "week": 3 },
+
+  { "crn": 85113, "word": "Resource Management", "difficulty": "Moderate", "imageRequired": false, "maxSubmissions": 3, "week": 1 },
+  { "crn": 85113, "word": "Urban Geography",     "difficulty": "Basic",    "imageRequired": false, "maxSubmissions": 3, "week": 2 },
+  { "crn": 85113, "word": "Urbanization",        "difficulty": "Moderate", "imageRequired": false, "maxSubmissions": 3, "week": 3 },
+
+  { "crn": 10299, "word": "Region",              "difficulty": "Basic",    "imageRequired": false, "maxSubmissions": 3, "week": 1 },
+  { "crn": 10299, "word": "Cultural Landscape",  "difficulty": "Moderate", "imageRequired": true,  "maxSubmissions": 3, "week": 2 },
+  { "crn": 10299, "word": "Geopolitics",         "difficulty": "Advanced", "imageRequired": false, "maxSubmissions": 3, "week": 3 },
+
+  { "crn": 82747, "word": "Democracy",           "difficulty": "Basic",    "imageRequired": false, "maxSubmissions": 3, "week": 1 },
+  { "crn": 82747, "word": "Sovereignty",         "difficulty": "Moderate", "imageRequired": false, "maxSubmissions": 3, "week": 2 },
+  { "crn": 82747, "word": "Political Ideology",  "difficulty": "Advanced", "imageRequired": false, "maxSubmissions": 3, "week": 3 },
+
+  { "crn": 81365, "word": "Monotheism",          "difficulty": "Basic",    "imageRequired": false, "maxSubmissions": 3, "week": 1 },
+  { "crn": 81365, "word": "Sacred Text",         "difficulty": "Basic",    "imageRequired": false, "maxSubmissions": 3, "week": 2 },
+  { "crn": 81365, "word": "Dharma",              "difficulty": "Moderate", "imageRequired": false, "maxSubmissions": 3, "week": 3 }
+],
 
   "defaultSubmissions": [
     {

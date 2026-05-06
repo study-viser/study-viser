@@ -82,6 +82,7 @@ export default async function CoursePage({ params }: { params: Promise<{ crn: st
           </h2>
 
           <div style={{ border: '1px solid #E5E7EB', borderRadius: '12px', overflow: 'hidden' }}>
+            {/* Header */}
             <div style={{
               display: 'grid', gridTemplateColumns: '2fr 1fr 2fr 1.2fr auto',
               padding: '8px 14px', background: '#F9FAFB',

@@ -425,3 +425,129 @@
   font-weight: 700;
   color: #1F2937;
 }
+
+/* Submission Review Card */
+.review-card {
+  border-radius: 12px;
+  padding: 20px;
+  position: relative;
+  background: #ffffff;
+  border: 2px solid #E5E7EB;
+}
+
+.review-card-winner {
+  border-color: #6DB089;
+  background: #F0FFF4;
+}
+
+.review-card-reviewed {
+  border-color: #E5E7EB;
+}
+
+.review-card-pending {
+  border-color: #E5E7EB;
+}
+
+.review-card-winner-badge {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  background: #DCFCE7;
+  color: #15803D;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+
+.review-card-anon-label {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-bottom: 12px;
+  color: #9CA3AF;
+  font-size: 13px;
+}
+
+.review-card-definition {
+  font-size: 15px;
+  color: #374151;
+  line-height: 1.6;
+  margin-bottom: 16px;
+  white-space: pre-wrap;
+}
+
+.review-card-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.review-card-status-reviewed {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  color: #15803D;
+  font-size: 13px;
+  font-weight: 600;
+}
+
+.review-card-status-pending {
+  color: #9CA3AF;
+  font-size: 13px;
+}
+
+.review-card-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.review-btn {
+  border-radius: 8px;
+  padding: 6px 14px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  border: none;
+}
+
+.review-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.review-btn-mark {
+  background: #F1F5F9;
+  color: #374151;
+  border: 1px solid #E5E7EB;
+}
+
+.review-btn-mark:hover:not(:disabled) {
+  background: #E2E8F0;
+}
+
+.review-btn-approve {
+  background: #6DB089;
+  color: #fff;
+}
+
+.review-btn-approve:hover:not(:disabled) {
+  background: #5c9b76;
+}
+
+.review-btn-undo {
+  background: transparent;
+  color: #9CA3AF;
+  border: 1px solid #E5E7EB;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.review-btn-undo:hover:not(:disabled) {
+  color: #6B7280;
+  border-color: #D1D5DB;
+}

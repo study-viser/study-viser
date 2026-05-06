@@ -42,9 +42,13 @@ export default function DeleteTermButton({ termId, termWord }: Props) {
           onClick={handleDelete}
           disabled={loading}
           style={{
-            background: '#DC2626', color: '#fff', border: 'none',
-            borderRadius: '6px', padding: '4px 10px',
-            fontSize: '12px', fontWeight: 600,
+            background: '#DC2626',
+            color: '#fff',
+            border: 'none',
+            borderRadius: '6px',
+            padding: '4px 10px',
+            fontSize: '12px',
+            fontWeight: 600,
             cursor: loading ? 'not-allowed' : 'pointer',
             opacity: loading ? 0.6 : 1,
           }}
@@ -55,9 +59,13 @@ export default function DeleteTermButton({ termId, termWord }: Props) {
           onClick={() => setConfirming(false)}
           disabled={loading}
           style={{
-            background: 'transparent', border: '1px solid #E5E7EB',
-            borderRadius: '6px', padding: '4px 10px',
-            fontSize: '12px', color: '#6B7280', cursor: 'pointer',
+            background: 'transparent',
+            border: '1px solid #E5E7EB',
+            borderRadius: '6px',
+            padding: '4px 10px',
+            fontSize: '12px',
+            color: '#6B7280',
+            cursor: 'pointer',
           }}
         >
           Cancel
@@ -71,9 +79,15 @@ export default function DeleteTermButton({ termId, termWord }: Props) {
       onClick={() => setConfirming(true)}
       title={`Delete "${termWord}"`}
       style={{
-        background: 'transparent', border: 'none', cursor: 'pointer',
-        color: '#9CA3AF', display: 'flex', alignItems: 'center',
-        padding: '4px', borderRadius: '6px', transition: 'color 0.15s',
+        background: 'transparent',
+        border: 'none',
+        cursor: 'pointer',
+        color: '#9CA3AF',
+        display: 'flex',
+        alignItems: 'center',
+        padding: '4px',
+        borderRadius: '6px',
+        transition: 'color 0.15s',
       }}
       onMouseEnter={e => (e.currentTarget.style.color = '#DC2626')}
       onMouseLeave={e => (e.currentTarget.style.color = '#9CA3AF')}

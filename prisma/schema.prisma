@@ -109,6 +109,7 @@ model Term {
   course           Course       @relation(fields: [courseCRN], references: [crn])
   courseCRN        Int
 
+  @@unique([courseCRN, word])   
   @@map("terms")
 }
 

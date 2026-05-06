@@ -1,32 +1,16 @@
 "use client";
- 
-import { useState } from "react";
+
 import Image from "next/image";
 import "./globals.css"; 
 import Link from "next/link";
  
 export default function HomePage() {
-  const [searchQuery, setSearchQuery] = useState("");
   return (
     <main className="min-h-screen bg-white font-sans overflow-x-hidden">
       
       {/* Hero Section */}
       <section className="hero">
-        {/* Search Bar */}
-        <div className="search-bar-wrapper">
-          <svg className="search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-            <circle cx="11" cy="11" r="8"/>
-            <line x1="21" y1="21" x2="16.65" y2="16.65"/>
-          </svg>
-          <input
-            type="text"
-            className="search-bar"
-            placeholder="Search for courses"
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
-          />
-        </div>
- 
+
         {/* Headline + CTA */}
         <div className="hero-content">
           <h1 className="hero-headline">

@@ -1,3 +1,4 @@
+'use server';
 import { hash, compare } from 'bcrypt';
 import { auth } from './auth';
 import { prisma } from './prisma';
