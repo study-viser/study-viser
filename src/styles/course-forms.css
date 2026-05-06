@@ -120,25 +120,10 @@
   padding: 4px;
 }
 
-.secret-toggle-outline {
-  background: #f1f5f1;
-  color: #4a6b52;
-  border: 2px solid #4a6b52;
-  border-radius: 5px;
-  padding: 5px;
-  font-size: 13px;
-}
-
-.secret-toggle-outline:hover {
-  background-color: #024731;
-  color: #e8f5e9;
-  border: 2px solid #024731;
-}
-
 .secret-toggle-wrapper {
   display: flex;
-  flex-direction: column;
-  gap: 8px;
+  align-items: center;
+  height: 37px; 
 }
 
 .secret-field {
@@ -148,7 +133,9 @@
   background: #F3F4F6;
   border: 1px solid #E5E7EB;
   border-radius: 8px;
-  padding: 8px 12px;
+  padding: 6px 12px;
+  height: 37px;
+  box-sizing: border-box;
 }
 
 .secret-value {
@@ -156,20 +143,43 @@
   font-size: 14px;
   color: #1F2937;
   flex: 1;
+  white-space: nowrap;
+}
+
+.secret-toggle-outline {
+  background: #f4faf6;
+  color: #6DB089;
+  border: 2px solid #6DB089;
+  border-radius: 8px;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  height: 37px;
+  box-sizing: border-box;
+}
+
+.secret-toggle-outline:hover {
+  background-color: #6DB089;
+  color: #ffffff;
 }
 
 .secret-copy-btn {
-  background: #e8f5e9;
-  color: #024731;
-  border: 2px solid #024731;
-  border-radius: 5px;
-  padding: 4px 10px;
+  background: #f4faf6;
+  color: #6DB089;
+  border: 2px solid #6DB089;
+  border-radius: 8px;
+  padding: 6px 10px;
   font-size: 12px;
   font-weight: 600;
   cursor: pointer;
+  height: 27px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
 }
 
 .secret-copy-btn:hover {
-  background-color: #024731;
-  color: #e8f5e9;
+  background-color: #6DB089;
+  color: #ffffff;
 }
