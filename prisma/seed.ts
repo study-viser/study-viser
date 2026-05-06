@@ -189,15 +189,24 @@ const created = await prisma.term.upsert({
       continue;
     }
 
-    await prisma.submission.create({
-      data: {
-        creatorId: creator.id,
+    const existingSubmission = await prisma.submission.findFirst({
+      where: {
         termId,
-        definition: sub.definition,
-        points: sub.points,
-        wasReviewed: sub.wasReviewed,
+        creatorId: creator.id,
       },
     });
+
+    if (!existingSubmission) {
+      await prisma.submission.create({
+        data: {
+          creatorId: creator.id,
+          termId,
+          definition: sub.definition,
+          points: sub.points,
+          wasReviewed: sub.wasReviewed,
+        },
+      });
+}
   }
 
   console.log('Seeding complete.');
